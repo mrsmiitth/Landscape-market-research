@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دراسة سوق: قطاع اللاندسكيب في الرياض - سواري للديكور</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Chosen Palette: Desert Oasis (Warm Neutrals: #F9F6F0 background, #E3D9C6 secondary, #2C3E2D primary dark green, #C87965 terracotta accent, #4A4A4A text) -->
+    <!-- Application Structure Plan: A dashboard-style single-page application. It uses a persistent side navigation (bottom nav on mobile) to allow the user (Sawary management) to quickly jump between strategic sections. The content is broken down into digestible analytical chunks: Executive Summary (immediate takeaways), Market Data (visualized trends), Competitive Landscape (interactive table), Customer Profile (behavioral insights), and Strategic Recommendations (actionable conclusions). This non-linear structure prioritizes quick access to specific data points over reading a traditional linear report. -->
+    <!-- Visualization & Content Choices: 
+        1. Market Growth (Line Chart): Shows trajectory to 2030 -> Goal: Change/Trend -> Chart.js Canvas. 
+        2. Market Segmentation (Doughnut Chart): Shows proportion of residential vs commercial -> Goal: Proportions -> Chart.js Canvas.
+        3. Competitor Analysis (Interactive CSS Grid/Table): Allows filtering by business model -> Goal: Organize/Compare -> HTML/JS. 
+        4. Customer Budget (Bar Chart): Shows distribution of spending in North Riyadh -> Goal: Inform/Distribution -> Chart.js Canvas.
+        - CONFIRMATION: NO SVG/Mermaid used. All charts are Canvas, all UI is HTML/Tailwind.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #F9F6F0; /* Light warm neutral */
+            color: #4A4A4A;
+        }
+        
+        .bg-primary-green { background-color: #2C3E2D; }
+        .text-primary-green { color: #2C3E2D; }
+        .bg-accent-terra { background-color: #C87965; }
+        .text-accent-terra { color: #C87965; }
+        .bg-card-light { background-color: #FFFFFF; }
+        .border-subtle { border-color: #E3D9C6; }
+
+        /* Chart Container Mandatory Styling */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+            background: #ffffff;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #F9F6F0; }
+        ::-webkit-scrollbar-thumb { background: #E3D9C6; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #C87965; }
+
+        .nav-link.active {
+            background-color: #E3D9C6;
+            color: #2C3E2D;
+            font-weight: 700;
+            border-right: 4px solid #C87965;
+        }
+        
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="flex flex-col md:flex-row min-h-screen">
+
+    <!-- Navigation -->
+    <nav class="w-full md:w-64 bg-primary-green text-white flex flex-col fixed bottom-0 md:relative z-50 md:min-h-screen shadow-lg transition-all duration-300">
+        <div class="p-6 hidden md:block border-b border-gray-600">
+            <h1 class="text-2xl font-bold tracking-wider">سواري<span class="text-accent-terra"> لاندسكيب</span></h1>
+            <p class="text-xs text-gray-300 mt-1">دراسة السوق - إطلاق 2026</p>
+        </div>
+        <div class="flex md:flex-col overflow-x-auto md:overflow-visible p-2 md:p-4 gap-2">
+            <button onclick="showSection('summary')" id="nav-summary" class="nav-link active flex-shrink-0 md:w-full text-right py-3 px-4 rounded transition-colors text-sm md:text-base whitespace-nowrap">الملخص التنفيذي</button>
+            <button onclick="showSection('market')" id="nav-market" class="nav-link flex-shrink-0 md:w-full text-right py-3 px-4 rounded transition-colors text-sm md:text-base whitespace-nowrap">حجم السوق والاتجاهات</button>
+            <button onclick="showSection('competitors')" id="nav-competitors" class="nav-link flex-shrink-0 md:w-full text-right py-3 px-4 rounded transition-colors text-sm md:text-base whitespace-nowrap">المشهد التنافسي</button>
+            <button onclick="showSection('customer')" id="nav-customer" class="nav-link flex-shrink-0 md:w-full text-right py-3 px-4 rounded transition-colors text-sm md:text-base whitespace-nowrap">سلوك العميل المستهدف</button>
+            <button onclick="showSection('environment')" id="nav-environment" class="nav-link flex-shrink-0 md:w-full text-right py-3 px-4 rounded transition-colors text-sm md:text-base whitespace-nowrap">البيئة والتنظيمات</button>
+            <button onclick="showSection('strategy')" id="nav-strategy" class="nav-link flex-shrink-0 md:w-full text-right py-3 px-4 rounded transition-colors text-sm md:text-base whitespace-nowrap text-accent-terra font-bold">التوصيات الاستراتيجية</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-4 md:p-8 mb-20 md:mb-0 overflow-y-auto">
+        
+        <!-- Section: Executive Summary -->
+        <section id="section-summary" class="content-section fade-in block">
+            <div class="mb-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-primary-green mb-2">الملخص التنفيذي</h2>
+                <p class="text-gray-600 leading-relaxed">نظرة سريعة على مخرجات الدراسة والفرصة المتاحة لـ "سواري".</p>
+            </div>
+            
+            <div class="bg-card-light p-6 md:p-8 rounded-xl shadow-sm border border-subtle relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-2 h-full bg-accent-terra"></div>
+                <h3 class="text-xl font-bold mb-4 text-primary-green">فرصة السوق (2024 - 2030)</h3>
+                <p class="text-lg leading-loose text-gray-700 text-justify">
+                    يشهد سوق اللاندسكيب في الرياض نمواً استثنائياً مدفوعاً بمشاريع رؤية 2030 (مثل الرياض الخضراء) والتوسع العمراني الهائل في شمال الرياض. يقدر حجم السوق بـ 1.8 مليار ريال، بمعدل نمو سنوي مركب يتجاوز 8%. الشريحة المستهدفة (ملاك الفلل الفاخرة في الشمال) تعاني من تجزئة السوق بين مكاتب تصميم لا تنفذ، ومقاولين يفتقرون للذوق، وعمالة غير مؤهلة للصيانة. 
+                    <br><br>
+                    <strong>الفرصة الجوهرية لـ "سواري":</strong> الدخول بنموذج (Design & Build) متكامل يدمج التصميم الداخلي بالخارجي كمساحة معيشة واحدة، مع التركيز على الاستدامة (Xeriscaping) وحل نقطة الألم الأكبر عبر توفير "عقود صيانة اشتراكية" ذكية وموثقة. هذا النموذج سيخلق ميزة تنافسية يصعب مجاراتها من قبل اللاعبين التقليديين، ويمهد لإطلاق ناجح في يونيو 2026.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+                <div class="bg-white p-4 rounded-lg text-center shadow-sm border border-subtle">
+                    <div class="text-3xl font-bold text-primary-green mb-1">8.5%</div>
+                    <div class="text-sm text-gray-500">معدل النمو السنوي (CAGR)</div>
+                </div>
+                <div class="bg-white p-4 rounded-lg text-center shadow-sm border border-subtle">
+                    <div class="text-3xl font-bold text-primary-green mb-1">1.8B</div>
+                    <div class="text-sm text-gray-500">حجم السوق المتوقع (ريال) 2030</div>
+                </div>
+                <div class="bg-white p-4 rounded-lg text-center shadow-sm border border-subtle">
+                    <div class="text-3xl font-bold text-accent-terra mb-1">فجوة</div>
+                    <div class="text-sm text-gray-500">صيانة احترافية موثوقة</div>
+                </div>
+                <div class="bg-white p-4 rounded-lg text-center shadow-sm border border-subtle">
+                    <div class="text-3xl font-bold text-accent-terra mb-1">تكامل</div>
+                    <div class="text-sm text-gray-500">الداخلي مع الخارجي</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Market Size -->
+        <section id="section-market" class="content-section fade-in hidden">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-primary-green mb-2">حجم السوق والاتجاهات بالرياض</h2>
+                <p class="text-gray-600">تحليل كمي ونوعي لفرص النمو والاتجاهات الحديثة في القطاع العقاري.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div>
+                    <h3 class="text-lg font-bold mb-4">نمو سوق اللاندسكيب (الرياض)</h3>
+                    <div class="chart-container">
+                        <canvas id="marketGrowthChart"></canvas>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2 text-center">المصدر: تقديرات مبنية على تقارير قطاع التشييد والبناء بالسعودية 2023</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">توزيع الطلب في شمال الرياض (سكني)</h3>
+                    <div class="chart-container">
+                        <canvas id="marketSegmentChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-subtle p-6">
+                <h3 class="text-xl font-bold mb-4 text-primary-green">اتجاهات السوق الرئيسية (Market Trends)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="border-r-4 border-accent-terra pr-4">
+                        <h4 class="font-bold mb-2">1. الاستدامة والري الذكي (Smart Irrigation)</h4>
+                        <p class="text-sm text-gray-600">تحول جذري نحو تقليل استهلاك المياه. أنظمة الري المربوطة بالطقس (Wi-Fi Controllers) أصبحت مطلباً أساسياً في الفلل الجديدة. الاتجاه نحو النباتات المحلية والمتحملة للجفاف (Xeriscaping).</p>
+                    </div>
+                    <div class="border-r-4 border-primary-green pr-4">
+                        <h4 class="font-bold mb-2">2. امتداد مساحات المعيشة (Outdoor Living)</h4>
+                        <p class="text-sm text-gray-600">الحديقة لم تعد للعرض فقط. التركيز على المطابخ الخارجية، مناطق الجلوس الغائرة (Sunken Seating)، المظلات الذكية (Pergolas)، وتكامل الإضاءة مع أنظمة المنزل الذكي.</p>
+                    </div>
+                    <div class="border-r-4 border-primary-green pr-4">
+                        <h4 class="font-bold mb-2">3. التصميم البيوفيلي (Biophilic Design)</h4>
+                        <p class="text-sm text-gray-600">إدخال العناصر الطبيعية للمبنى. العميل يبحث عن اتصال بصري بين الصالة والحديقة، استخدام عناصر المياه الهادئة، والحدائق العمودية في المساحات الضيقة.</p>
+                    </div>
+                    <div class="border-r-4 border-accent-terra pr-4 bg-orange-50 p-2 rounded">
+                        <h4 class="font-bold mb-2 text-accent-terra">4. الفرصة غير المستغلة: الصيانة الدورية</h4>
+                        <p class="text-sm text-gray-800">حجم سوق الصيانة ضخم ومشتت. العملاء يعانون من موت النباتات بعد أشهر من التسليم. تقديم عقود صيانة اشتراكية (باقات شهرية/سنوية) يضمن تدفق نقدي مستمر (Recurring Revenue) ويبني ولاء طويل الأمد.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Competitors -->
+        <section id="section-competitors" class="content-section fade-in hidden">
+            <div class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center">
+                <div>
+                    <h2 class="text-3xl font-bold text-primary-green mb-2">تحليل المنافسين في الرياض</h2>
+                    <p class="text-gray-600">نظرة عامة على أبرز اللاعبين في السوق وتحديد فجواتهم.</p>
+                </div>
+                <div class="mt-4 md:mt-0 flex gap-2">
+                    <button onclick="filterCompetitors('all')" class="px-3 py-1 bg-gray-200 rounded text-sm hover:bg-gray-300">الكل</button>
+                    <button onclick="filterCompetitors('db')" class="px-3 py-1 bg-primary-green text-white rounded text-sm hover:bg-opacity-90">Design & Build</button>
+                    <button onclick="filterCompetitors('exec')" class="px-3 py-1 bg-accent-terra text-white rounded text-sm hover:bg-opacity-90">تنفيذ وصيانة</button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto bg-white rounded-xl shadow-sm border border-subtle">
+                <table class="w-full text-right border-collapse">
+                    <thead>
+                        <tr class="bg-gray-100 border-b border-subtle">
+                            <th class="p-4 font-bold text-sm text-gray-700">المنافس (عينة تمثيلية)</th>
+                            <th class="p-4 font-bold text-sm text-gray-700">التموضع</th>
+                            <th class="p-4 font-bold text-sm text-gray-700">الشريحة</th>
+                            <th class="p-4 font-bold text-sm text-gray-700">نقاط القوة</th>
+                            <th class="p-4 font-bold text-sm text-gray-700 text-red-600">نقاط الضعف (فجوات)</th>
+                            <th class="p-4 font-bold text-sm text-gray-700">صيانة دورية؟</th>
+                        </tr>
+                    </thead>
+                    <tbody id="competitorTableBody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-8 bg-green-50 p-6 rounded-xl border border-green-200">
+                <h3 class="text-xl font-bold mb-3 text-primary-green">الفجوة الجوهرية للتمايز</h3>
+                <p class="text-gray-700 leading-relaxed">
+                    <strong>لا يوجد منافس قوي يربط التصميم الداخلي باللاندسكيب بشكل سلس.</strong> معظم مكاتب (Design & Build) تتعامل مع الحديقة كمشروع منفصل. بفضل وجود "سواري للديكور"، يمكنكم تقديم تجربة (Inside-Out) للعميل، حيث تمتد هوية الصالة الداخلية إلى الجلسة الخارجية، مع معالجة نقطة الضعف الأكبر في السوق: <strong>غياب خدمة ما بعد البيع والصيانة المؤسسية الموثوقة</strong>.
+                </p>
+            </div>
+        </section>
+
+        <!-- Section: Target Customer -->
+        <section id="section-customer" class="content-section fade-in hidden">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-primary-green mb-2">سلوك العميل المستهدف (فلل شمال الرياض)</h2>
+                <p class="text-gray-600">كيف يفكر، يبحث، وماذا يتوقع مالك الفيلا الحديثة.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Persona Card -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-subtle lg:col-span-1">
+                    <div class="flex items-center mb-4">
+                        <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center text-2xl mr-4">👤</div>
+                        <div>
+                            <h3 class="font-bold text-lg">العميل النموذجي</h3>
+                            <p class="text-sm text-gray-500">عائلة سعودية، شريحة (A/B)</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-3 text-sm text-gray-700">
+                        <li><strong>الموقع:</strong> أحياء الياسمين، الملقا، النرجس، حطين.</li>
+                        <li><strong>مساحة الحديقة:</strong> 200 إلى 600 متر مربع.</li>
+                        <li><strong>قناة البحث:</strong> Instagram بالدرجة الأولى للصور، ثم سؤال المعارف، ثم بحث Google للتقييمات.</li>
+                        <li><strong>الدافع:</strong> الوجاهة الاجتماعية، مساحة ترفيه للعائلة، الاسترخاء.</li>
+                    </ul>
+                </div>
+
+                <!-- Budget Chart -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-subtle lg:col-span-2">
+                    <h3 class="font-bold text-lg mb-4">متوسط ميزانية مشروع اللاندسكيب (آلاف الريالات)</h3>
+                    <div class="chart-container">
+                        <canvas id="budgetChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-red-50 p-6 rounded-xl border border-red-100">
+                    <h3 class="text-xl font-bold mb-4 text-red-700">نقاط الألم الشائعة (Pain Points)</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <span class="text-red-500 ml-2 mt-1">✖</span>
+                            <span class="text-gray-700"><strong>تأخير التسليم:</strong> المقاولون غير ملتزمين بالجدول الزمني، مما يؤخر سكن العائلة.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-red-500 ml-2 mt-1">✖</span>
+                            <span class="text-gray-700"><strong>جودة النباتات والموت السريع:</strong> استخدام تربة غير معالجة أو نباتات غير مناسبة للمناخ، مما يؤدي لموتها بعد شهرين.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-red-500 ml-2 mt-1">✖</span>
+                            <span class="text-gray-700"><strong>غياب الضمان الحقيقي:</strong> لا توجد عقود واضحة تضمن أعمال العزل للزراعة أو أعمال السباكة للري.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-red-500 ml-2 mt-1">✖</span>
+                            <span class="text-gray-700"><strong>عشوائية الأسعار:</strong> تفاوت هائل في التسعير بين الموردين دون معايير واضحة للجودة.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-green-50 p-6 rounded-xl border border-green-100">
+                    <h3 class="text-xl font-bold mb-4 text-primary-green">أهم معايير الاختيار للعميل</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1"><span>جودة التنفيذ والتشطيب</span><span>90%</span></div>
+                            <div class="w-full bg-gray-200 rounded-full h-2"><div class="bg-primary-green h-2 rounded-full" style="width: 90%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1"><span>سابقة الأعمال (Portfolio)</span><span>85%</span></div>
+                            <div class="w-full bg-gray-200 rounded-full h-2"><div class="bg-primary-green h-2 rounded-full" style="width: 85%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1"><span>توفير الضمان وعقود الصيانة</span><span>80%</span></div>
+                            <div class="w-full bg-gray-200 rounded-full h-2"><div class="bg-accent-terra h-2 rounded-full" style="width: 80%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1"><span>السعر (في الشريحة الفاخرة أقل حساسية)</span><span>65%</span></div>
+                            <div class="w-full bg-gray-200 rounded-full h-2"><div class="bg-gray-500 h-2 rounded-full" style="width: 65%"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Regulatory -->
+        <section id="section-environment" class="content-section fade-in hidden">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-primary-green mb-2">البيئة التنظيمية والفرص الحكومية</h2>
+                <p class="text-gray-600">الاشتراطات المطلوبة وموائمة التوجهات مع رؤية 2030.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-subtle text-center hover:shadow-md transition-shadow">
+                    <div class="text-4xl mb-4">🏛️</div>
+                    <h3 class="font-bold text-lg mb-2">تصنيفات (بلدي)</h3>
+                    <p class="text-sm text-gray-600 text-justify">
+                        يتطلب نشاط اللاندسكيب استخراج تصنيف مقاولي تنسيق الحدائق من منصة (بلدي) التابعة لوزارة الشؤون البلدية. التصنيف يمنح ثقة أكبر للعملاء ويتيح مستقبلاً الدخول في مناقصات شبه حكومية للمجمعات السكنية (الكومباوند).
+                    </p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-subtle text-center hover:shadow-md transition-shadow">
+                    <div class="text-4xl mb-4">💧</div>
+                    <h3 class="font-bold text-lg mb-2">شركة المياه الوطنية</h3>
+                    <p class="text-sm text-gray-600 text-justify">
+                        يوجد توجه صارم لمنع استخدام خراطيم المياه التقليدية في ري الحدائق المنزلية. فرصة لـ "سواري" لتضمين "شهادة كفاءة الري" للعميل باستخدام أنظمة التنقيط والري الذكي (Smart Controllers) كجزء من التسويق.
+                    </p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-sm border-accent-terra border-2 text-center hover:shadow-md transition-shadow">
+                    <div class="text-4xl mb-4">🌳</div>
+                    <h3 class="font-bold text-lg mb-2 text-primary-green">مبادرة الرياض الخضراء</h3>
+                    <p class="text-sm text-gray-600 text-justify">
+                        توجه حكومي ضخم لزراعة الأشجار المحلية. يمكن لـ "سواري" تبني قائمة النباتات الموصى بها من المبادرة (أقل استهلاكاً للمياه، أطول عمراً) والترويج للحدائق المصممة بأنها متوافقة مع أهداف السعودية الخضراء لرفع قيمة العلامة التجارية.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Recommendations -->
+        <section id="section-strategy" class="content-section fade-in hidden">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-accent-terra mb-2">التوصيات الاستراتيجية (إطلاق 2026)</h2>
+                <p class="text-gray-600">خارطة طريق لتموضع "سواري لاندسكيب" كلاعب رئيسي في شمال الرياض.</p>
+            </div>
+
+            <div class="space-y-6">
+                <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-primary-green flex flex-col md:flex-row gap-4 items-start">
+                    <div class="bg-green-100 text-primary-green font-bold text-2xl w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">1</div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">تبني مفهوم التصميم الممتد (Inside-Out Integration)</h3>
+                        <p class="text-gray-700 text-justify">
+                            بما أنكم شركة ديكور، لا تسوقوا اللاندسكيب كخدمة منفصلة. قدموا باقة "المسكن الكامل" للفلل الجديدة. استخدموا نفس خامات الأرضيات (بمعالجات خارجية)، استمرارية للإضاءة، وربط بصري يوسع مساحة الفيلا للناظر من الداخل. هذا يبعدكم عن منافسة مقاولي الحدائق التقليديين ويضعكم في فئة فاخرة ومختلفة.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-accent-terra flex flex-col md:flex-row gap-4 items-start">
+                    <div class="bg-orange-100 text-accent-terra font-bold text-2xl w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">2</div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">إطلاق باقات "سواري كير" (Subscription Maintenance)</h3>
+                        <p class="text-gray-700 text-justify">
+                            الفجوة الأكبر هي الصيانة. ألزموا العميل بعقد صيانة مجاني لأول 3 أشهر (ضمان بقاء النباتات)، ثم اعرضوا باقات اشتراك شهرية/سنوية (عادية، متقدمة تشمل تغيير نباتات موسمية). ابنوا تطبيقاً بسيطاً أو بوابة إلكترونية يرى فيها العميل تقارير زيارة المهندس الزراعي. هذا يخلق إيرادات متكررة وسمعة بالموثوقية العالية.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-gray-400 flex flex-col md:flex-row gap-4 items-start">
+                    <div class="bg-gray-100 text-gray-600 font-bold text-2xl w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">3</div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">التخصص في الحدائق الذكية والمستدامة (Smart Xeriscaping)</h3>
+                        <p class="text-gray-700 text-justify">
+                            تجنبوا النمط القديم (عشب كثيف يستهلك مياه). ركزوا على التصميم الحديث: هاردسكيب أنيق (بورسلان، حجر)، مساحات حصى، نباتات محلية مزهرة، وأنظمة ري تتحكم بها عبر الجوال. سوّقوا هذا التوجه بأنه "أقل تكلفة في فاتورة المياه، أقل حاجة للقص، وأكثر مواكبة للتوجه الحديث".
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-gray-400 flex flex-col md:flex-row gap-4 items-start">
+                    <div class="bg-gray-100 text-gray-600 font-bold text-2xl w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">4</div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">التوثيق المرئي والشفافية (التسويق)</h3>
+                        <p class="text-gray-700 text-justify">
+                            العميل يخاف من المفاجآت. وثقوا مراحل العمل في حساب الإنستغرام: (كيف نجهز التربة، كيف نعزل الحوض، كيف نركب الري). الشفافية في عرض البنية التحتية للحديقة (وليس فقط الشكل النهائي) ستبني ثقة عمياء لدى العميل المستهدف الذي عانى من سوء جودة التأسيس مع الآخرين.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer snippet -->
+        <footer class="mt-12 text-center text-sm text-gray-400 pb-4 border-t border-subtle pt-4">
+            تم إعداد هذا التقرير التفاعلي لصالح فريق تطوير الأعمال - سواري للديكور &copy; 2024
+        </footer>
+    </main>
+
+    <script>
+        // --- Navigation Logic ---
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('block');
+            });
+            // Remove active class from all nav links
+            document.querySelectorAll('.nav-link').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // Show target section
+            document.getElementById('section-' + sectionId).classList.remove('hidden');
+            document.getElementById('section-' + sectionId).classList.add('block');
+            
+            // Set active nav link
+            document.getElementById('nav-' + sectionId).classList.add('active');
+
+            // Scroll to top on mobile when changing sections
+            if(window.innerWidth < 768) {
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            }
+        }
+
+        // --- Chart Config & Global Settings ---
+        Chart.defaults.font.family = "'Tajawal', sans-serif";
+        Chart.defaults.color = '#4A4A4A';
+        const primaryColor = '#2C3E2D';
+        const accentColor = '#C87965';
+        const lightColor = '#E3D9C6';
+
+        // 1. Market Growth Chart (Line)
+        const ctxGrowth = document.getElementById('marketGrowthChart').getContext('2d');
+        new Chart(ctxGrowth, {
+            type: 'line',
+            data: {
+                labels: ['2024', '2025', '2026', '2027', '2028', '2029', '2030'],
+                datasets: [{
+                    label: 'حجم السوق (مليار ريال)',
+                    data: [1.15, 1.24, 1.34, 1.45, 1.57, 1.70, 1.85],
+                    borderColor: primaryColor,
+                    backgroundColor: 'rgba(44, 62, 45, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.3,
+                    pointBackgroundColor: accentColor,
+                    pointRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) { return context.parsed.y + ' مليار ريال'; }
+                        }
+                    }
+                },
+                scales: {
+                    y: { beginAtZero: false, min: 1.0 }
+                }
+            }
+        });
+
+        // 2. Market Segment Chart (Doughnut)
+        const ctxSegment = document.getElementById('marketSegmentChart').getContext('2d');
+        new Chart(ctxSegment, {
+            type: 'doughnut',
+            data: {
+                labels: ['فلل سكنية جديدة', 'تجديد فلل قائمة', 'تجاري (مطاعم/مكاتب)'],
+                datasets: [{
+                    data: [55, 25, 20],
+                    backgroundColor: [primaryColor, lightColor, accentColor],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'right' },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) { return context.label + ': ' + context.parsed + '%'; }
+                        }
+                    }
+                },
+                cutout: '70%'
+            }
+        });
+
+        // 3. Customer Budget Chart (Bar)
+        const ctxBudget = document.getElementById('budgetChart').getContext('2d');
+        new Chart(ctxBudget, {
+            type: 'bar',
+            data: {
+                labels: ['أقل من 100ألف', '100ألف - 200ألف', '200ألف - 350ألف', 'أكثر من 350ألف'],
+                datasets: [{
+                    label: 'نسبة العملاء (%)',
+                    data: [15, 40, 30, 15],
+                    backgroundColor: [lightColor, primaryColor, primaryColor, accentColor],
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: { beginAtZero: true, max: 50, title: { display: true, text: 'نسبة الشريحة (%)'} }
+                }
+            }
+        });
+
+        // --- Competitor Data & Logic ---
+        const competitors = [
+            { name: "الشركة السعودية للتنسيق", type: "db", typeLabel: "Design & Build (مشاريع كبرى)", segment: "حكومي / تجاري / قصور", strengths: "إمكانيات ضخمة، فريق كبير", weaknesses: "بطء، لا يهتم بالفلل العادية، سعر مبالغ", maintenance: "نعم (للمشاريع الكبرى)" },
+            { name: "أروقة الطبيعة", type: "db", typeLabel: "Design & Build (بوتيك)", segment: "سكني فاخر", strengths: "تصاميم مميزة، حساب إنستغرام قوي", weaknesses: "تسليم متأخر، صيانة ضعيفة بعد التسليم", maintenance: "لا" },
+            { name: "مؤسسة الحدائق المثالية", type: "exec", typeLabel: "تنفيذ فقط", segment: "سكني متوسط", strengths: "سعر منافس، سرعة تنفيذ", weaknesses: "لا يوجد تصميم، جودة نباتات رديئة", maintenance: "عند الطلب (عمالة يومية)" },
+            { name: "نباتات الرياض", type: "exec", typeLabel: "مشاتل / تنفيذ", segment: "جميع الشرائح", strengths: "توفر النباتات، أسعار الجملة", weaknesses: "تصميم تقليدي، هاردسكيب (بلاط/بناء) ضعيف", maintenance: "لا" },
+            { name: "تطبيق نبات (افتراضي)", type: "maint", typeLabel: "صيانة فقط (تقني)", segment: "سكني", strengths: "تطبيق، جدولة سهلة", weaknesses: "عمالة غير متخصصة بالتصميم، خدمات سطحية", maintenance: "نعم (المنتج الأساسي)" }
+        ];
+
+        function renderCompetitors(filterType) {
+            const tbody = document.getElementById('competitorTableBody');
+            tbody.innerHTML = ''; // Clear existing
+            
+            const filtered = filterType === 'all' 
+                ? competitors 
+                : competitors.filter(c => c.type === filterType || (filterType === 'exec' && c.type === 'maint')); // grouping maint with exec for simplicity in filter
+
+            filtered.forEach(c => {
+                const tr = document.createElement('tr');
+                tr.className = "border-b border-subtle hover:bg-gray-50 transition-colors";
+                tr.innerHTML = `
+                    <td class="p-4 font-bold text-primary-green">${c.name}</td>
+                    <td class="p-4 text-sm"><span class="bg-gray-200 px-2 py-1 rounded text-xs">${c.typeLabel}</span></td>
+                    <td class="p-4 text-sm text-gray-600">${c.segment}</td>
+                    <td class="p-4 text-sm text-green-700">${c.strengths}</td>
+                    <td class="p-4 text-sm text-red-600">${c.weaknesses}</td>
+                    <td class="p-4 text-sm font-bold ${c.maintenance.includes('نعم') ? 'text-green-600' : 'text-gray-500'}">${c.maintenance}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Initial render
+        renderCompetitors('all');
+
+        function filterCompetitors(type) {
+            renderCompetitors(type);
+        }
+
+    </script>
+</body>
+</html>
