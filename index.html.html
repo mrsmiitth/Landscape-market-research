@@ -118,6 +118,20 @@
         .break-url {
             word-break: break-all;
         }
+
+        /* --- إضافات الذكاء الاصطناعي (Chat & Modal) --- */
+        .loader { 
+            display: inline-block; width: 1.5rem; height: 1.5rem; 
+            border: 3px solid #D4AF37; border-radius: 50%; 
+            border-top-color: transparent; animation: spin 1s linear infinite; 
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .modal-bg { background: rgba(0,0,0,0.7); backdrop-filter: blur(3px); }
+        
+        /* تنسيق رسائل الدردشة */
+        .msg-bot { background: #1C201E; border: 1px solid rgba(212, 175, 55, 0.3); color: #F5F5DC; border-radius: 0.75rem 0.75rem 0 0.75rem; align-self: flex-start; max-width: 85%; padding: 0.75rem; font-size: 0.875rem; line-height: 1.6;}
+        .msg-user { background: #556B2F; color: white; border-radius: 0.75rem 0.75rem 0.75rem 0; align-self: flex-end; max-width: 85%; padding: 0.75rem; font-size: 0.875rem;}
     </style>
 </head>
 <body class="flex flex-col md:flex-row min-h-screen">
@@ -128,7 +142,7 @@
             <h1 class="text-3xl font-bold tracking-widest gold-gradient-text mb-2">سواري</h1>
             <p class="text-[0.65rem] tracking-widest text-brand-gold uppercase">Sustainable Landscaping</p>
             <div class="mt-4 pt-4 border-t border-gray-800 text-xs text-brand-muted leading-relaxed">
-                دراسة السوق المعمقة للرياض<br>إعداد: قسم تطوير الأعمال<br>2026
+                دراسة السوق المعمقة<br>إعداد: قسم تطوير الأعمال<br>2026
             </div>
         </div>
         <div class="flex md:flex-col overflow-x-auto md:overflow-visible p-2 md:p-4 gap-1 md:gap-2 flex-grow">
@@ -167,12 +181,12 @@
                     <div class="absolute -left-4 -top-4 w-16 h-16 bg-brand-olive rounded-full opacity-20"></div>
                     <p class="text-sm text-brand-muted mb-2">حصة مدينة الرياض (2026)</p>
                     <h3 class="text-4xl font-bold text-brand-gold mb-1">45%</h3>
-                    <p class="text-xs text-brand-muted">الأسرع نمواً بسبب التوسع السكني شمالاً</p>
+                    <p class="text-xs text-brand-muted">الأسرع نمواً بسبب التوسع السكني والعمراني</p>
                 </div>
                 <div class="bg-brand-card p-6 rounded-xl border border-gray-800 shadow-lg">
                     <p class="text-sm text-brand-muted mb-2">معدل النمو السنوي (CAGR)</p>
                     <h3 class="text-4xl font-bold text-brand-light mb-1">7.8%</h3>
-                    <p class="text-xs text-brand-olive">مدفوع ببرامج جودة الحياة والتوسع العمراني</p>
+                    <p class="text-xs text-brand-olive">مدفوع ببرامج جودة الحياة والمبادرات الخضراء</p>
                 </div>
             </div>
 
@@ -207,7 +221,7 @@
                             <span class="text-2xl ml-2 text-brand-gold">✨</span> الفخامة الهادئة والخصوصية (Quiet Luxury)
                         </h4>
                         <p class="text-sm text-brand-muted leading-relaxed text-justify">
-                            عملاء شمال الرياض يميلون للتصاميم التي تعكس الفخامة والأصالة وتتكامل مع المعمار الأصلي للفيلا. استخدام الأحجار الطبيعية، الأرضيات البورسلان، وتوظيف النباتات كحواجز بصرية وأسوار طبيعية لتحقيق أقصى درجات الخصوصية عن الجيران.
+                            عملاء الشريحة الفاخرة يميلون للتصاميم التي تعكس الفخامة والأصالة وتتكامل مع المعمار الأصلي للفيلا. استخدام الأحجار الطبيعية، الأرضيات البورسلان، وتوظيف النباتات كحواجز بصرية وأسوار طبيعية لتحقيق أقصى درجات الخصوصية عن الجيران.
                         </p>
                     </div>
                     <div>
@@ -235,13 +249,13 @@
             <div class="mb-8 border-b border-gray-800 pb-6 flex flex-col lg:flex-row justify-between items-start lg:items-end gap-4">
                 <div>
                     <h2 class="text-3xl font-bold gold-gradient-text mb-3">2. تحليل المنافسين (سواري + 20 لاعب)</h2>
-                    <p class="text-brand-muted text-lg">خريطة شاملة تركز حصرياً على مكاتب التصميم ومقاولين التنفيذ الفعليين.</p>
+                    <p class="text-brand-muted text-lg">خريطة شاملة تركز حصرياً على مكاتب التصميم ومقاولين التنفيذ الفعليين، مع الروابط المرجعية.</p>
                 </div>
                 <!-- Filters -->
                 <div class="flex flex-wrap gap-2 print:hidden">
                     <button onclick="filterTable('all', this)" class="filter-btn px-4 py-2 bg-brand-card border border-brand-gold text-brand-gold rounded font-bold text-sm transition-colors">الكل</button>
-                    <button onclick="filterTable('مكاتب ديكور ولاندسكيب', this)" class="filter-btn px-4 py-2 bg-[#121413] border border-gray-700 text-gray-400 hover:text-brand-light rounded text-sm transition-colors">مكاتب ديكور ولاندسكيب</button>
                     <button onclick="filterTable('Design & Build', this)" class="filter-btn px-4 py-2 bg-[#121413] border border-gray-700 text-gray-400 hover:text-brand-light rounded text-sm transition-colors">Design & Build</button>
+                    <button onclick="filterTable('مكاتب ديكور ولاندسكيب', this)" class="filter-btn px-4 py-2 bg-[#121413] border border-gray-700 text-gray-400 hover:text-brand-light rounded text-sm transition-colors">مكاتب ديكور ولاندسكيب</button>
                     <button onclick="filterTable('تنفيذ فقط', this)" class="filter-btn px-4 py-2 bg-[#121413] border border-gray-700 text-gray-400 hover:text-brand-light rounded text-sm transition-colors">تنفيذ فقط</button>
                 </div>
             </div>
@@ -256,7 +270,7 @@
                                 <th class="p-4 font-bold text-brand-gold">النموذج</th>
                                 <th class="p-4 font-bold text-brand-light">الشريحة المستهدفة</th>
                                 <th class="p-4 font-bold text-brand-olive w-48">نقاط القوة</th>
-                                <th class="p-4 font-bold text-red-400 w-48">نقاط الضعف / فرصتنا</th>
+                                <th class="p-4 font-bold text-red-400 w-48">نقاط الضعف / التحديات</th>
                                 <th class="p-4 font-bold text-brand-light text-center">عقود صيانة؟</th>
                             </tr>
                         </thead>
@@ -266,13 +280,13 @@
                     </table>
                 </div>
             </div>
-            <p class="text-xs text-brand-muted mt-4">* تم إبراز شركة "سواري" في القمة لتكون المقياس. الروابط المباشرة مؤكدة وتعمل.</p>
+            <p class="text-xs text-brand-muted mt-4">* تم إبراز شركة "سواري" في القمة لتكون المقياس الاستراتيجي لبقية السوق.</p>
         </section>
 
         <!-- Module 3: Gaps & Customer Behavior -->
         <section id="section-gaps" class="content-section fade-in hidden">
             <div class="mb-10 border-b border-gray-800 pb-6">
-                <h2 class="text-3xl font-bold gold-gradient-text mb-3">3. الفجوات وسلوك العميل (فلل شمال الرياض)</h2>
+                <h2 class="text-3xl font-bold gold-gradient-text mb-3">3. الفجوات وسلوك العميل (الشريحة الفاخرة)</h2>
                 <p class="text-brand-muted text-lg">تحليل سلوك العميل المستهدف وأهم نقاط الألم التي تخلق فرصاً لـ "سواري".</p>
             </div>
 
@@ -343,7 +357,7 @@
                 </div>
                 
                 <div class="flex flex-col items-center justify-center">
-                    <h4 class="text-center font-bold text-gray-300 mb-2">أولويات اتخاذ القرار (شريحة الفلل الفاخرة)</h4>
+                    <h4 class="text-center font-bold text-gray-300 mb-2">أولويات اتخاذ القرار (الشريحة الفاخرة)</h4>
                     <div class="radar-container bg-[#121413] rounded-full p-4 border border-gray-800">
                         <canvas id="selectionCriteriaRadarChart"></canvas>
                     </div>
@@ -372,6 +386,7 @@
                             <li>التسجيل في منصة تصنيف مقدمي خدمات المدن.</li>
                         </ul>
                     </div>
+                    <a href="https://balady.gov.sa/ar/services/305" target="_blank" class="text-center block w-full py-3 bg-[#121413] border border-brand-gold text-brand-gold text-sm font-bold rounded hover:bg-brand-gold hover:text-[#121413] transition-colors mt-4">🔗 الانتقال لبوابة بلدي للتصنيف</a>
                 </div>
 
                 <!-- NWC -->
@@ -387,6 +402,7 @@
                             <span class="text-xs text-gray-400">تصميم وتوثيق أنظمة اللاندسكيب لـ "سواري" لتكون معتمدة ومطابقة لأدلة الترشيد الوطنية.</span>
                         </div>
                     </div>
+                    <a href="https://www.nwc.com.sa/" target="_blank" class="text-center block w-full py-3 bg-[#121413] border border-brand-gold text-brand-gold text-sm font-bold rounded hover:bg-brand-gold hover:text-[#121413] transition-colors mt-4">🔗 موقع شركة المياه الوطنية (NWC)</a>
                 </div>
 
                 <!-- Green Riyadh -->
@@ -397,6 +413,9 @@
                         <p class="text-sm text-brand-muted leading-relaxed text-justify mb-4">
                             دليل التشجير لمدينة الرياض ومبادرة السعودية الخضراء يحددان قوائم النباتات المحلية والمستأنسة المعتمدة، ويقيدان استخدام بعض النباتات الضارة بالبنية التحتية. مواءمة كتالوج "سواري" مع هذه الأدلة يعتبر نقطة قوة تسويقية وقانونية.
                         </p>
+                    </div>
+                    <div class="w-full md:w-auto md:min-w-[250px]">
+                        <a href="https://riyadhgreen.sa/ar/" target="_blank" class="text-center block w-full py-3 bg-brand-olive text-brand-light text-sm font-bold rounded hover:bg-opacity-80 transition-colors">🔗 بوابة الرياض الخضراء الرسمية</a>
                     </div>
                 </div>
             </div>
@@ -438,7 +457,7 @@
                     <div class="z-10">
                         <h3 class="text-2xl font-bold mb-2 text-brand-light">عقد شراكات استراتيجية (B2B) مع مطوري الفلل الفاخرة</h3>
                         <p class="text-brand-muted leading-relaxed text-justify mb-3">
-                            بدلاً من التركيز حصرياً على العميل النهائي (B2C)، أوصي ببناء تحالفات مع شركات التطوير العقاري الفاخرة (مثل المطورين في أحياء الملقا وحطين والنرجس). يمكن لـ "سواري" تقديم "باقات لاندسكيب قياسية فاخرة" يتم إدراجها ضمن قيمة الفيلا عند البيع. هذا يضمن الحصول على مشاريع متعددة دفعة واحدة، ويخفض تكاليف الاستحواذ على العملاء (CAC) بشكل كبير.
+                            بدلاً من التركيز حصرياً على العميل النهائي (B2C)، أوصي ببناء تحالفات مع شركات التطوير العقاري الفاخرة (مثل المطورين في الأحياء الراقية). يمكن لـ "سواري" تقديم "باقات لاندسكيب قياسية فاخرة" يتم إدراجها ضمن قيمة الفيلا عند البيع. هذا يضمن الحصول على مشاريع متعددة دفعة واحدة، ويخفض تكاليف الاستحواذ على العملاء (CAC) بشكل كبير.
                         </p>
                     </div>
                     <div class="absolute left-0 top-0 h-full w-24 bg-gradient-to-r from-brand-gold/10 to-transparent"></div>
@@ -475,14 +494,59 @@
                 <p class="text-brand-muted text-lg">قائمة المصادر والبيانات المرجعية المستخدمة في هذه الدراسة.</p>
             </div>
 
-            <div class="bg-brand-card p-6 rounded-xl border border-gray-800 max-h-[700px] overflow-y-auto">
-                <ul id="sourceList" class="space-y-4 text-sm">
+            <div class="bg-brand-card p-6 rounded-xl border border-gray-800">
+                <ul id="sourceList" class="space-y-3 text-sm">
                     <!-- Populated by JS based on user's exact list -->
                 </ul>
             </div>
         </section>
         
     </main>
+
+    <!-- نافذة منبثقة لتحليل المنافسين بالذكاء الاصطناعي -->
+    <div id="aiModal" class="fixed inset-0 z-[200] modal-bg hidden flex items-center justify-center print:hidden">
+        <div class="bg-brand-dark border border-brand-gold rounded-xl p-6 max-w-lg w-[90%] shadow-2xl relative">
+            <button onclick="closeModal()" class="absolute top-4 left-4 text-gray-400 hover:text-white text-xl">✖</button>
+            <h3 class="text-xl font-bold text-brand-gold mb-1 flex items-center gap-2"><span class="text-2xl">✨</span> استراتيجية التغلب البيعية</h3>
+            <h4 id="modalCompetitorName" class="font-bold text-brand-light mb-4 pb-3 border-b border-gray-800 text-sm"></h4>
+            
+            <div id="modalLoading" class="text-center py-8 hidden">
+                <div class="loader mb-3"></div>
+                <p class="text-sm text-brand-muted">جاري تحليل المنافس وبناء نقاط القوة لصالح سواري عبر Gemini...</p>
+            </div>
+            
+            <div id="modalContent" class="text-sm leading-relaxed text-gray-300 hidden max-h-[60vh] overflow-y-auto pr-2"></div>
+        </div>
+    </div>
+
+    <!-- المساعد الذكي (Chat Widget) -->
+    <div class="fixed bottom-6 left-6 z-[100] print:hidden flex flex-col items-start drop-shadow-2xl">
+        <div id="chatWindow" class="hidden w-[320px] md:w-[380px] h-[500px] bg-brand-dark border border-brand-gold rounded-xl flex-col overflow-hidden mb-4 transition-all opacity-0 scale-95 origin-bottom-left">
+            <div class="bg-brand-card text-brand-light p-4 font-bold flex justify-between items-center shadow-md border-b border-brand-gold/30">
+                <div class="flex items-center gap-2">
+                    <span class="text-xl">✨</span> مستشار سواري الذكي
+                </div>
+                <button onclick="toggleChat()" class="text-gray-400 hover:text-white transition-colors">✖</button>
+            </div>
+            <div id="chatMessages" class="flex-1 p-4 overflow-y-auto flex flex-col gap-3 bg-[#181A19]">
+                <div class="msg-bot">
+                    مرحباً! أنا مستشارك الذكي المدمج والمدعوم بـ Gemini. يمكنني تزويدك باستراتيجيات التوسع، تحليل الفجوات، واقتراحات التسعير. كيف يمكنني مساعدة إدارة "سواري" اليوم؟
+                </div>
+            </div>
+            <div class="p-3 bg-brand-card border-t border-gray-800 flex gap-2">
+                <input type="text" id="chatInput" placeholder="اسألني عن السوق أو المنافسين..." class="flex-1 bg-brand-dark border border-gray-700 text-brand-light text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-brand-gold transition-colors" onkeypress="handleChatKeyPress(event)">
+                <button onclick="sendMessage()" id="sendBtn" class="bg-brand-gold text-brand-dark px-4 py-2 rounded-lg font-bold text-sm hover:bg-brand-goldHover transition-colors flex items-center justify-center min-w-[60px]">
+                    إرسال
+                </button>
+            </div>
+        </div>
+        
+        <button onclick="toggleChat()" class="bg-brand-gold text-brand-dark w-14 h-14 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(212,175,55,0.4)] hover:scale-105 transition-transform border-2 border-[#121413]">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+            </svg>
+        </button>
+    </div>
 
     <script>
         // --- Single Page Application Navigation ---
@@ -558,22 +622,20 @@
 
         const sourcesListEl = document.getElementById('sourceList');
         rawSources.forEach(source => {
-            // Extract URL
             const urlMatch = source.match(/https?:\/\/[^\s]+/);
             let url = "";
             let text = source;
             if(urlMatch) {
                 url = urlMatch[0];
-                text = source.replace(url, '').trim().replace(/,\s*$/, ''); // Remove trailing comma
+                text = source.replace(url, '').trim().replace(/,\s*$/, ''); 
             }
 
             const li = document.createElement('li');
-            li.className = "flex items-start bg-[#181A19] p-4 rounded-lg border border-gray-700 hover:border-brand-gold transition-colors";
+            li.className = "bg-[#181A19] p-4 rounded-lg border border-gray-700 hover:border-brand-gold transition-colors";
             li.innerHTML = `
-                <span class="text-brand-gold ml-4 text-xl mt-0.5">🔗</span>
-                <div class="flex-1 overflow-hidden">
-                    <p class="text-brand-light font-medium mb-1">${text}</p>
-                    ${url ? `<a href="${url}" target="_blank" class="text-brand-olive hover:text-brand-gold break-url text-xs font-bold block">${url}</a>` : ''}
+                <div class="flex flex-col gap-1 w-full">
+                    <p class="text-brand-light font-medium text-sm leading-relaxed">${text}</p>
+                    ${url ? `<a href="${url}" target="_blank" class="text-brand-olive hover:text-brand-gold break-url text-xs font-bold block mt-1 w-full overflow-hidden text-ellipsis whitespace-nowrap">🔗 ${url}</a>` : ''}
                 </div>
             `;
             sourcesListEl.appendChild(li);
@@ -584,7 +646,7 @@
         Chart.defaults.font.family = "'Tajawal', sans-serif";
         Chart.defaults.color = '#8B948E'; 
         Chart.defaults.scale.grid.color = 'rgba(255, 255, 255, 0.05)';
-        Chart.defaults.animation = false; // For clean PDF export
+        Chart.defaults.animation = false; 
         
         const cGold = '#D4AF37';
         const cOlive = '#556B2F';
@@ -692,7 +754,7 @@
         // --- Competitor Data & Table Logic (Sawary + 20 Players) ---
         const competitors = [
             // سواري (الأساس للقياس)
-            { name: "سواري للديكور واللاندسكيب (Sawary)", web: "https://sawary.de/", ig: "https://www.instagram.com/sawary.de/", type: "تصميم وتنفيذ وتصنيع لاندسكيب ومكتب هندسي", segment: "الفلل الفاخرة (شمال الرياض)", strengths: "تكامل داخلي/خارجي (Inside-Out)، استدامة بصرية", weaknesses: "قسم اللاندسكيب قيد الانطلاق والتأسيس", maint: "نعم" },
+            { name: "سواري للديكور واللاندسكيب (Sawary)", web: "https://taplink.cc/sawary.de?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnPdxJzKTaNYfIKhaRWQ5Zzt5dDSTDNtuQKQDbIGsqISPWsMoXDwEDs_Q3jmw_aem_3UKixQ1TX5-qnb8WcM6Ldg", ig: "https://www.instagram.com/sawary.de/", type: "Design & Build", segment: "الفلل الفاخرة", strengths: "خبرة عميقة ولاء العملاء والجودة والنموذج الشامل", weaknesses: "الحضور الرقمي الواضح", maint: "نعم" },
             
             // مكاتب ديكور وتصميم معماري
             { name: "فارس الفارس (Faris AlFares)", web: "https://farisalfaris.com/", ig: "https://www.instagram.com/faris_alfares/", type: "مكاتب ديكور ولاندسكيب", segment: "قصور/فاخر", strengths: "تصاميم استثنائية وتكامل هندسي", weaknesses: "ميزانيات تنفيذ مرتفعة جداً", maint: "لا" },
@@ -710,7 +772,7 @@
             { name: "تنسيق العربية (Tansiq)", web: "https://tansiqarabia.com/", ig: "https://www.instagram.com/explore/search/keyword/?q=tansiqarabia", type: "Design & Build", segment: "سكني فاخر", strengths: "جودة الهاردسكيب وتنفيذ البلاط", weaknesses: "ضغط مشاريع يؤثر على سرعة التسليم", maint: "لا" },
             { name: "الشركة السعودية (SLC)", web: "https://slc.com.sa/", ig: "https://www.instagram.com/explore/search/keyword/?q=saudilandscaping", type: "Design & Build", segment: "شبه حكومي", strengths: "مقاولات ثقيلة وخبرة عريقة جداً", weaknesses: "تتجاهل قطاع الأفراد تماماً", maint: "نعم" },
             { name: "تكوين (Takween)", web: "https://www.google.com/search?q=تكوين+لاندسكيب+الرياض", ig: "https://www.instagram.com/takweensa/", type: "Design & Build", segment: "سكني فاخر", strengths: "تصاميم حداثية ممتازة", weaknesses: "التكلفة العالية جداً للتنفيذ", maint: "لا" },
-            { name: "نباتي (Nabaty)", web: "https://nabaty.sa/", ig: "https://www.instagram.com/nabaty.sa/", type: "Design & Build", segment: "سكني/تجاري", strengths: "هوية بصرية قوية، تصاميم بوتيك", weaknesses: "تأخير في المواعيد لزيادة الطلب", maint: "محدود" },
+            { name: "نباتي (Nabaty)", web: "https://nabaty.sa/", ig: "https://www.instagram.com/nabaty.sa/", type: "Design & Build", segment: "سكني/تجاري", strengths: "هوية بصرية قوية، تصاميم بوتيك", weaknesses: "تأخير في المواعيد لزيادة الطلب", maint: "نعم" },
             { name: "آركي جرين (ArchiGreen)", web: "https://www.google.com/search?q=ArchiGreen+landscape+riyadh", ig: "https://www.instagram.com/explore/search/keyword/?q=archigreen", type: "Design & Build", segment: "سكني فاخر", strengths: "دمج المساحات المائية بشكل عصري", weaknesses: "التكلفة تعتبر مرتفعة نسبياً", maint: "لا" },
             
             // Execution Only
@@ -740,17 +802,24 @@
                 else if(c.type === 'مكاتب ديكور ولاندسكيب') typeColor = "bg-[#D4AF37]/20 text-brand-light border border-brand-gold";
 
                 let webLabel = c.web.includes('google.com') ? '🌐 بحث جوجل' : '🌐 الموقع الرسمي';
+                
+                // إضافة زر تحليل الذكاء الاصطناعي للمنافسين فقط
+                let aiBtn = '';
+                if(!c.name.includes('سواري')) {
+                    aiBtn = `<button onclick="analyzeCompetitor('${c.name.replace(/'/g, "\\'")}', '${c.strengths.replace(/'/g, "\\'")}', '${c.weaknesses.replace(/'/g, "\\'")}')" class="mt-2 text-brand-dark bg-brand-gold hover:bg-brand-goldHover transition-colors font-bold rounded px-2 py-1.5 w-fit flex items-center gap-1 text-xs print:hidden"><span class="text-sm leading-none">✨</span> كيف نتغلب عليهم؟</button>`;
+                }
 
                 tr.innerHTML = `
                     <td class="p-4 border-b border-gray-800">
                         <div class="text-brand-light mb-2 ${c.name.includes('سواري') ? 'text-brand-gold text-lg' : 'font-bold'}">${c.name}</div>
                         <div class="flex flex-col gap-2 text-xs">
-                            <a href="${c.web}" target="_blank" class="${c.name.includes('سواري') ? 'text-brand-gold border-brand-gold' : 'text-brand-olive border-gray-700'} hover:text-white transition-colors block border rounded px-2 py-1 w-fit">${webLabel}</a>
+                            <a href="${c.web}" target="_blank" class="${c.name.includes('سواري') ? 'text-brand-gold border-brand-gold' : 'text-brand-olive border-gray-700'} hover:text-white transition-colors block border rounded px-2 py-1 w-fit overflow-hidden text-ellipsis whitespace-nowrap max-w-[200px]">${webLabel}</a>
                             <a href="${c.ig}" target="_blank" class="${c.name.includes('سواري') ? 'text-brand-gold border-brand-gold' : 'text-brand-muted border-gray-700'} hover:text-white transition-colors block border rounded px-2 py-1 w-fit">📸 حساب / بحث إنستغرام</a>
+                            ${aiBtn}
                         </div>
                     </td>
                     <td class="p-4 border-b border-gray-800">
-                        <span class="px-2 py-1 rounded text-xs ${typeColor}">${c.type}</span>
+                        <span class="px-2 py-1 rounded text-xs ${typeColor} whitespace-nowrap">${c.type}</span>
                     </td>
                     <td class="p-4 border-b border-gray-800 text-sm">${c.segment}</td>
                     <td class="p-4 border-b border-gray-800 ${c.name.includes('سواري') ? 'text-brand-light' : 'text-brand-olive'} text-sm">${c.strengths}</td>
@@ -810,6 +879,168 @@
                 btn.innerHTML = originalText;
                 btn.disabled = false;
             });
+        }
+
+        // ==========================================
+        // --- إعدادات وتكامل Gemini API ---
+        // ==========================================
+        const apiKey = ""; // API Key is injected by the environment
+        
+        // دالة نداء الـ API مع نظام Exponential Backoff لمعالجة الضغط (Rate Limits)
+        async function fetchGemini(prompt, systemInstruction = "", chatHistory = []) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            
+            let contents = [...chatHistory, { role: "user", parts: [{ text: prompt }] }];
+            
+            const payload = {
+                contents: contents,
+                systemInstruction: systemInstruction ? { parts: [{ text: systemInstruction }] } : undefined
+            };
+
+            const maxRetries = 5;
+            const baseDelay = 1000;
+
+            for (let attempt = 0; attempt < maxRetries; attempt++) {
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    if (!response.ok) {
+                        if (response.status === 429) {
+                            const delay = baseDelay * Math.pow(2, attempt);
+                            await new Promise(r => setTimeout(r, delay));
+                            continue;
+                        }
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const result = await response.json();
+                    return result.candidates?.[0]?.content?.parts?.[0]?.text || "عذراً، لم أتمكن من توليد إجابة.";
+                } catch (error) {
+                    if (attempt === maxRetries - 1) throw error;
+                    const delay = baseDelay * Math.pow(2, attempt);
+                    await new Promise(r => setTimeout(r, delay));
+                }
+            }
+        }
+
+        // تنسيق النصوص القادمة من Gemini (تحويل ** إلى عريض)
+        function formatMarkdown(text) {
+            return text.replace(/\*\*(.*?)\*\*/g, '<strong class="text-brand-gold">$1</strong>')
+                       .replace(/\*(.*?)\*/g, '<em class="text-gray-300">$1</em>')
+                       .replace(/\n/g, '<br>');
+        }
+
+        // --- 1. ميزة تحليل المنافسين (Modal) ---
+        async function analyzeCompetitor(name, strengths, weaknesses) {
+            const modal = document.getElementById('aiModal');
+            const title = document.getElementById('modalCompetitorName');
+            const loading = document.getElementById('modalLoading');
+            const content = document.getElementById('modalContent');
+            
+            modal.classList.remove('hidden');
+            title.innerHTML = `مقارنة استراتيجية مع: <span class="text-white">${name}</span>`;
+            loading.classList.remove('hidden');
+            content.classList.add('hidden');
+            content.innerHTML = '';
+
+            const prompt = `أنت خبير مبيعات استراتيجي في شركة 'سواري لاندسكيب' بالرياض (شركة تصميم وتنفيذ مساحات خارجية فاخرة، تعتمد نموذج Design & Build، وتركز على الاستدامة والفخامة وتوفر عقود صيانة).
+            لدينا منافس في السوق اسمه "${name}".
+            - نقاط قوة المنافس: ${strengths}
+            - نقاط ضعف المنافس: ${weaknesses}
+            
+            المطلوب: اكتب 3 نصائح بيعية سريعة ومقنعة (على شكل نقاط) لمندوب مبيعاتنا ليستخدمها في إقناع عميل يمتلك فيلا فاخرة باختيار 'سواري' بدلاً من هذا المنافس. اجعلها احترافية، مباشرة، وركز على تحويل نقاط ضعف المنافس لفرصة لنا.`;
+
+            try {
+                const responseText = await fetchGemini(prompt);
+                loading.classList.add('hidden');
+                content.innerHTML = formatMarkdown(responseText);
+                content.classList.remove('hidden');
+            } catch (error) {
+                loading.classList.add('hidden');
+                content.innerHTML = `<span class="text-red-400">حدث خطأ أثناء تحليل البيانات. الرجاء المحاولة لاحقاً.</span>`;
+                content.classList.remove('hidden');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('aiModal').classList.add('hidden');
+        }
+
+        // --- 2. ميزة المستشار الذكي العائم (Chatbot) ---
+        let chatHistory = [];
+        const systemPrompt = `أنت مستشار تخطيط أعمال وتطوير استراتيجي مدمج في لوحة تحكم شركة 'سواري لاندسكيب' في السعودية. سواري متخصصة في التصميم والتنفيذ والصيانة (Design & Build) للمساحات الخارجية للفلل الفاخرة بطريقة مستدامة. هدفك هو مساعدة فريق المبيعات والإدارة من خلال تقديم نصائح سريعة، استراتيجيات بيعية، واقتراحات تسعير وتسويق. إجاباتك يجب أن تكون دقيقة، مختصرة قدر الإمكان، وداعمة لنمو الشركة.`;
+
+        function toggleChat() {
+            const chatWindow = document.getElementById('chatWindow');
+            if (chatWindow.classList.contains('hidden')) {
+                chatWindow.classList.remove('hidden');
+                setTimeout(() => {
+                    chatWindow.classList.remove('opacity-0', 'scale-95');
+                    chatWindow.classList.add('opacity-100', 'scale-100');
+                }, 10);
+            } else {
+                chatWindow.classList.remove('opacity-100', 'scale-100');
+                chatWindow.classList.add('opacity-0', 'scale-95');
+                setTimeout(() => { chatWindow.classList.add('hidden'); }, 200);
+            }
+        }
+
+        function handleChatKeyPress(event) {
+            if (event.key === 'Enter') sendMessage();
+        }
+
+        function appendMessage(text, isUser = false) {
+            const chatContainer = document.getElementById('chatMessages');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = isUser ? 'msg-user' : 'msg-bot';
+            msgDiv.innerHTML = isUser ? text : formatMarkdown(text);
+            chatContainer.appendChild(msgDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const inputEl = document.getElementById('chatInput');
+            const btnEl = document.getElementById('sendBtn');
+            const userText = inputEl.value.trim();
+            
+            if (!userText) return;
+
+            // إضافة رسالة المستخدم للواجهة
+            appendMessage(userText, true);
+            inputEl.value = '';
+            btnEl.disabled = true;
+            btnEl.innerHTML = '<div class="loader !w-4 !h-4 !border-2"></div>';
+
+            // عرض رسالة تحميل وهمية
+            const loadingId = 'loading-' + Date.now();
+            const chatContainer = document.getElementById('chatMessages');
+            const loadingDiv = document.createElement('div');
+            loadingDiv.id = loadingId;
+            loadingDiv.className = 'msg-bot flex items-center gap-2';
+            loadingDiv.innerHTML = `<div class="loader !w-4 !h-4 border-brand-gold"></div> يفكر...`;
+            chatContainer.appendChild(loadingDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            try {
+                const responseText = await fetchGemini(userText, systemPrompt, chatHistory);
+                
+                // تحديث الذاكرة
+                chatHistory.push({ role: "user", parts: [{ text: userText }] });
+                chatHistory.push({ role: "model", parts: [{ text: responseText }] });
+                
+                // إزالة علامة التحميل وإضافة الرد
+                document.getElementById(loadingId).remove();
+                appendMessage(responseText, false);
+            } catch (error) {
+                document.getElementById(loadingId).remove();
+                appendMessage("عذراً، واجهت مشكلة في الاتصال. حاول مرة أخرى.", false);
+            } finally {
+                btnEl.disabled = false;
+                btnEl.innerHTML = 'إرسال';
+            }
         }
 
     </script>
