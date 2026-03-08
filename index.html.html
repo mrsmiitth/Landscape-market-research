@@ -1,1048 +1,1405 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دراسة السوق المعمقة - سواري لاندسكيب (قسم تطوير الأعمال)</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            dark: '#121413',
-                            card: '#1C201E',
-                            gold: '#D4AF37',
-                            goldHover: '#f3ce56',
-                            olive: '#556B2F',
-                            light: '#F5F5DC',
-                            muted: '#8B948E'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Tajawal', 'sans-serif'],
-                    }
-                }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAWARY | لوحة القيادة الاستراتيجية — دراسة سوق اللاندسكيب</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              bg: '#0B0A09',
+              panel: '#141210',
+              card: '#1A1816',
+              elevated: '#211E1A',
+              gold: '#C9A96A',
+              gold2: '#E0C58A',
+              goldMuted: '#8E7538',
+              line: '#2E2821',
+              text: '#F3EBDD',
+              muted: '#9E9182',
+              olive: '#6B7252',
+              accent: '#8E6B49',
+              success: '#5A8A5E',
+              warning: '#C9A96A',
+              danger: '#A65D5D'
             }
+          },
+          fontFamily: {
+            sans: ['Tajawal', 'sans-serif'],
+            display: ['Playfair Display', 'serif']
+          }
         }
-    </script>
+      }
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: #0B0A09;
+      color: #F3EBDD;
+      overflow: hidden;
+      height: 100vh;
+    }
 
-    <style>
-        body {
-            background-color: #121413;
-            color: #F5F5DC;
-            font-family: 'Tajawal', sans-serif;
-            overflow-x: hidden;
-        }
+    /* === Subtle Background Texture === */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 15% 10%, rgba(201,169,106,.06), transparent 40%),
+        radial-gradient(ellipse at 85% 90%, rgba(107,114,82,.04), transparent 35%);
+      pointer-events: none;
+      z-index: 0;
+    }
 
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 350px;
-            max-height: 450px;
-            background: #1C201E;
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            border: 1px solid rgba(212, 175, 55, 0.15);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
-        }
-        @media (min-width: 768px) {
-            .chart-container { height: 400px; }
-        }
+    /* === Gold Gradient Text === */
+    .gold-text {
+      background: linear-gradient(135deg, #F2E2BC 0%, #C9A96A 40%, #8E7538 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
-        .radar-container {
-            position: relative;
-            width: 100%;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 350px;
-        }
+    /* === Glass Morphism === */
+    .glass {
+      background: linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,.008));
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
 
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #121413; }
-        ::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #f3ce56; }
+    /* === Sidebar === */
+    .sidebar {
+      background: linear-gradient(180deg, #141210 0%, #0F0E0C 100%);
+      border-left: 1px solid rgba(201,169,106,.12);
+    }
 
-        .nav-link {
-            border-right: 4px solid transparent;
-            transition: all 0.2s ease;
-        }
-        .nav-link.active {
-            background-color: rgba(212, 175, 55, 0.1);
-            color: #D4AF37;
-            font-weight: 700;
-            border-right: 4px solid #D4AF37;
-        }
-        .nav-link:hover:not(.active) {
-            background-color: rgba(255, 255, 255, 0.03);
-        }
-        
-        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
-        @keyframes fadeIn { 
-            from { opacity: 0; transform: translateY(10px); } 
-            to { opacity: 1; transform: translateY(0); } 
-        }
+    /* === Nav Buttons === */
+    .nav-btn {
+      color: #9E9182;
+      border: 1px solid transparent;
+      transition: all .35s cubic-bezier(.4,0,.2,1);
+      position: relative;
+      overflow: hidden;
+    }
+    .nav-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(201,169,106,.12), transparent);
+      opacity: 0;
+      transition: opacity .35s;
+    }
+    .nav-btn:hover {
+      color: #F3EBDD;
+      border-color: rgba(201,169,106,.15);
+    }
+    .nav-btn:hover::before { opacity: 1; }
+    .nav-btn.active {
+      color: #F3EBDD;
+      border-color: rgba(201,169,106,.35);
+      background: rgba(201,169,106,.08);
+    }
+    .nav-btn.active::before { opacity: 1; }
+    .nav-btn .nav-indicator {
+      width: 3px;
+      height: 0;
+      background: linear-gradient(180deg, #C9A96A, #8E7538);
+      border-radius: 99px;
+      transition: height .35s cubic-bezier(.4,0,.2,1);
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .nav-btn.active .nav-indicator { height: 60%; }
 
-        .gold-gradient-text {
-            background: linear-gradient(to left, #D4AF37, #FFF8DC);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+    /* === Section Visibility === */
+    .section { display: none; opacity: 0; transform: translateY(12px); }
+    .section.active {
+      display: block;
+      animation: sectionIn .5s cubic-bezier(.4,0,.2,1) forwards;
+    }
+    @keyframes sectionIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-        th { position: sticky; top: 0; background-color: #121413; z-index: 10; }
+    /* === Cards === */
+    .metric-card {
+      background: linear-gradient(145deg, #1A1816, #141210);
+      border: 1px solid rgba(201,169,106,.1);
+      border-radius: 20px;
+      transition: all .4s cubic-bezier(.4,0,.2,1);
+    }
+    .metric-card:hover {
+      border-color: rgba(201,169,106,.25);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0,0,0,.4);
+    }
 
-        .pdf-mode .content-section {
-            display: block !important;
-            opacity: 1 !important;
-            page-break-after: always;
-        }
-        .pdf-mode {
-            background-color: #121413;
-        }
+    .trend-card {
+      background: linear-gradient(160deg, rgba(201,169,106,.06), rgba(201,169,106,.01));
+      border: 1px solid rgba(201,169,106,.1);
+      border-radius: 24px;
+      transition: all .4s;
+    }
+    .trend-card:hover {
+      border-color: rgba(201,169,106,.3);
+      background: linear-gradient(160deg, rgba(201,169,106,.1), rgba(201,169,106,.02));
+    }
 
-        /* تنسيق خاص بصف سواري */
-        .sawary-row {
-            background-color: rgba(212, 175, 55, 0.1) !important;
-            border: 2px solid #D4AF37 !important;
-        }
-        
-        .break-url {
-            word-break: break-all;
-        }
+    /* === Chart Containers === */
+    .chart-wrap { position: relative; height: 340px; }
+    @media (min-width: 1024px) { .chart-wrap { height: 400px; } }
 
-        /* --- إضافات الذكاء الاصطناعي (Chat & Modal) --- */
-        .loader { 
-            display: inline-block; width: 1.5rem; height: 1.5rem; 
-            border: 3px solid #D4AF37; border-radius: 50%; 
-            border-top-color: transparent; animation: spin 1s linear infinite; 
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        
-        .modal-bg { background: rgba(0,0,0,0.7); backdrop-filter: blur(3px); }
-        
-        /* تنسيق رسائل الدردشة */
-        .msg-bot { background: #1C201E; border: 1px solid rgba(212, 175, 55, 0.3); color: #F5F5DC; border-radius: 0.75rem 0.75rem 0 0.75rem; align-self: flex-start; max-width: 85%; padding: 0.75rem; font-size: 0.875rem; line-height: 1.6;}
-        .msg-user { background: #556B2F; color: white; border-radius: 0.75rem 0.75rem 0.75rem 0; align-self: flex-end; max-width: 85%; padding: 0.75rem; font-size: 0.875rem;}
-    </style>
+    /* === Scrollbar === */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-thumb { background: rgba(201,169,106,.25); border-radius: 99px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+
+    /* === Table === */
+    .comp-table { border-collapse: separate; border-spacing: 0; }
+    .comp-table thead th {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: #141210;
+      border-bottom: 1px solid rgba(201,169,106,.2);
+      white-space: nowrap;
+      font-weight: 700;
+      font-size: 13px;
+      color: #C9A96A;
+      padding: 14px 16px;
+      text-align: right;
+    }
+    .comp-table tbody td {
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(201,169,106,.06);
+      font-size: 13px;
+      line-height: 1.7;
+      vertical-align: top;
+    }
+    .comp-table tbody tr { transition: background .2s; }
+    .comp-table tbody tr:hover { background: rgba(201,169,106,.04); }
+    .comp-table a { color: #C9A96A; text-decoration: underline; text-underline-offset: 2px; }
+
+    /* === Badge === */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid;
+    }
+    .badge-gold { color: #C9A96A; border-color: rgba(201,169,106,.25); background: rgba(201,169,106,.08); }
+    .badge-olive { color: #6B7252; border-color: rgba(107,114,82,.25); background: rgba(107,114,82,.08); }
+    .badge-accent { color: #8E6B49; border-color: rgba(142,107,73,.25); background: rgba(142,107,73,.08); }
+
+    /* === Pulse Dot === */
+    .pulse-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #C9A96A;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(201,169,106,.4); }
+      50% { box-shadow: 0 0 0 6px rgba(201,169,106,0); }
+    }
+
+    /* === Gap Card === */
+    .gap-card {
+      position: relative;
+      background: #141210;
+      border: 1px solid rgba(201,169,106,.1);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .gap-card::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, #C9A96A, transparent);
+    }
+
+    /* === Recommendation Card === */
+    .rec-card {
+      background: linear-gradient(145deg, #1A1816, #0F0E0C);
+      border: 1px solid rgba(201,169,106,.1);
+      border-radius: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .rec-card .rec-number {
+      position: absolute;
+      top: -10px; right: -5px;
+      font-size: 80px;
+      font-weight: 900;
+      line-height: 1;
+      background: linear-gradient(180deg, rgba(201,169,106,.12), transparent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* === Mobile Sidebar Toggle === */
+    .mobile-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.7);
+      z-index: 40;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s;
+    }
+    .mobile-overlay.open { opacity: 1; pointer-events: all; }
+
+    .sidebar-mobile {
+      transform: translateX(100%);
+      transition: transform .35s cubic-bezier(.4,0,.2,1);
+    }
+    .sidebar-mobile.open { transform: translateX(0); }
+
+    /* === Source Card === */
+    .source-card {
+      background: #141210;
+      border: 1px solid rgba(201,169,106,.08);
+      border-radius: 16px;
+      transition: all .3s;
+    }
+    .source-card:hover {
+      border-color: rgba(201,169,106,.25);
+      background: #1A1816;
+    }
+
+    /* === Regulatory Timeline === */
+    .reg-step {
+      position: relative;
+      padding-right: 36px;
+    }
+    .reg-step::before {
+      content: '';
+      position: absolute;
+      right: 12px;
+      top: 8px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 2px solid #C9A96A;
+      background: #0B0A09;
+    }
+    .reg-step::after {
+      content: '';
+      position: absolute;
+      right: 17px;
+      top: 24px;
+      width: 2px;
+      height: calc(100% - 12px);
+      background: rgba(201,169,106,.15);
+    }
+    .reg-step:last-child::after { display: none; }
+  </style>
 </head>
-<body class="flex flex-col md:flex-row min-h-screen">
+<body>
 
-    <!-- Sidebar Navigation -->
-    <nav class="w-full md:w-72 bg-brand-card flex flex-col fixed bottom-0 md:relative z-50 md:min-h-screen border-l border-gray-800 shadow-2xl transition-all duration-300 print:hidden" id="sidebar-nav">
-        <div class="p-8 hidden md:block border-b border-gray-800 text-center">
-            <h1 class="text-3xl font-bold tracking-widest gold-gradient-text mb-2">سواري</h1>
-            <p class="text-[0.65rem] tracking-widest text-brand-gold uppercase">Sustainable Landscaping</p>
-            <div class="mt-4 pt-4 border-t border-gray-800 text-xs text-brand-muted leading-relaxed">
-                دراسة السوق المعمقة<br>إعداد: قسم تطوير الأعمال<br>2026
-            </div>
+  <!-- =================== LAYOUT =================== -->
+  <div class="relative z-10 h-screen flex">
+
+    <!-- === SIDEBAR (Desktop) === -->
+    <aside class="sidebar hidden lg:flex flex-col w-[300px] h-screen sticky top-0 shrink-0">
+      <!-- Brand -->
+      <div class="p-6 border-b border-brand-line/50">
+        <div class="flex items-center gap-4">
+          <div class="w-14 h-14 rounded-2xl border border-brand-gold/20 bg-brand-elevated flex items-center justify-center">
+            <span class="gold-text text-xl font-extrabold font-display">SL</span>
+          </div>
+          <div>
+            <div class="text-2xl font-extrabold gold-text leading-none">سواري</div>
+            <div class="text-[10px] tracking-[.4em] text-brand-muted mt-1.5 font-light">SUSTAINABLE LANDSCAPE</div>
+          </div>
         </div>
-        <div class="flex md:flex-col overflow-x-auto md:overflow-visible p-2 md:p-4 gap-1 md:gap-2 flex-grow">
-            <button onclick="showSection('market')" id="nav-market" class="nav-link active flex-shrink-0 md:w-full text-right py-3 px-5 rounded-l text-sm md:text-base whitespace-nowrap">حجم السوق والاتجاهات</button>
-            <button onclick="showSection('competitors')" id="nav-competitors" class="nav-link flex-shrink-0 md:w-full text-right py-3 px-5 rounded-l text-sm md:text-base whitespace-nowrap">المنافسون (سواري + 20)</button>
-            <button onclick="showSection('gaps')" id="nav-gaps" class="nav-link flex-shrink-0 md:w-full text-right py-3 px-5 rounded-l text-sm md:text-base whitespace-nowrap">الفجوات وسلوك العميل</button>
-            <button onclick="showSection('regulatory')" id="nav-regulatory" class="nav-link flex-shrink-0 md:w-full text-right py-3 px-5 rounded-l text-sm md:text-base whitespace-nowrap">البيئة التنظيمية</button>
-            <button onclick="showSection('recommendations')" id="nav-recommendations" class="nav-link flex-shrink-0 md:w-full text-right py-3 px-5 rounded-l text-sm md:text-base whitespace-nowrap text-brand-gold font-bold">التوصيات الاستراتيجية (5)</button>
-            <button onclick="showSection('sources')" id="nav-sources" class="nav-link flex-shrink-0 md:w-full text-right py-3 px-5 rounded-l text-sm md:text-base whitespace-nowrap">المصادر والروابط</button>
-        </div>
-        
-        <div class="hidden md:block p-6 mt-auto">
-            <button onclick="downloadPDF()" class="w-full py-3 bg-transparent border-2 border-brand-gold text-brand-gold font-bold rounded hover:bg-brand-gold hover:text-brand-dark transition-colors flex items-center justify-center gap-2">
-                📄 تنزيل الدراسة (PDF)
-            </button>
-        </div>
-    </nav>
+        <p class="text-[13px] text-brand-muted mt-5 leading-7">
+          لوحة القيادة الاستراتيجية الشاملة لدراسة سوق تصميم وتنفيذ المساحات الخارجية في المملكة العربية السعودية والرياض
+        </p>
+      </div>
 
-    <!-- Main Content Area -->
-    <main id="report-content" class="flex-1 p-4 md:p-8 lg:p-12 mb-20 md:mb-0 overflow-y-auto">
-        
-        <!-- Module 1: Market Size & Trends -->
-        <section id="section-market" class="content-section fade-in block">
-            <div class="mb-10 border-b border-gray-800 pb-6">
-                <h2 class="text-3xl md:text-4xl font-bold gold-gradient-text mb-3">1. حجم السوق والاتجاهات (2024–2030)</h2>
-                <p class="text-brand-muted text-lg">تحليل كمي للفرصة الاستثمارية في قطاع اللاندسكيب في السعودية وفي مدينة الرياض.</p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                <div class="bg-brand-card p-6 rounded-xl border border-gray-800 shadow-lg">
-                    <p class="text-sm text-brand-muted mb-2">حجم السوق السعودي (2026)</p>
-                    <h3 class="text-4xl font-bold text-brand-light mb-1">9.2 <span class="text-xl">مليار ريال</span></h3>
-                    <p class="text-xs text-brand-gold">يشمل المشاريع الحكومية والعملاقة والسكنية</p>
-                </div>
-                <div class="bg-brand-card p-6 rounded-xl border border-gray-800 shadow-lg relative overflow-hidden">
-                    <div class="absolute -left-4 -top-4 w-16 h-16 bg-brand-olive rounded-full opacity-20"></div>
-                    <p class="text-sm text-brand-muted mb-2">حصة مدينة الرياض (2026)</p>
-                    <h3 class="text-4xl font-bold text-brand-gold mb-1">45%</h3>
-                    <p class="text-xs text-brand-muted">الأسرع نمواً بسبب التوسع السكني والعمراني</p>
-                </div>
-                <div class="bg-brand-card p-6 rounded-xl border border-gray-800 shadow-lg">
-                    <p class="text-sm text-brand-muted mb-2">معدل النمو السنوي (CAGR)</p>
-                    <h3 class="text-4xl font-bold text-brand-light mb-1">7.8%</h3>
-                    <p class="text-xs text-brand-olive">مدفوع ببرامج جودة الحياة والمبادرات الخضراء</p>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-12">
-                <div>
-                    <h3 class="text-xl font-bold mb-4 text-brand-light">حجم السوق: السعودية مقابل الرياض (بالمليار ريال)</h3>
-                    <div class="chart-container">
-                        <canvas id="marketSizeChart"></canvas>
-                    </div>
-                </div>
-                <div>
-                    <h3 class="text-xl font-bold mb-4 text-brand-light">الفرصة غير المستغلة: سوق إشتراكات الصيانة بالرياض</h3>
-                    <div class="chart-container">
-                        <canvas id="maintenanceMarketChart"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-brand-card p-8 rounded-xl border border-brand-gold/30 relative">
-                <h3 class="text-2xl font-bold mb-6 text-brand-gold">اتجاهات السوق الرئيسية (السكنية والتجارية)</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div>
-                        <h4 class="font-bold text-brand-light text-lg mb-2 flex items-center">
-                            <span class="text-2xl ml-2 text-brand-olive">🏡</span> امتداد مساحات المعيشة (Outdoor Living)
-                        </h4>
-                        <p class="text-sm text-brand-muted leading-relaxed text-justify">
-                            تغير مفهوم الحديقة من مساحة للعرض فقط إلى مساحة معيشة متكاملة. الطلب يتزايد بشكل هائل على المطابخ الخارجية، مناطق الجلوس الغائرة (Sunken Seating)، والمظلات المجهزة (Pergolas)، مما يجعل التصميم المعماري (Hardscape) يهيمن على ميزانية المشروع.
-                        </p>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-brand-light text-lg mb-2 flex items-center">
-                            <span class="text-2xl ml-2 text-brand-gold">✨</span> الفخامة الهادئة والخصوصية (Quiet Luxury)
-                        </h4>
-                        <p class="text-sm text-brand-muted leading-relaxed text-justify">
-                            عملاء الشريحة الفاخرة يميلون للتصاميم التي تعكس الفخامة والأصالة وتتكامل مع المعمار الأصلي للفيلا. استخدام الأحجار الطبيعية، الأرضيات البورسلان، وتوظيف النباتات كحواجز بصرية وأسوار طبيعية لتحقيق أقصى درجات الخصوصية عن الجيران.
-                        </p>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-brand-light text-lg mb-2 flex items-center">
-                            <span class="text-2xl ml-2 text-brand-olive">📱</span> دمج التكنولوجيا المنزلية (Smart Integration)
-                        </h4>
-                        <p class="text-sm text-brand-muted leading-relaxed text-justify">
-                            ربط إضاءة اللاندسكيب، وأنظمة الصوت، والمظلات المتحركة بتطبيقات المنزل الذكي. العميل يبحث عن تجربة سلسة يتحكم بها بالكامل من هاتفه أو أجهزة التحكم الصوتية لخلق "سيناريوهات" مختلفة للحديقة (أجواء حفلات، استرخاء).
-                        </p>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-brand-light text-lg mb-2 flex items-center">
-                            <span class="text-2xl ml-2 text-brand-gold">🔄</span> سوق إشتراكات الصيانة
-                        </h4>
-                        <p class="text-sm text-brand-muted leading-relaxed text-justify">
-                            بسبب ضيق الوقت وعدم توفر العمالة المدربة، يتجه السوق بقوة نحو الاعتماد على "عقود الصيانة الدورية" كخدمة اشتراك. الملاك يفضلون الدفع الشهري لشركات مؤسسية تضمن بقاء الحديقة في أفضل حالاتها دون عناء المتابعة الشخصية.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Module 2: Competitor Analysis (20 Players) -->
-        <section id="section-competitors" class="content-section fade-in hidden">
-            <div class="mb-8 border-b border-gray-800 pb-6 flex flex-col lg:flex-row justify-between items-start lg:items-end gap-4">
-                <div>
-                    <h2 class="text-3xl font-bold gold-gradient-text mb-3">2. تحليل المنافسين (سواري + 20 لاعب)</h2>
-                    <p class="text-brand-muted text-lg">خريطة شاملة تركز حصرياً على مكاتب التصميم ومقاولين التنفيذ الفعليين، مع الروابط المرجعية.</p>
-                </div>
-                <!-- Filters -->
-                <div class="flex flex-wrap gap-2 print:hidden">
-                    <button onclick="filterTable('all', this)" class="filter-btn px-4 py-2 bg-brand-card border border-brand-gold text-brand-gold rounded font-bold text-sm transition-colors">الكل</button>
-                    <button onclick="filterTable('Design & Build', this)" class="filter-btn px-4 py-2 bg-[#121413] border border-gray-700 text-gray-400 hover:text-brand-light rounded text-sm transition-colors">Design & Build</button>
-                    <button onclick="filterTable('مكاتب ديكور ولاندسكيب', this)" class="filter-btn px-4 py-2 bg-[#121413] border border-gray-700 text-gray-400 hover:text-brand-light rounded text-sm transition-colors">مكاتب ديكور ولاندسكيب</button>
-                    <button onclick="filterTable('تنفيذ فقط', this)" class="filter-btn px-4 py-2 bg-[#121413] border border-gray-700 text-gray-400 hover:text-brand-light rounded text-sm transition-colors">تنفيذ فقط</button>
-                </div>
-            </div>
-
-            <!-- The Players Table -->
-            <div class="bg-brand-card rounded-xl border border-gray-800 overflow-hidden shadow-2xl">
-                <div class="overflow-x-auto" style="max-height: 700px;">
-                    <table class="w-full text-right border-collapse text-sm">
-                        <thead class="shadow-md">
-                            <tr>
-                                <th class="p-4 font-bold text-brand-light w-56">الاسم والروابط</th>
-                                <th class="p-4 font-bold text-brand-gold">النموذج</th>
-                                <th class="p-4 font-bold text-brand-light">الشريحة المستهدفة</th>
-                                <th class="p-4 font-bold text-brand-olive w-48">نقاط القوة</th>
-                                <th class="p-4 font-bold text-red-400 w-48">نقاط الضعف / التحديات</th>
-                                <th class="p-4 font-bold text-brand-light text-center">عقود صيانة؟</th>
-                            </tr>
-                        </thead>
-                        <tbody id="competitorsBody" class="text-gray-300 divide-y divide-gray-800">
-                            <!-- Populated via JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <p class="text-xs text-brand-muted mt-4">* تم إبراز شركة "سواري" في القمة لتكون المقياس الاستراتيجي لبقية السوق.</p>
-        </section>
-
-        <!-- Module 3: Gaps & Customer Behavior -->
-        <section id="section-gaps" class="content-section fade-in hidden">
-            <div class="mb-10 border-b border-gray-800 pb-6">
-                <h2 class="text-3xl font-bold gold-gradient-text mb-3">3. الفجوات وسلوك العميل (الشريحة الفاخرة)</h2>
-                <p class="text-brand-muted text-lg">تحليل سلوك العميل المستهدف وأهم نقاط الألم التي تخلق فرصاً لـ "سواري".</p>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-12">
-                <!-- Pain Points -->
-                <div class="bg-[#181A19] p-8 rounded-xl border border-red-900/30">
-                    <h3 class="text-2xl font-bold mb-6 text-red-400 flex items-center">
-                        <span class="text-3xl ml-2">⚠️</span> نقاط الألم الشائعة (Pain Points)
-                    </h3>
-                    <ul class="space-y-5">
-                        <li class="flex items-start">
-                            <div class="bg-red-900/50 text-red-200 font-bold w-8 h-8 rounded flex items-center justify-center ml-4 shrink-0">1</div>
-                            <div>
-                                <h4 class="font-bold text-brand-light">انفصال التصميم عن التنفيذ</h4>
-                                <p class="text-sm text-brand-muted">المكاتب الفاخرة تصمم فقط، والعميل يضيع مع مقاولين لا يفهمون المخططات أو المناسيب.</p>
-                            </div>
-                        </li>
-                        <li class="flex items-start">
-                            <div class="bg-red-900/50 text-red-200 font-bold w-8 h-8 rounded flex items-center justify-center ml-4 shrink-0">2</div>
-                            <div>
-                                <h4 class="font-bold text-brand-light">موت النباتات بعد شهرين</h4>
-                                <p class="text-sm text-brand-muted">استخدام نباتات تجارية غير مناسبة، أو عدم معالجة التربة بشكل صحيح قبل الزراعة.</p>
-                            </div>
-                        </li>
-                        <li class="flex items-start">
-                            <div class="bg-red-900/50 text-red-200 font-bold w-8 h-8 rounded flex items-center justify-center ml-4 shrink-0">3</div>
-                            <div>
-                                <h4 class="font-bold text-brand-light">غياب خدمة ما بعد البيع والضمان</h4>
-                                <p class="text-sm text-brand-muted">بعد استلام المشروع، يواجه العميل صعوبة في إيجاد المقاول لحل مشاكل السباكة أو الإضاءة التالفة.</p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Strategic Gaps -->
-                <div class="bg-brand-card p-8 rounded-xl border border-brand-gold/30">
-                    <h3 class="text-2xl font-bold mb-6 text-brand-gold flex items-center">
-                        <span class="text-3xl ml-2">🎯</span> الفجوات الاستراتيجية لـ "سواري"
-                    </h3>
-                    <div class="space-y-4">
-                        <div class="p-4 bg-[#121413] rounded border border-gray-800">
-                            <h4 class="font-bold text-brand-light mb-1">فجوة "التكامل الداخلي/الخارجي"</h4>
-                            <p class="text-sm text-brand-muted">السوق يفتقر لشركة تمتلك حس "الديكور الداخلي" لتطبيقه في اللاندسكيب وخلق مساحة منسجمة بالكامل.</p>
-                        </div>
-                        <div class="p-4 bg-[#121413] rounded border border-gray-800">
-                            <h4 class="font-bold text-brand-light mb-1">فجوة "الصيانة المؤسسية الموثقة"</h4>
-                            <p class="text-sm text-brand-muted">نقص حاد في الشركات التي تقدم عقود صيانة سنوية تدار بشكل احترافي وليس كعمالة يومية.</p>
-                        </div>
-                        <div class="p-4 bg-[#121413] rounded border border-gray-800">
-                            <h4 class="font-bold text-brand-light mb-1">فجوة "الشفافية في البنية التحتية"</h4>
-                            <p class="text-sm text-brand-muted">العملاء يبحثون عن مقاول يعرض لهم جودة العزل والتمديدات وليس فقط الشكل النهائي، لبناء الثقة.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Customer Search & Selection with RADAR CHART -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center bg-brand-card p-8 rounded-xl border border-gray-800">
-                <div>
-                    <h3 class="text-2xl font-bold mb-6 text-brand-light">كيف يبحث العميل؟ وأهم معاييره</h3>
-                    <ul class="space-y-4 text-sm text-brand-muted mb-8">
-                        <li class="flex items-center bg-[#121413] p-3 rounded border border-gray-800"><span class="text-brand-gold ml-3 text-lg">1.</span> <strong>الإنستغرام/بينترست:</strong> مصدر الإلهام الأول. يبحث عن فيديوهات "قبل وبعد".</li>
-                        <li class="flex items-center bg-[#121413] p-3 rounded border border-gray-800"><span class="text-brand-gold ml-3 text-lg">2.</span> <strong>توصيات المعارف (WOM):</strong> العامل الأقوى في الإغلاق البيعي للفلل الفاخرة.</li>
-                        <li class="flex items-center bg-[#121413] p-3 rounded border border-gray-800"><span class="text-brand-gold ml-3 text-lg">3.</span> <strong>خرائط جوجل:</strong> للبحث عن المكاتب والمقاولين لقراءة التقييمات.</li>
-                        <li class="flex items-center bg-[#121413] p-3 rounded border border-gray-800"><span class="text-brand-gold ml-3 text-lg">4.</span> <strong>زيارة المشاريع:</strong> العميل الفاخر يطلب زيارة مشروع قيد التنفيذ للثقة.</li>
-                    </ul>
-                    <p class="text-sm text-brand-gold font-bold">المخطط المرفق يوضح توزع أولويات العميل في الشريحة المستهدفة (أ/ب).</p>
-                </div>
-                
-                <div class="flex flex-col items-center justify-center">
-                    <h4 class="text-center font-bold text-gray-300 mb-2">أولويات اتخاذ القرار (الشريحة الفاخرة)</h4>
-                    <div class="radar-container bg-[#121413] rounded-full p-4 border border-gray-800">
-                        <canvas id="selectionCriteriaRadarChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Module 4: Regulatory Environment -->
-        <section id="section-regulatory" class="content-section fade-in hidden">
-            <div class="mb-10 border-b border-gray-800 pb-6">
-                <h2 class="text-3xl font-bold gold-gradient-text mb-3">4. البيئة التنظيمية والاشتراطات</h2>
-                <p class="text-brand-muted text-lg">التراخيص المطلوبة ومواكبة التوجهات الحكومية.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Balady -->
-                <div class="bg-brand-card p-8 rounded-xl border border-gray-800 flex flex-col justify-between">
-                    <div>
-                        <div class="text-4xl mb-4 text-brand-gold">🏛️</div>
-                        <h3 class="text-xl font-bold mb-3 text-brand-light">تصنيف منصة (بلدي) - وزارة الشؤون البلدية</h3>
-                        <p class="text-sm text-brand-muted leading-relaxed text-justify mb-4">
-                            النشاط المطلوب لتنفيذ المشاريع الكبرى والسكنية بشكل رسمي هو <strong>"مقاولات تشجير وتنسيق الحدائق"</strong>. الحصول على شهادة تصنيف المقاولين يمنح الشركة موثوقية عالية (Trust Badge) أمام الملاك، ويؤهل للدخول في مناقصات حكومية أو مجمعات سكنية لاحقاً.
-                        </p>
-                        <ul class="text-xs text-brand-olive list-disc list-inside mb-6">
-                            <li>يشترط وجود كادر هندسي وفني.</li>
-                            <li>التسجيل في منصة تصنيف مقدمي خدمات المدن.</li>
-                        </ul>
-                    </div>
-                    <a href="https://balady.gov.sa/ar/services/305" target="_blank" class="text-center block w-full py-3 bg-[#121413] border border-brand-gold text-brand-gold text-sm font-bold rounded hover:bg-brand-gold hover:text-[#121413] transition-colors mt-4">🔗 الانتقال لبوابة بلدي للتصنيف</a>
-                </div>
-
-                <!-- NWC -->
-                <div class="bg-brand-card p-8 rounded-xl border border-gray-800 flex flex-col justify-between">
-                    <div>
-                        <div class="text-4xl mb-4 text-brand-gold">💧</div>
-                        <h3 class="text-xl font-bold mb-3 text-brand-light">شركة المياه الوطنية وكفاءة الاستهلاك</h3>
-                        <p class="text-sm text-brand-muted leading-relaxed text-justify mb-4">
-                            هناك تنظيمات مشددة لمنع هدر المياه في الاستخدامات الخارجية (الري بالخراطيم). تبني أنظمة ري حديثة ومتوافقة مع لوائح الترشيد يعد مطلباً أساسياً لعملاء القطاع السكني لتجنب ارتفاع الفواتير والمخالفات.
-                        </p>
-                        <div class="bg-[#121413] p-3 rounded border border-brand-olive/50 mb-6">
-                            <strong class="text-brand-gold text-sm block mb-1">توجه استراتيجي:</strong>
-                            <span class="text-xs text-gray-400">تصميم وتوثيق أنظمة اللاندسكيب لـ "سواري" لتكون معتمدة ومطابقة لأدلة الترشيد الوطنية.</span>
-                        </div>
-                    </div>
-                    <a href="https://www.nwc.com.sa/" target="_blank" class="text-center block w-full py-3 bg-[#121413] border border-brand-gold text-brand-gold text-sm font-bold rounded hover:bg-brand-gold hover:text-[#121413] transition-colors mt-4">🔗 موقع شركة المياه الوطنية (NWC)</a>
-                </div>
-
-                <!-- Green Riyadh -->
-                <div class="bg-brand-card p-8 rounded-xl border border-gray-800 md:col-span-2 flex flex-col md:flex-row items-center gap-6 justify-between">
-                    <div class="flex-1">
-                        <div class="text-4xl mb-4 text-brand-gold">🌿</div>
-                        <h3 class="text-xl font-bold mb-3 text-brand-light">برنامج الرياض الخضراء (الغطاء النباتي)</h3>
-                        <p class="text-sm text-brand-muted leading-relaxed text-justify mb-4">
-                            دليل التشجير لمدينة الرياض ومبادرة السعودية الخضراء يحددان قوائم النباتات المحلية والمستأنسة المعتمدة، ويقيدان استخدام بعض النباتات الضارة بالبنية التحتية. مواءمة كتالوج "سواري" مع هذه الأدلة يعتبر نقطة قوة تسويقية وقانونية.
-                        </p>
-                    </div>
-                    <div class="w-full md:w-auto md:min-w-[250px]">
-                        <a href="https://riyadhgreen.sa/ar/" target="_blank" class="text-center block w-full py-3 bg-brand-olive text-brand-light text-sm font-bold rounded hover:bg-opacity-80 transition-colors">🔗 بوابة الرياض الخضراء الرسمية</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Module 5: Strategic Recommendations -->
-        <section id="section-recommendations" class="content-section fade-in hidden">
-            <div class="mb-10 border-b border-gray-800 pb-6">
-                <h2 class="text-3xl font-bold gold-gradient-text mb-3">5. التوصيات الاستراتيجية لقسم تطوير الأعمال</h2>
-                <p class="text-brand-muted text-lg">5 مسارات عمل للنمو والتموضع الناجح لـ "سواري لاندسكيب".</p>
-            </div>
-
-            <div class="space-y-6">
-                <!-- Rec 1 -->
-                <div class="bg-brand-card p-6 md:p-8 rounded-xl border-r-4 border-brand-gold shadow-lg flex flex-col md:flex-row gap-6 items-start">
-                    <div class="text-4xl font-extrabold text-[#2A302D] md:w-16 pt-1">01</div>
-                    <div>
-                        <h3 class="text-2xl font-bold mb-2 text-brand-light">امتداد معماري للأصالة (Inside-Out Integration)</h3>
-                        <p class="text-brand-muted leading-relaxed text-justify mb-3">
-                            لا تسوقوا اللاندسكيب كخدمة زراعية منفصلة، بل كـ "امتداد معماري للأصالة". استفيدوا من قاعدة عملاء الديكور الحاليين. استخدموا خامات خارجية تطابق الداخلية (ألوان البورسلان، نمط الإضاءة) لخلق مساحة منسجمة، مما يرفع قيمة المشروع ويزيل المنافسة مع مقاولي الحدائق التقليديين.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Rec 2 -->
-                <div class="bg-brand-card p-6 md:p-8 rounded-xl border-r-4 border-brand-olive shadow-lg flex flex-col md:flex-row gap-6 items-start">
-                    <div class="text-4xl font-extrabold text-[#2A302D] md:w-16 pt-1">02</div>
-                    <div>
-                        <h3 class="text-2xl font-bold mb-2 text-brand-light">إطلاق منتج "سواري كير" لاشتراكات صيانة الاندسكيب</h3>
-                        <p class="text-brand-muted leading-relaxed text-justify mb-3">
-                            حوّلوا عملية صيانة الحدائق من اجتهاد شخصي للعميل إلى باقات اشتراك شهرية/سنوية (B2C) موثقة. تشمل العناية بالهاردسكيب، فحص شبكات الري، وتسميد النباتات. هذا النموذج يعالج أكبر نقطة ألم في السوق ويضمن للشركة تدفقاً نقدياً متكرراً (Recurring Revenue) وبناء علاقة طويلة الأمد مع الملاك.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Rec 3 -->
-                <div class="bg-brand-card p-6 md:p-8 rounded-xl border-r-4 border-gray-500 shadow-lg flex flex-col md:flex-row gap-6 items-start relative overflow-hidden">
-                    <div class="text-4xl font-extrabold text-[#2A302D] md:w-16 pt-1 z-10">03</div>
-                    <div class="z-10">
-                        <h3 class="text-2xl font-bold mb-2 text-brand-light">عقد شراكات استراتيجية (B2B) مع مطوري الفلل الفاخرة</h3>
-                        <p class="text-brand-muted leading-relaxed text-justify mb-3">
-                            بدلاً من التركيز حصرياً على العميل النهائي (B2C)، أوصي ببناء تحالفات مع شركات التطوير العقاري الفاخرة (مثل المطورين في الأحياء الراقية). يمكن لـ "سواري" تقديم "باقات لاندسكيب قياسية فاخرة" يتم إدراجها ضمن قيمة الفيلا عند البيع. هذا يضمن الحصول على مشاريع متعددة دفعة واحدة، ويخفض تكاليف الاستحواذ على العملاء (CAC) بشكل كبير.
-                        </p>
-                    </div>
-                    <div class="absolute left-0 top-0 h-full w-24 bg-gradient-to-r from-brand-gold/10 to-transparent"></div>
-                </div>
-
-                <!-- Rec 4 -->
-                <div class="bg-brand-card p-6 md:p-8 rounded-xl border-r-4 border-gray-600 shadow-lg flex flex-col md:flex-row gap-6 items-start">
-                    <div class="text-4xl font-extrabold text-[#2A302D] md:w-16 pt-1">04</div>
-                    <div>
-                        <h3 class="text-2xl font-bold mb-2 text-brand-light">تسويق الشفافية في البنية التحتية (Trust Marketing)</h3>
-                        <p class="text-brand-muted leading-relaxed text-justify mb-3">
-                            اجعلوا توثيق البنية التحتية (العزل المائي للأحواض، جودة مواسير الري، تمديدات الكهرباء للجهد المنخفض) جزءاً أساسياً من محتواكم التسويقي. العميل الفاخر مستعد لدفع علاوة سعرية إذا اقتنع بأن التأسيس الهندسي قوي ولن يسبب له تسربات أو مشاكل مستقبلية.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Rec 5 -->
-                <div class="bg-brand-card p-6 md:p-8 rounded-xl border-r-4 border-brand-gold shadow-lg flex flex-col md:flex-row gap-6 items-start">
-                    <div class="text-4xl font-extrabold text-[#2A302D] md:w-16 pt-1">05</div>
-                    <div>
-                        <h3 class="text-2xl font-bold mb-2 text-brand-light">تصميم الفخامة الهادئة والمنخفضة الصيانة</h3>
-                        <p class="text-brand-muted leading-relaxed text-justify mb-3">
-                            التركيز في التصميم على المساحات الصلبة الأنيقة (Hardscape)، وتقليل المساحات الخضراء العشوائية واستبدالها بنقاط ارتكاز نباتية (Focal Points) مدروسة. هذا التوجه يلبي ذوق العميل العصري الباحث عن "الهدوء البصري"، وفي نفس الوقت يقلل بشكل جذري من تكاليف استهلاك المياه والجهد التشغيلي.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Module 6: Sources & Links -->
-        <section id="section-sources" class="content-section fade-in hidden">
-            <div class="mb-10 border-b border-gray-800 pb-6">
-                <h2 class="text-3xl font-bold gold-gradient-text mb-3">6. المصادر والروابط التفصيلية</h2>
-                <p class="text-brand-muted text-lg">قائمة المصادر والبيانات المرجعية المستخدمة في هذه الدراسة.</p>
-            </div>
-
-            <div class="bg-brand-card p-6 rounded-xl border border-gray-800">
-                <ul id="sourceList" class="space-y-3 text-sm">
-                    <!-- Populated by JS based on user's exact list -->
-                </ul>
-            </div>
-        </section>
-        
-    </main>
-
-    <!-- نافذة منبثقة لتحليل المنافسين بالذكاء الاصطناعي -->
-    <div id="aiModal" class="fixed inset-0 z-[200] modal-bg hidden flex items-center justify-center print:hidden">
-        <div class="bg-brand-dark border border-brand-gold rounded-xl p-6 max-w-lg w-[90%] shadow-2xl relative">
-            <button onclick="closeModal()" class="absolute top-4 left-4 text-gray-400 hover:text-white text-xl">✖</button>
-            <h3 class="text-xl font-bold text-brand-gold mb-1 flex items-center gap-2"><span class="text-2xl">✨</span> استراتيجية التغلب البيعية</h3>
-            <h4 id="modalCompetitorName" class="font-bold text-brand-light mb-4 pb-3 border-b border-gray-800 text-sm"></h4>
-            
-            <div id="modalLoading" class="text-center py-8 hidden">
-                <div class="loader mb-3"></div>
-                <p class="text-sm text-brand-muted">جاري تحليل المنافس وبناء نقاط القوة لصالح سواري عبر Gemini...</p>
-            </div>
-            
-            <div id="modalContent" class="text-sm leading-relaxed text-gray-300 hidden max-h-[60vh] overflow-y-auto pr-2"></div>
-        </div>
-    </div>
-
-    <!-- المساعد الذكي (Chat Widget) -->
-    <div class="fixed bottom-6 left-6 z-[100] print:hidden flex flex-col items-start drop-shadow-2xl">
-        <div id="chatWindow" class="hidden w-[320px] md:w-[380px] h-[500px] bg-brand-dark border border-brand-gold rounded-xl flex-col overflow-hidden mb-4 transition-all opacity-0 scale-95 origin-bottom-left">
-            <div class="bg-brand-card text-brand-light p-4 font-bold flex justify-between items-center shadow-md border-b border-brand-gold/30">
-                <div class="flex items-center gap-2">
-                    <span class="text-xl">✨</span> مستشار سواري الذكي
-                </div>
-                <button onclick="toggleChat()" class="text-gray-400 hover:text-white transition-colors">✖</button>
-            </div>
-            <div id="chatMessages" class="flex-1 p-4 overflow-y-auto flex flex-col gap-3 bg-[#181A19]">
-                <div class="msg-bot">
-                    مرحباً! أنا مستشارك الذكي المدمج والمدعوم بـ Gemini. يمكنني تزويدك باستراتيجيات التوسع، تحليل الفجوات، واقتراحات التسعير. كيف يمكنني مساعدة إدارة "سواري" اليوم؟
-                </div>
-            </div>
-            <div class="p-3 bg-brand-card border-t border-gray-800 flex gap-2">
-                <input type="text" id="chatInput" placeholder="اسألني عن السوق أو المنافسين..." class="flex-1 bg-brand-dark border border-gray-700 text-brand-light text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-brand-gold transition-colors" onkeypress="handleChatKeyPress(event)">
-                <button onclick="sendMessage()" id="sendBtn" class="bg-brand-gold text-brand-dark px-4 py-2 rounded-lg font-bold text-sm hover:bg-brand-goldHover transition-colors flex items-center justify-center min-w-[60px]">
-                    إرسال
-                </button>
-            </div>
-        </div>
-        
-        <button onclick="toggleChat()" class="bg-brand-gold text-brand-dark w-14 h-14 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(212,175,55,0.4)] hover:scale-105 transition-transform border-2 border-[#121413]">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-            </svg>
+      <!-- Nav -->
+      <nav class="flex-1 overflow-y-auto p-4 space-y-1.5">
+        <button class="nav-btn active w-full text-right rounded-2xl px-4 py-3 text-sm relative" data-target="overview">
+          <span class="nav-indicator"></span>
+          <span class="flex items-center gap-3">
+            <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            الملخص التنفيذي
+          </span>
         </button>
+        <button class="nav-btn w-full text-right rounded-2xl px-4 py-3 text-sm relative" data-target="market">
+          <span class="nav-indicator"></span>
+          <span class="flex items-center gap-3">
+            <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+            حجم السوق والنمو
+          </span>
+        </button>
+        <button class="nav-btn w-full text-right rounded-2xl px-4 py-3 text-sm relative" data-target="trends">
+          <span class="nav-indicator"></span>
+          <span class="flex items-center gap-3">
+            <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>
+            اتجاهات اللاندسكيب
+          </span>
+        </button>
+        <button class="nav-btn w-full text-right rounded-2xl px-4 py-3 text-sm relative" data-target="maintenance">
+          <span class="nav-indicator"></span>
+          <span class="flex items-center gap-3">
+            <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            سوق الصيانة المتكررة
+          </span>
+        </button>
+        <button class="nav-btn w-full text-right rounded-2xl px-4 py-3 text-sm relative" data-target="competitors">
+          <span class="nav-indicator"></span>
+          <span class="flex items-center gap-3">
+            <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/></svg>
+            استخبارات المنافسين
+          </span>
+        </button>
+        <button class="nav-btn w-full text-right rounded-2xl px-4 py-3 text-sm relative" data-target="customer">
+          <span class="nav-indicator"></span>
+          <span class="flex items-center gap-3">
+            <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
+            سلوك العميل
+          </span>
+        </button>
+        <button class="nav-btn w-full text-right rounded-2xl px-4 py-3 text-sm relative" data-target="gaps">
+          <span class="nav-indicator"></span>
+          <span class="flex items-center gap-3">
+            <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/></svg>
+            الفجوات والفرص
+          </span>
+        </button>
+        <button class="nav-btn w-full text-right rounded-2xl px-4 py-3 text-sm relative" data-target="regulatory">
+          <span class="nav-indicator"></span>
+          <span class="flex items-center gap-3">
+            <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z"/></svg>
+            البيئة التنظيمية
+          </span>
+        </button>
+        <button class="nav-btn w-full text-right rounded-2xl px-4 py-3 text-sm relative" data-target="recommendations">
+          <span class="nav-indicator"></span>
+          <span class="flex items-center gap-3">
+            <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"/></svg>
+            التوصيات الاستراتيجية
+          </span>
+        </button>
+        <button class="nav-btn w-full text-right rounded-2xl px-4 py-3 text-sm relative" data-target="sources">
+          <span class="nav-indicator"></span>
+          <span class="flex items-center gap-3">
+            <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"/></svg>
+            المصادر والمراجع
+          </span>
+        </button>
+      </nav>
+
+      <!-- Footer -->
+      <div class="p-4 border-t border-brand-line/30">
+        <div class="rounded-2xl bg-brand-bg border border-brand-line/30 p-4">
+          <div class="flex items-center gap-2 mb-2">
+            <div class="pulse-dot"></div>
+            <span class="text-[11px] text-brand-muted tracking-wider">MARKET INTELLIGENCE</span>
+          </div>
+          <div class="text-[12px] text-brand-muted leading-6">محدّث: مارس ٢٠٢٦ — بيانات من ٧+ مصادر بحثية معتمدة</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- === MOBILE HEADER === -->
+    <div class="lg:hidden fixed top-0 inset-x-0 z-50 bg-brand-panel/95 backdrop-blur-xl border-b border-brand-line/30 px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl border border-brand-gold/20 bg-brand-elevated flex items-center justify-center">
+          <span class="gold-text text-sm font-extrabold">SL</span>
+        </div>
+        <div>
+          <div class="text-lg font-extrabold gold-text leading-none">سواري</div>
+          <div class="text-[9px] tracking-[.3em] text-brand-muted mt-0.5">SUSTAINABLE LANDSCAPE</div>
+        </div>
+      </div>
+      <button id="mobileMenuBtn" class="w-10 h-10 rounded-xl border border-brand-line bg-brand-elevated flex items-center justify-center text-brand-muted">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg>
+      </button>
     </div>
 
-    <script>
-        // --- Single Page Application Navigation ---
-        function showSection(sectionId) {
-            document.querySelectorAll('.content-section').forEach(el => {
-                el.classList.add('hidden');
-                el.classList.remove('block');
-            });
-            document.querySelectorAll('.nav-link').forEach(el => {
-                el.classList.remove('active');
-            });
-            
-            document.getElementById('section-' + sectionId).classList.remove('hidden');
-            document.getElementById('section-' + sectionId).classList.add('block');
-            document.getElementById('nav-' + sectionId).classList.add('active');
+    <!-- Mobile Overlay -->
+    <div id="mobileOverlay" class="mobile-overlay lg:hidden"></div>
 
-            if(window.innerWidth < 768) {
-                window.scrollTo({top: 0, behavior: 'smooth'});
-            }
-        }
+    <!-- Mobile Sidebar -->
+    <div id="mobileSidebar" class="sidebar-mobile fixed top-0 right-0 w-[280px] h-screen z-50 lg:hidden sidebar overflow-y-auto">
+      <div class="p-4 border-b border-brand-line/30 flex items-center justify-between">
+        <span class="gold-text font-bold">القائمة</span>
+        <button id="mobileCloseBtn" class="w-8 h-8 rounded-lg border border-brand-line flex items-center justify-center text-brand-muted">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <nav id="mobileNav" class="p-3 space-y-1.5"></nav>
+    </div>
 
-        // --- Source Links Injection ---
-        const rawSources = [
-            "Saudi Arabia Landscaping Market Size, Share & Forecast 2030F - TechSci Research, accessed March 7, 2026, https://www.techsciresearch.com/report/saudi-arabia-landscaping-market/11746.html",
-            "Saudi Arabia 5.55 Bn Landscaping Market Trends, accessed March 7, 2026, https://www.globenewswire.com/news-release/2025/09/01/3142102/28124/en/Saudi-Arabia-5-55-Bn-Landscaping-Market-Trends-Competition-Forecast-Opportunities-2030F.html",
-            "KSA Landscaping Market, Industry Growth and Forecast to 2030, accessed March 7, 2026, https://www.kenresearch.com/industry-reports/ksa-landscaping-market",
-            "Landscape Design in Riyadh - SOL, accessed March 8, 2026, https://soldesignsa.com/en/landscape-design-in-riyadh/",
-            "Garden Maintenance Company in Riyadh - KACC, accessed March 8, 2026, https://kacc.co/garden-maintanance/",
-            "Saudi Arabia Landscaping Market Size, Share and Growth 2032 - Markets and Data, accessed March 7, 2026, https://www.marketsandata.com/industry-reports/saudi-arabia-landscaping-market",
-            "Saudi Arabia Landscaping Market Report: Trends, Growth and Forecast (2026-2032), accessed March 7, 2026, https://www.vyansaintelligence.com/industry-report/saudi-arabia-landscaping-market-forecast",
-            "A Comprehensive Guide to Buying Land in Riyadh: Prices, Areas, and Investment Tips for 2026 - Mada Properties, accessed March 7, 2026, https://www.madaproperties.sa/en/blogs/a-comprehensive-guide-to-buying-land-in-riyadh-prices-areas-and-investment-tips-for-2026",
-            "Discover Premium Villas for Sale in North Riyadh in Installments - Mada Properties, accessed March 7, 2026, https://www.madaproperties.sa/en/blogs/discover-premium-villas-for-sale-in-north-riyadh-in-installments",
-            "Saudi Arabia Landscaping Market 2030: The Rise of Smart and Sustainable Landscaping - Market Research - Global Risk Community, accessed March 7, 2026, https://globalriskcommunity.com/market_research/saudi-arabia-landscaping-market-2030-the-rise-of-smart-and-sustai",
-            "2023 Investment Climate Statements: Saudi Arabia, accessed March 8, 2026, https://2021-2025.state.gov/reports/2023-investment-climate-statements/saudi-arabia/",
-            "تنسيق حدائق بالرياض تركيب عشب صناعي وتصميم حدائق منزلية حديثة, accessed March 8, 2026, https://hadaiqriad.com/",
-            "Revolutionizing urban life: efficient and sustainable landscaping solutions - AZUD, accessed March 7, 2026, https://azud.com/en/project/subsurface-drip-irrigation-in-saudi-arabia/",
-            "How Irrigation and Landscaping Work Together in Riyadh, accessed March 7, 2026, https://www.greenwavs.com/how-irrigation-and-landscaping-work-together-in-riyadh/",
-            "Saudi Arabia Landscaping Market | 2019 – 2030 - Ken Research, accessed March 7, 2026, https://www.kenresearch.com/saudi-arabia-commercial-facility-landscaping-services-market",
-            "تنسيق حدائق - مؤسسة ارجاء بالرياض خبرة 15 عام, accessed March 8, 2026, https://abusamahgarden.com/",
-            "تنسيق حدائق, accessed March 8, 2026, https://landscaper205.com/",
-            "Annual Landscape Maintenance for Businesses in Saudi Arabia, accessed March 8, 2026, https://www.nabtat.com.sa/annual-landscape-maintenance/",
-            "Garden Maintenance (Long Term - 6 months), accessed March 8, 2026, https://www.bastanastore.com/products/copy-of-garden-maintenance-one-time-visit",
-            "KSA Landscaping Market Size, Competitors, Trends & Forecast, accessed March 7, 2026, https://www.researchandmarkets.com/report/saudi-arabia-landscaping-market",
-            "Top Trends in Irrigation Installation for Saudi Arabian Landscapes, accessed March 8, 2026, https://www.greenwavs.com/top-trends-in-irrigation-installation-for-saudi-arabian-landscapes/",
-            "توب جاردنز: الصفحة الرئيسية, accessed March 8, 2026, https://topgardens.online/",
-            "Home - تنسيق حدائق الرياض | شركة تنسيق حدائق بالرياض, accessed March 8, 2026, https://fllorenza.com/",
-            "أفضل 5 شركات تنسيق حدائق بالرياض بخبرة طويلة وأسعار تنافسية, accessed March 7, 2026, https://hadaiqriad.com/%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%D9%86%D8%A7/%D8%AF%D9%84%D9%8A%D9%84-%D8%A3%D9%81%D8%B6%D9%84-%D8%B4%D8%B1%D9%83%D8%A7%D8%AA-%D8%AA%D9%86%D8%B3%D9%8A%D9%82-%D8%A7%D9%84%D8%AD%D8%AF%D8%A7%D8%A6%D9%82/%D8%A3%D9%81%D8%B6%D9%84-5-%D8%B4%D8%B1%D9%83%D8%A7%D8%AA-%D8%AA%D9%86%D8%B3%D9%8A%D9%82-%D8%AD%D8%AF%D8%A7%D8%A6%D9%82/",
-            "عقود الصيانة الشهرية والسنوية للحدائق - شركة حدائق الفرسان التجارية, accessed March 8, 2026, https://fursan-sa.com/contract/",
-            "أفضل شركة تنسيق حدائق شرق الرياض, accessed March 7, 2026, https://landscaper205.com/%D8%A3%D9%81%D8%B6%D9%84-%D8%B4%D8%B1%D9%83%D8%A9-%D8%AA%D9%86%D8%B3%D9%8A%D9%82-%D8%AD%D8%AF%D8%A7%D8%A6%D9%82-%D8%B4%D8%B1%D9%82-%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6/",
-            "About us - Contracting Company in Saudi Arabia - HALSCO, accessed March 7, 2026, https://halsco.com.sa/about-us/",
-            "Contracting Company in Saudi Arabia - HALSCO, accessed March 7, 2026, https://halsco.com.sa/",
-            "Landscaping and park design - toq.com.sa, accessed March 8, 2026, https://toq.com.sa/en/landscaping-and-park-design/",
-            "Interior Design in Riyadh: Blending Luxury and Functionality - First Garden, accessed March 8, 2026, https://firstgardenksa.com/test/",
-            "Incredible Landscaping Companies In Saudi Arabia 2025 - Skilya, accessed March 8, 2026, https://skilya.com/landscaping-companies-in-saudi-arabia/",
-            "تنسيق حدائق بالرياض - مؤسسة الوفاء لتنسيق الحدائق, accessed March 8, 2026, https://alwafagardens.com/",
-            "شركة تنسيق الحدائق بالرياض لتصميم 5 أفكار لحديقة كمتحف فني, accessed March 8, 2026, https://gardens-ruwaad.com/%D8%B4%D8%B1%D9%83%D8%A9-%D8%AA%D9%86%D8%B3%D9%8A%D9%82-%D8%A7%D9%84%D8%AD%D8%AF%D8%A7%D8%A6%D9%82-%D8%A8%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6-%D9%84%D8%AA%D8%B5%D9%85%D9%8A%D9%85-5-%D8%A3%D9%81%D9%83/",
-            "The 10 Best Interior Designers in Riyadh: Top Experts Transforming Spaces, accessed March 8, 2026, https://eraculturedesign.com/the-10-best-interior-designers-in-riyadh-top-experts-transforming-spaces/",
-            "Interior Design Company in Riyadh & Saudi Arabia - Rayfitout, accessed March 8, 2026, https://www.rayfitout.com/services/interior-design-company-in-riyadh",
-            "The 20 Best Interior Designers In Riyadh 2023 - LUXXU, accessed March 8, 2026, https://www.luxxu.net/blog/the-20-best-interior-designers-in-riyadh/",
-            "أبرز الأخطاء الشائعة في تنسيق الحدائق وكيفية تجنبها » Naseem Alzahra Landscape, accessed March 8, 2026, https://naseemlandscape.com/%D8%A3%D8%A8%D8%B1%D8%B2-%D8%A7%D9%84%D8%A3%D8%AE%D8%B7%D8%A7%D8%A1-%D8%A7%D9%84%D8%B4%D8%A7%D8%A6%D8%B9%D8%A9-%D9%81%D9%8A-%D8%AA%D9%86%D8%B3%D9%8A%D9%82-%D8%A7%D9%84%D8%AD%D8%AF%D8%A7%D8%A6%D9%82/",
-            "صيانة الحدائق الدورية بزيارات متكررة أسبوعية وشهرية - تنسيق حدائق, accessed March 7, 2026, https://tansikhadaek.org/%D8%B5%D9%8A%D8%A7%D9%86%D8%A9-%D8%A7%D9%84%D8%AD%D8%AF%D8%A7%D8%A6%D9%82/",
-            "Turnkey Villa Finishing Cost in Jeddah 2026 - SMD Decoration, accessed March 7, 2026, https://smddecoration.com/en/post/%D8%AA%D9%83%D9%84%D9%81%D8%A9-%D8%AA%D8%B4%D8%B7%D9%8A%D8%A8-%D9%81%D9%8A%D9%84%D8%A7-%D8%AA%D8%B3%D9%84%D9%8A%D9%85-%D9%85%D9%81%D8%AA%D8%A7%D8%AD-%D8%AC%D8%AF%D8%A9-2026-%D8%A7%D9%84%D8%A8%D9%86%D9%88%D8%AF-%D9%88%D8%A7%D9%84%D9%85%D8%AF%D8%A9-%D9%88%D8%A7%D9%84%D8%A3%D8%B3%D8%B9%D8%A7%D8%B1",
-            "دليل المستخدم وتأهيل مشغلي المدن لبوابة تصنيف - منصة بلدي, accessed March 8, 2026, https://balady.gov.sa/sites/default/files/service/%D8%AF%D9%84%D9%8A%D9%84%20%D8%A7%D9%84%D9%85%D8%B3%D8%AA%D8%AE%D8%AF%D9%85%20%D9%84%D8%A8%D9%88%D8%A7%D8%A8%D8%A9%20%D8%AA%D8%B5%D9%86%D9%8A%D9%81%20%D9%85%D8%B4%D8%BA%D9%84%D9%8A%20%D8%A7%D9%84%D9%85%D8%AF%D9%86_0.pdf",
-            "SSIC - الهيئة العامة للإحصاء, accessed March 8, 2026, https://www.stats.gov.sa/documents/20117/114272/National+Classification+for+the+Economic+Activities%28SSIC%29_Nov_2024_Ar_.xlsx/bfa55102-6f89-df36-c648-3428ee1f8f73?t=1733922449526",
-            "طلب تنسيق حفريات متعددة - وزارة البلديات والإسكان, accessed March 8, 2026, https://momah.gov.sa/ar/e-services/tlb-tnsyq-hfryat-mtddt?pageNumber=12",
-            "البلدية والإسكان 30 يوماً مدة التراخيص لأعمال الحفر - وزارة البلديات والإسكان, accessed March 8, 2026, https://momah.gov.sa/ar/news/momrah-30-day-license-period?pageNumber=15",
-            "البلدية والإسكان: إنشاء وتفعيل 474 حديقةً وتنفيذ 568 تدخلاً حضرياً ضمن مشروع بهجة حتى نهاية الربع الأول 2024, accessed March 7, 2026, https://momah.gov.sa/ar/news/albldyt-walaskan-ansha-wtfyl-474?pageNumber=4",
-            "(PDF) 1 Environment Sustainability and Green Entrepreneurship in Saudi Arabia, accessed March 8, 2026, https://www.researchgate.net/publication/400430691_1_Environment_Sustainability_and_Green_Entrepreneurship_in_Saudi_Arabia",
-            "VOLUNTARY LOCAL REVIEW OF THE SUSTAINABLE DEVELOPMENT GOALS, accessed March 8, 2026, https://sdgs.un.org/sites/default/files/2025-11/VLR_Riyadh_2024.pdf",
-            "Saudi Arabia Green Construction Market Outlook to 2030 - Nexdigm, accessed March 8, 2026, https://www.nexdigm.com/market-research/report-store/saudi-arabia-green-construction-market-report/",
-            "المملكة تتقدم في مؤشر المستقبل الأخضر 2022.. نجاحات بيئية على أرض الواقع - صحيفة اليوم, accessed March 8, 2026, https://www.alyaum.com/articles/6431219/%D8%A7%D9%84%D8%A3%D8%AE%D8%A8%D8%A7%D8%B1/%D8%A7%D9%84%D9%85%D9%85%D9%84%D9%83%D8%A9-%D8%A7%D9%84%D9%8A%D9%88%D9%85/%D8%A7%D9%84%D9%85%D9%85%D9%84%D9%83%D8%A9-%D8%AA%D8%AA%D9%82%D8%AF%D9%85-%D9%81%D9%8A-%D9%85%D8%A4%D8%B4%D8%B1-%D8%A7%D9%84%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84-%D8%A7%D9%84%D8%A3%D8%AE%D8%B6%D8%B1-2022-%D9%86%D8%AC%D8%A7%D8%AD%D8%A7%D8%AA-%D8%A8%D9%8A%D8%A6%D9%8A%D8%A9-%D8%B9%D9%84%D9%89-%D8%A3%D8%B1%D8%B6-%D8%A7%D9%84%D9%88%D8%A7%D9%82%D8%B9"
-        ];
+    <!-- === MAIN CONTENT === -->
+    <main class="flex-1 h-screen overflow-y-auto" id="mainContent">
+      <div class="p-4 md:p-8 lg:p-10 pt-20 lg:pt-10 max-w-[1400px]">
 
-        const sourcesListEl = document.getElementById('sourceList');
-        rawSources.forEach(source => {
-            const urlMatch = source.match(/https?:\/\/[^\s]+/);
-            let url = "";
-            let text = source;
-            if(urlMatch) {
-                url = urlMatch[0];
-                text = source.replace(url, '').trim().replace(/,\s*$/, ''); 
-            }
+        <!-- ============ HEADER ============ -->
+        <header class="mb-8 rounded-[28px] border border-brand-line/40 overflow-hidden" style="background: linear-gradient(135deg, #1A1816 0%, #141210 50%, #0F0E0C 100%);">
+          <div class="p-7 md:p-10">
+            <div class="flex flex-wrap items-center gap-3 mb-6">
+              <span class="badge badge-gold">
+                <span class="pulse-dot" style="width:6px;height:6px;"></span>
+                Board-Level Intelligence
+              </span>
+              <span class="badge badge-olive">Vision 2030 Aligned</span>
+              <span class="badge badge-accent">Q1 2026</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl lg:text-6xl font-extrabold leading-tight gold-text mb-5 max-w-4xl">
+              دراسة السوق الاستراتيجية لقطاع اللاندسكيب في السعودية
+            </h1>
+            <p class="text-brand-muted text-base md:text-lg leading-8 max-w-3xl">
+              تحليل شامل لسوق تصميم وتنفيذ المساحات الخارجية — الحجم، النمو، المنافسين، سلوك العميل، الفجوات، والتوصيات الاستراتيجية لإطلاق قسم لاندسكيب فاخر ومستدام تحت مظلة سواري.
+            </p>
+            <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-3">
+              <div class="metric-card p-4 text-center">
+                <div class="text-2xl md:text-3xl font-extrabold gold-text">$3.45B</div>
+                <div class="text-xs text-brand-muted mt-1">حجم السوق ٢٠٢٤</div>
+              </div>
+              <div class="metric-card p-4 text-center">
+                <div class="text-2xl md:text-3xl font-extrabold gold-text">$5.55B</div>
+                <div class="text-xs text-brand-muted mt-1">التوقعات ٢٠٣٠</div>
+              </div>
+              <div class="metric-card p-4 text-center">
+                <div class="text-2xl md:text-3xl font-extrabold gold-text">8.1%</div>
+                <div class="text-xs text-brand-muted mt-1">معدل النمو CAGR</div>
+              </div>
+              <div class="metric-card p-4 text-center">
+                <div class="text-2xl md:text-3xl font-extrabold gold-text">7.5M</div>
+                <div class="text-xs text-brand-muted mt-1">شجرة — مبادرة الرياض الخضراء</div>
+              </div>
+            </div>
+          </div>
+        </header>
 
-            const li = document.createElement('li');
-            li.className = "bg-[#181A19] p-4 rounded-lg border border-gray-700 hover:border-brand-gold transition-colors";
-            li.innerHTML = `
-                <div class="flex flex-col gap-1 w-full">
-                    <p class="text-brand-light font-medium text-sm leading-relaxed">${text}</p>
-                    ${url ? `<a href="${url}" target="_blank" class="text-brand-olive hover:text-brand-gold break-url text-xs font-bold block mt-1 w-full overflow-hidden text-ellipsis whitespace-nowrap">🔗 ${url}</a>` : ''}
+        <!-- ======================= SECTIONS ======================= -->
+
+        <!-- ===== 1. EXECUTIVE SUMMARY ===== -->
+        <div id="overview" class="section active">
+          <div class="mb-6">
+            <span class="text-[11px] tracking-[.3em] text-brand-goldMuted font-medium">01 / EXECUTIVE SUMMARY</span>
+            <h2 class="text-3xl font-extrabold mt-2 gold-text">الملخص التنفيذي</h2>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4 mb-6">
+            <div class="metric-card p-6">
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-2xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center shrink-0">
+                  <svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"/></svg>
                 </div>
-            `;
-            sourcesListEl.appendChild(li);
-        });
+                <div>
+                  <h3 class="font-bold text-lg mb-2">نمو استثنائي</h3>
+                  <p class="text-brand-muted text-sm leading-7">سوق اللاندسكيب في المملكة يشهد نمواً قوياً بمعدل 8.1% سنوياً مدفوعاً بمشاريع رؤية 2030 الضخمة، التوسع الحضري المتسارع، ومبادرات التشجير الوطنية. السوق سيتجاوز 5.5 مليار دولار بحلول 2030.</p>
+                </div>
+              </div>
+            </div>
+            <div class="metric-card p-6">
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-2xl bg-brand-olive/15 border border-brand-olive/25 flex items-center justify-center shrink-0">
+                  <svg class="w-6 h-6 text-brand-olive" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"/></svg>
+                </div>
+                <div>
+                  <h3 class="font-bold text-lg mb-2">محرّكات الطلب</h3>
+                  <p class="text-brand-muted text-sm leading-7">مشروع الرياض الخضراء (7.5 مليون شجرة)، مبادرة السعودية الخضراء (10 مليار شجرة)، مشاريع نيوم والبحر الأحمر والدرعية، والتوسع العقاري بالقطاعين السكني والتجاري.</p>
+                </div>
+              </div>
+            </div>
+          </div>
 
+          <div class="grid md:grid-cols-2 gap-4 mb-6">
+            <div class="metric-card p-6">
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-2xl bg-brand-accent/15 border border-brand-accent/25 flex items-center justify-center shrink-0">
+                  <svg class="w-6 h-6 text-brand-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg>
+                </div>
+                <div>
+                  <h3 class="font-bold text-lg mb-2">حركة الاستدامة</h3>
+                  <p class="text-brand-muted text-sm leading-7">التحول نحو الري الذكي، النباتات المحلية المتكيّفة، وتصميمات Xeriscaping الموفّرة للمياه. الاستدامة أصبحت معيار تنافسي أساسي في المناقصات الحكومية والخاصة.</p>
+                </div>
+              </div>
+            </div>
+            <div class="metric-card p-6">
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-2xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center shrink-0">
+                  <svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21"/></svg>
+                </div>
+                <div>
+                  <h3 class="font-bold text-lg mb-2">فرصة سواري</h3>
+                  <p class="text-brand-muted text-sm leading-7">فجوة واضحة في قطاع اللاندسكيب الفاخر: لا يوجد لاعب يجمع بين التصميم الراقي، التنفيذ المتكامل (Design-Build)، الاستدامة الحقيقية، وعقود الصيانة الاشتراكية — وهذا بالضبط موقع سواري.</p>
+                </div>
+              </div>
+            </div>
+          </div>
 
-        // --- Chart.js Configuration for Dark Theme ---
-        Chart.defaults.font.family = "'Tajawal', sans-serif";
-        Chart.defaults.color = '#8B948E'; 
-        Chart.defaults.scale.grid.color = 'rgba(255, 255, 255, 0.05)';
-        Chart.defaults.animation = false; 
-        
-        const cGold = '#D4AF37';
-        const cOlive = '#556B2F';
+          <!-- Key Market Indicators — Radial Ring Design -->
+          <div class="mb-2 mt-2">
+            <h3 class="font-bold text-lg gold-text">المؤشرات الرئيسية للسوق</h3>
+            <p class="text-brand-muted text-xs mt-1">أرقام محورية تشكّل المشهد الاستراتيجي لقطاع اللاندسكيب السعودي</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="kpiGrid">
+            <div class="metric-card p-5 flex items-center gap-5">
+              <div class="relative shrink-0" style="width:78px;height:78px;">
+                <svg width="78" height="78" viewBox="0 0 78 78"><circle cx="39" cy="39" r="33" fill="none" stroke="rgba(201,169,106,.1)" stroke-width="5"/><circle class="kpi-arc" cx="39" cy="39" r="33" fill="none" stroke="#C9A96A" stroke-width="5" stroke-linecap="round" stroke-dasharray="207.3" stroke-dashoffset="207.3" data-pct="83" transform="rotate(-90 39 39)"/></svg>
+                <div class="absolute inset-0 flex items-center justify-center"><span class="text-lg font-extrabold text-brand-gold">83%</span></div>
+              </div>
+              <div><div class="font-bold text-sm mb-1">نسبة التحضر</div><p class="text-brand-muted text-xs leading-5">83% من سكان المملكة في مناطق حضرية — المحرك الأول لطلب اللاندسكيب السكني والتجاري</p></div>
+            </div>
+            <div class="metric-card p-5 flex items-center gap-5">
+              <div class="relative shrink-0" style="width:78px;height:78px;">
+                <svg width="78" height="78" viewBox="0 0 78 78"><circle cx="39" cy="39" r="33" fill="none" stroke="rgba(107,114,82,.12)" stroke-width="5"/><circle class="kpi-arc" cx="39" cy="39" r="33" fill="none" stroke="#6B7252" stroke-width="5" stroke-linecap="round" stroke-dasharray="207.3" stroke-dashoffset="207.3" data-pct="75" transform="rotate(-90 39 39)"/></svg>
+                <div class="absolute inset-0 flex items-center justify-center"><span class="text-lg font-extrabold text-brand-olive">45M</span></div>
+              </div>
+              <div><div class="font-bold text-sm mb-1">السكان المتوقع ٢٠٣٠</div><p class="text-brand-muted text-xs leading-5">نمو سكاني يضغط على البنية الحضرية ويولّد طلباً متصاعداً على المساحات الخضراء</p></div>
+            </div>
+            <div class="metric-card p-5 flex items-center gap-5">
+              <div class="relative shrink-0" style="width:78px;height:78px;">
+                <svg width="78" height="78" viewBox="0 0 78 78"><circle cx="39" cy="39" r="33" fill="none" stroke="rgba(201,169,106,.1)" stroke-width="5"/><circle class="kpi-arc" cx="39" cy="39" r="33" fill="none" stroke="#C9A96A" stroke-width="5" stroke-linecap="round" stroke-dasharray="207.3" stroke-dashoffset="207.3" data-pct="90" transform="rotate(-90 39 39)"/></svg>
+                <div class="absolute inset-0 flex items-center justify-center"><span class="text-[14px] font-extrabold text-brand-gold">$42.9B</span></div>
+              </div>
+              <div><div class="font-bold text-sm mb-1">مشاريع الخصخصة PPP</div><p class="text-brand-muted text-xs leading-5">200+ مشروع في 17 قطاع — فرص شراكة طويلة الأمد في البنية التحتية الخضراء</p></div>
+            </div>
+            <div class="metric-card p-5 flex items-center gap-5">
+              <div class="relative shrink-0" style="width:78px;height:78px;">
+                <svg width="78" height="78" viewBox="0 0 78 78"><circle cx="39" cy="39" r="33" fill="none" stroke="rgba(142,107,73,.12)" stroke-width="5"/><circle class="kpi-arc" cx="39" cy="39" r="33" fill="none" stroke="#8E6B49" stroke-width="5" stroke-linecap="round" stroke-dasharray="207.3" stroke-dashoffset="207.3" data-pct="70" transform="rotate(-90 39 39)"/></svg>
+                <div class="absolute inset-0 flex items-center justify-center"><span class="text-lg font-extrabold text-brand-accent">70%</span></div>
+              </div>
+              <div><div class="font-bold text-sm mb-1">حصة التركيب</div><p class="text-brand-muted text-xs leading-5">التركيب يهيمن على السوق — الصيانة المتكررة هي الفرصة غير المستغلة بهوامش أعلى</p></div>
+            </div>
+            <div class="metric-card p-5 flex items-center gap-5">
+              <div class="relative shrink-0" style="width:78px;height:78px;">
+                <svg width="78" height="78" viewBox="0 0 78 78"><circle cx="39" cy="39" r="33" fill="none" stroke="rgba(107,114,82,.12)" stroke-width="5"/><circle class="kpi-arc" cx="39" cy="39" r="33" fill="none" stroke="#6B7252" stroke-width="5" stroke-linecap="round" stroke-dasharray="207.3" stroke-dashoffset="207.3" data-pct="60" transform="rotate(-90 39 39)"/></svg>
+                <div class="absolute inset-0 flex items-center justify-center"><span class="text-lg font-extrabold text-brand-olive">60%</span></div>
+              </div>
+              <div><div class="font-bold text-sm mb-1">حصة Softscape</div><p class="text-brand-muted text-xs leading-5">الغطاء النباتي والتشجير يشكّل الحصة الأكبر — مدفوعاً بمبادرات التشجير ومكافحة التصحر</p></div>
+            </div>
+            <div class="metric-card p-5 flex items-center gap-5">
+              <div class="relative shrink-0" style="width:78px;height:78px;">
+                <svg width="78" height="78" viewBox="0 0 78 78"><circle cx="39" cy="39" r="33" fill="none" stroke="rgba(201,169,106,.1)" stroke-width="5"/><circle class="kpi-arc" cx="39" cy="39" r="33" fill="none" stroke="#C9A96A" stroke-width="5" stroke-linecap="round" stroke-dasharray="207.3" stroke-dashoffset="207.3" data-pct="46" transform="rotate(-90 39 39)"/></svg>
+                <div class="absolute inset-0 flex items-center justify-center"><span class="text-lg font-extrabold text-brand-gold">46m²</span></div>
+              </div>
+              <div><div class="font-bold text-sm mb-1">المساحة الخضراء / فرد</div><p class="text-brand-muted text-xs leading-5">هدف طموح: من 1.7م² حالياً إلى 46م² — قفزة تعني مشاريع تشجير غير مسبوقة</p></div>
+            </div>
+          </div>
+        </div>
 
-        // Chart 1: Market Size KSA vs Riyadh
-        new Chart(document.getElementById('marketSizeChart').getContext('2d'), {
-            type: 'bar',
-            data: {
-                labels: ['2024', '2026', '2028', '2030'],
-                datasets: [
-                    {
-                        label: 'المملكة (إجمالي)',
-                        data: [7.8, 9.2, 11.5, 14.0],
-                        backgroundColor: 'rgba(85, 107, 47, 0.7)',
-                        borderRadius: 4
-                    },
-                    {
-                        label: 'الرياض فقط',
-                        data: [3.5, 4.1, 5.2, 6.5],
-                        backgroundColor: cGold,
-                        borderRadius: 4
-                    }
-                ]
+        <!-- ===== 2. MARKET SIZE & GROWTH ===== -->
+        <div id="market" class="section">
+          <div class="mb-6">
+            <span class="text-[11px] tracking-[.3em] text-brand-goldMuted font-medium">02 / MARKET SIZE & GROWTH</span>
+            <h2 class="text-3xl font-extrabold mt-2 gold-text">حجم السوق والنمو</h2>
+          </div>
+
+          <div class="grid md:grid-cols-3 gap-4 mb-6">
+            <div class="metric-card p-5 text-center">
+              <div class="text-[11px] text-brand-muted mb-2">القيمة الحالية ٢٠٢٤</div>
+              <div class="text-4xl font-extrabold gold-text">$3.45B</div>
+              <div class="text-xs text-brand-muted mt-1">مليار دولار أمريكي</div>
+            </div>
+            <div class="metric-card p-5 text-center">
+              <div class="text-[11px] text-brand-muted mb-2">التوقعات ٢٠٣٠</div>
+              <div class="text-4xl font-extrabold gold-text">$5.55B</div>
+              <div class="text-xs text-brand-muted mt-1">مليار دولار أمريكي</div>
+            </div>
+            <div class="metric-card p-5 text-center">
+              <div class="text-[11px] text-brand-muted mb-2">معدل النمو المركب CAGR</div>
+              <div class="text-4xl font-extrabold gold-text">8.10%</div>
+              <div class="text-xs text-brand-muted mt-1">٢٠٢٤ — ٢٠٣٠</div>
+            </div>
+          </div>
+
+          <div class="metric-card p-6 mb-6">
+            <h3 class="font-bold text-lg mb-4">نمو سوق اللاندسكيب في السعودية (مليار دولار)</h3>
+            <div class="chart-wrap">
+              <canvas id="marketChart"></canvas>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="metric-card p-6">
+              <h3 class="font-bold text-lg mb-3 gold-text">التوزيع حسب نوع الخدمة</h3>
+              <div style="height:280px"><canvas id="serviceTypeChart"></canvas></div>
+            </div>
+            <div class="metric-card p-6">
+              <h3 class="font-bold text-lg mb-3 gold-text">التوزيع حسب القطاع</h3>
+              <div style="height:280px"><canvas id="sectorChart"></canvas></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== 3. LANDSCAPING TRENDS ===== -->
+        <div id="trends" class="section">
+          <div class="mb-6">
+            <span class="text-[11px] tracking-[.3em] text-brand-goldMuted font-medium">03 / LANDSCAPING TRENDS</span>
+            <h2 class="text-3xl font-extrabold mt-2 gold-text">اتجاهات اللاندسكيب</h2>
+          </div>
+
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="trend-card p-6">
+              <div class="w-12 h-12 rounded-2xl bg-brand-olive/15 border border-brand-olive/25 flex items-center justify-center mb-4">
+                <svg class="w-6 h-6 text-brand-olive" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"/></svg>
+              </div>
+              <h3 class="font-bold text-lg mb-2">اللاندسكيب المستدام</h3>
+              <p class="text-brand-muted text-sm leading-7">تصاميم تعتمد على مبادئ الاستدامة وكفاءة استخدام الموارد. Xeriscaping وتقليل البصمة المائية أصبحا معياراً أساسياً في المشاريع الكبرى.</p>
+              <div class="mt-3"><span class="badge badge-olive">أولوية قصوى</span></div>
+            </div>
+            <div class="trend-card p-6">
+              <div class="w-12 h-12 rounded-2xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center mb-4">
+                <svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5"/></svg>
+              </div>
+              <h3 class="font-bold text-lg mb-2">الري الذكي</h3>
+              <p class="text-brand-muted text-sm leading-7">أنظمة ري تعمل بمستشعرات رطوبة التربة وبيانات الطقس اللحظية. تقلل استهلاك المياه حتى 40% مقارنة بالأنظمة التقليدية.</p>
+              <div class="mt-3"><span class="badge badge-gold">تقنية ناشئة</span></div>
+            </div>
+            <div class="trend-card p-6">
+              <div class="w-12 h-12 rounded-2xl bg-brand-accent/15 border border-brand-accent/25 flex items-center justify-center mb-4">
+                <svg class="w-6 h-6 text-brand-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z"/></svg>
+              </div>
+              <h3 class="font-bold text-lg mb-2">النباتات المتحملة للجفاف</h3>
+              <p class="text-brand-muted text-sm leading-7">اختيار نباتات محلية ومتكيّفة مع المناخ الصحراوي. تزدهر بأقل كمية مياه وتقلل تكاليف الصيانة بنسبة تصل إلى 50%.</p>
+              <div class="mt-3"><span class="badge badge-accent">توفير طويل الأمد</span></div>
+            </div>
+            <div class="trend-card p-6">
+              <div class="w-12 h-12 rounded-2xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center mb-4">
+                <svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205l3 1m1.5.5l-1.5-.5M6.75 7.364V3h-3v18m3-13.636l10.5-3.819"/></svg>
+              </div>
+              <h3 class="font-bold text-lg mb-2">مساحات المعيشة الخارجية</h3>
+              <p class="text-brand-muted text-sm leading-7">تصميم مناطق جلوس خارجية متكاملة مع مطابخ، مسابح، ومناطق ترفيه تمثل امتداداً طبيعياً للمساحة الداخلية.</p>
+              <div class="mt-3"><span class="badge badge-gold">طلب متزايد</span></div>
+            </div>
+            <div class="trend-card p-6">
+              <div class="w-12 h-12 rounded-2xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center mb-4">
+                <svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18"/></svg>
+              </div>
+              <h3 class="font-bold text-lg mb-2">إضاءة المناظر الطبيعية</h3>
+              <p class="text-brand-muted text-sm leading-7">إضاءة مدروسة تُبرز العناصر المعمارية والنباتية وتمنح المساحة حضوراً مختلفاً في المساء. LED وطاقة شمسية.</p>
+              <div class="mt-3"><span class="badge badge-gold">قيمة مضافة عالية</span></div>
+            </div>
+            <div class="trend-card p-6">
+              <div class="w-12 h-12 rounded-2xl bg-brand-olive/15 border border-brand-olive/25 flex items-center justify-center mb-4">
+                <svg class="w-6 h-6 text-brand-olive" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11.42 15.17l-5.1-3.13M11.42 15.17l5.1-3.13m-5.1 3.13V21m5.1-9.96l5.1-3.13m-5.1 3.13V3m0 18l5.1-3.13M6.32 12.04L1.22 8.91m5.1 3.13V3m0 18l-5.1-3.13"/></svg>
+              </div>
+              <h3 class="font-bold text-lg mb-2">حدائق منخفضة الصيانة</h3>
+              <p class="text-brand-muted text-sm leading-7">تصاميم ذكية تقلل الحاجة للصيانة المتكررة عبر أنظمة أتمتة وخامات متينة ونباتات ذاتية الاكتفاء.</p>
+              <div class="mt-3"><span class="badge badge-olive">كفاءة تشغيلية</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== 4. RECURRING MAINTENANCE ===== -->
+        <div id="maintenance" class="section">
+          <div class="mb-6">
+            <span class="text-[11px] tracking-[.3em] text-brand-goldMuted font-medium">04 / RECURRING MAINTENANCE</span>
+            <h2 class="text-3xl font-extrabold mt-2 gold-text">سوق الصيانة المتكررة</h2>
+          </div>
+
+          <div class="metric-card p-6 mb-6">
+            <p class="text-brand-muted text-base leading-8 mb-4">
+              الصيانة الاشتراكية للمساحات الخارجية تمثل فرصة إيرادات متكررة عالية الهامش. معظم المنافسين يركزون على التركيب فقط ويتجاهلون خدمات ما بعد التسليم — مما يخلق فجوة كبيرة يمكن لسواري استغلالها ببناء نموذج اشتراكي يحقق إيرادات مستقرة وعلاقات طويلة الأمد.
+            </p>
+            <div class="grid md:grid-cols-3 gap-4">
+              <div class="rounded-xl bg-brand-bg border border-brand-line/30 p-5 text-center">
+                <div class="text-3xl font-extrabold gold-text">SAR 3,500</div>
+                <div class="text-sm text-brand-muted mt-1">الباقة الأساسية / شهر</div>
+                <div class="text-xs text-brand-muted mt-2">زيارتين شهرياً + ري + تقليم</div>
+              </div>
+              <div class="rounded-xl bg-brand-bg border border-brand-gold/20 p-5 text-center">
+                <div class="text-3xl font-extrabold gold-text">SAR 7,500</div>
+                <div class="text-sm text-brand-muted mt-1">الباقة المتقدمة / شهر</div>
+                <div class="text-xs text-brand-muted mt-2">4 زيارات + مكافحة آفات + تقارير</div>
+              </div>
+              <div class="rounded-xl bg-brand-bg border border-brand-line/30 p-5 text-center">
+                <div class="text-3xl font-extrabold gold-text">SAR 15,000</div>
+                <div class="text-sm text-brand-muted mt-1">الباقة الفاخرة / شهر</div>
+                <div class="text-xs text-brand-muted mt-2">أسبوعي + مدير حساب + طوارئ 24/7</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="metric-card p-6">
+              <h3 class="font-bold text-lg mb-4 gold-text">نموذج نمو الإيرادات الاشتراكية (سنوياً)</h3>
+              <div class="chart-wrap" style="height:300px"><canvas id="subscriptionChart"></canvas></div>
+            </div>
+            <div class="metric-card p-6">
+              <h3 class="font-bold text-lg mb-4 gold-text">مزايا النموذج الاشتراكي</h3>
+              <div class="space-y-4 mt-2">
+                <div class="flex gap-3 items-start">
+                  <div class="w-8 h-8 rounded-lg bg-brand-gold/10 flex items-center justify-center shrink-0 mt-1"><span class="text-brand-gold text-sm font-bold">1</span></div>
+                  <div><div class="font-bold text-sm">إيرادات متكررة</div><div class="text-brand-muted text-sm">تدفق نقدي مستقر ومتوقع يقلل الاعتماد على المشاريع الجديدة</div></div>
+                </div>
+                <div class="flex gap-3 items-start">
+                  <div class="w-8 h-8 rounded-lg bg-brand-gold/10 flex items-center justify-center shrink-0 mt-1"><span class="text-brand-gold text-sm font-bold">2</span></div>
+                  <div><div class="font-bold text-sm">هوامش عالية</div><div class="text-brand-muted text-sm">هامش ربح 40-55% على خدمات الصيانة مقارنة بـ 20-30% على التركيب</div></div>
+                </div>
+                <div class="flex gap-3 items-start">
+                  <div class="w-8 h-8 rounded-lg bg-brand-gold/10 flex items-center justify-center shrink-0 mt-1"><span class="text-brand-gold text-sm font-bold">3</span></div>
+                  <div><div class="font-bold text-sm">ولاء العميل</div><div class="text-brand-muted text-sm">علاقة مستمرة تفتح باب Upselling وإحالات عملاء جدد</div></div>
+                </div>
+                <div class="flex gap-3 items-start">
+                  <div class="w-8 h-8 rounded-lg bg-brand-gold/10 flex items-center justify-center shrink-0 mt-1"><span class="text-brand-gold text-sm font-bold">4</span></div>
+                  <div><div class="font-bold text-sm">تقييم أعلى</div><div class="text-brand-muted text-sm">الشركات ذات الإيرادات المتكررة تحظى بمضاعفات تقييم أعلى (3-5x ARR)</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== 5. COMPETITOR INTELLIGENCE ===== -->
+        <div id="competitors" class="section">
+          <div class="mb-6">
+            <span class="text-[11px] tracking-[.3em] text-brand-goldMuted font-medium">05 / COMPETITOR INTELLIGENCE</span>
+            <h2 class="text-3xl font-extrabold mt-2 gold-text">استخبارات المنافسين</h2>
+            <p class="text-brand-muted text-sm mt-2">تحليل شامل لأبرز 20 شركة لاندسكيب في الرياض والمملكة</p>
+          </div>
+
+          <div class="metric-card overflow-hidden">
+            <div class="overflow-x-auto" style="max-height: 700px; overflow-y: auto;">
+              <table class="comp-table w-full min-w-[1600px]">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>الشركة</th>
+                    <th>الموقع</th>
+                    <th>التموضع</th>
+                    <th>الشريحة المستهدفة</th>
+                    <th>نقاط القوة</th>
+                    <th>نقاط الضعف</th>
+                    <th>مستوى التسعير</th>
+                    <th>عقود صيانة</th>
+                    <th>انستغرام</th>
+                    <th>Google Reviews</th>
+                  </tr>
+                </thead>
+                <tbody id="compTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== 6. CUSTOMER BEHAVIOUR ===== -->
+        <div id="customer" class="section">
+          <div class="mb-6">
+            <span class="text-[11px] tracking-[.3em] text-brand-goldMuted font-medium">06 / CUSTOMER BEHAVIOUR</span>
+            <h2 class="text-3xl font-extrabold mt-2 gold-text">سلوك العميل</h2>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="metric-card p-6">
+              <h3 class="font-bold text-lg mb-4 gold-text">عوامل اتخاذ القرار — Radar Analysis</h3>
+              <div style="height:380px"><canvas id="radarChart"></canvas></div>
+            </div>
+            <div class="metric-card p-6">
+              <h3 class="font-bold text-lg mb-4 gold-text">أولويات عملاء القطاع الفاخر</h3>
+              <div class="space-y-4 mt-4">
+                <div>
+                  <div class="flex justify-between text-sm mb-1"><span>جودة التصميم</span><span class="text-brand-gold font-bold">95%</span></div>
+                  <div class="h-2 rounded-full bg-brand-bg"><div class="h-2 rounded-full" style="width:95%;background:linear-gradient(90deg,#C9A96A,#8E7538)"></div></div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-sm mb-1"><span>السمعة والمرجعيات</span><span class="text-brand-gold font-bold">90%</span></div>
+                  <div class="h-2 rounded-full bg-brand-bg"><div class="h-2 rounded-full" style="width:90%;background:linear-gradient(90deg,#C9A96A,#8E7538)"></div></div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-sm mb-1"><span>الصيانة وما بعد التسليم</span><span class="text-brand-gold font-bold">85%</span></div>
+                  <div class="h-2 rounded-full bg-brand-bg"><div class="h-2 rounded-full" style="width:85%;background:linear-gradient(90deg,#C9A96A,#8E7538)"></div></div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-sm mb-1"><span>الضمان</span><span class="text-brand-gold font-bold">80%</span></div>
+                  <div class="h-2 rounded-full bg-brand-bg"><div class="h-2 rounded-full" style="width:80%;background:linear-gradient(90deg,#C9A96A,#8E7538)"></div></div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-sm mb-1"><span>الجودة العامة</span><span class="text-brand-gold font-bold">92%</span></div>
+                  <div class="h-2 rounded-full bg-brand-bg"><div class="h-2 rounded-full" style="width:92%;background:linear-gradient(90deg,#C9A96A,#8E7538)"></div></div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-sm mb-1"><span>السعر</span><span class="text-brand-gold font-bold">55%</span></div>
+                  <div class="h-2 rounded-full bg-brand-bg"><div class="h-2 rounded-full" style="width:55%;background:linear-gradient(90deg,#C9A96A,#8E7538)"></div></div>
+                </div>
+              </div>
+              <div class="mt-6 p-4 rounded-xl bg-brand-bg border border-brand-line/30">
+                <p class="text-brand-muted text-sm leading-7">
+                  <span class="text-brand-gold font-bold">الاستنتاج:</span> العميل الفاخر يضع جودة التصميم والسمعة فوق السعر. خدمات ما بعد التسليم والضمان عوامل تمييز حاسمة.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== 7. MARKET GAPS ===== -->
+        <div id="gaps" class="section">
+          <div class="mb-6">
+            <span class="text-[11px] tracking-[.3em] text-brand-goldMuted font-medium">07 / MARKET GAPS & OPPORTUNITIES</span>
+            <h2 class="text-3xl font-extrabold mt-2 gold-text">الفجوات والفرص الاستراتيجية</h2>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="gap-card p-6">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-xl bg-brand-danger/15 flex items-center justify-center"><span class="text-brand-danger text-lg font-bold">1</span></div>
+                <h3 class="font-bold text-lg">غياب التموضع الفاخر</h3>
+              </div>
+              <p class="text-brand-muted text-sm leading-7 pr-4">لا يوجد لاعب واحد يتموضع بوضوح كعلامة "فاخرة" في اللاندسكيب بالرياض. أغلب الشركات تتنافس على السعر وليس القيمة. سواري تملك ميزة الأسبقية في هذا القطاع.</p>
+            </div>
+            <div class="gap-card p-6">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-xl bg-brand-danger/15 flex items-center justify-center"><span class="text-brand-danger text-lg font-bold">2</span></div>
+                <h3 class="font-bold text-lg">ضعف تكامل التصميم والتنفيذ</h3>
+              </div>
+              <p class="text-brand-muted text-sm leading-7 pr-4">معظم الشركات تفصل بين التصميم والتنفيذ، مما يؤدي لفجوة بين الرؤية والنتيجة. نموذج Design-Build المتكامل نادر وهو ما تتبناه سواري.</p>
+            </div>
+            <div class="gap-card p-6">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-xl bg-brand-warning/15 flex items-center justify-center"><span class="text-brand-warning text-lg font-bold">3</span></div>
+                <h3 class="font-bold text-lg">انعدام تنسيق داخلي/خارجي</h3>
+              </div>
+              <p class="text-brand-muted text-sm leading-7 pr-4">لا يوجد شركة لاندسكيب تنسق تصميم المساحات الخارجية مع الديكور الداخلي. سواري الوحيدة التي تملك هذا التكامل تحت مظلة واحدة.</p>
+            </div>
+            <div class="gap-card p-6">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-xl bg-brand-warning/15 flex items-center justify-center"><span class="text-brand-warning text-lg font-bold">4</span></div>
+                <h3 class="font-bold text-lg">محدودية نماذج الصيانة الاشتراكية</h3>
+              </div>
+              <p class="text-brand-muted text-sm leading-7 pr-4">أغلب الشركات تقدم صيانة بالطلب (On-demand) وليس باقات اشتراكية محترفة. فرصة ضخمة لبناء إيرادات متكررة مع ولاء طويل الأمد.</p>
+            </div>
+            <div class="gap-card p-6">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-xl bg-brand-accent/15 flex items-center justify-center"><span class="text-brand-accent text-lg font-bold">5</span></div>
+                <h3 class="font-bold text-lg">ضعف التوثيق وخدمة ما بعد البيع</h3>
+              </div>
+              <p class="text-brand-muted text-sm leading-7 pr-4">غياب التوثيق الاحترافي (مخططات As-Built، أدلة الصيانة، ضمانات المواد). سواري يمكنها التميز بتجربة عميل متكاملة تشمل تسليم رقمي احترافي.</p>
+            </div>
+            <div class="gap-card p-6">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-xl bg-brand-accent/15 flex items-center justify-center"><span class="text-brand-accent text-lg font-bold">6</span></div>
+                <h3 class="font-bold text-lg">نقص الكوادر المتخصصة</h3>
+              </div>
+              <p class="text-brand-muted text-sm leading-7 pr-4">فجوة كبيرة في المهارات المتخصصة: هندسة الري، تصميم المناظر الطبيعية، والعناية بالنباتات. الاستثمار في التدريب والتأهيل ميزة تنافسية مستدامة.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== 8. REGULATORY ENVIRONMENT ===== -->
+        <div id="regulatory" class="section">
+          <div class="mb-6">
+            <span class="text-[11px] tracking-[.3em] text-brand-goldMuted font-medium">08 / REGULATORY ENVIRONMENT</span>
+            <h2 class="text-3xl font-extrabold mt-2 gold-text">البيئة التنظيمية</h2>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="metric-card p-6">
+              <h3 class="font-bold text-lg mb-6 gold-text">المتطلبات التنظيمية الرئيسية</h3>
+              <div class="space-y-6">
+                <div class="reg-step">
+                  <h4 class="font-bold text-base mb-1">التصنيف البلدي</h4>
+                  <p class="text-brand-muted text-sm leading-7">التسجيل لدى وزارة الشؤون البلدية والقروية والإسكان (MOMRAH) مع تصنيف نشاط تنسيق المواقع وفق الإصدار المعتمد.</p>
+                </div>
+                <div class="reg-step">
+                  <h4 class="font-bold text-base mb-1">تصنيف ISIC/SSIC</h4>
+                  <p class="text-brand-muted text-sm leading-7">تصنيف النشاط الاقتصادي حسب SSIC لأنشطة تنسيق الحدائق والمساحات الخضراء وصيانتها.</p>
+                </div>
+                <div class="reg-step">
+                  <h4 class="font-bold text-base mb-1">هيئة المقاولين السعودية (SCA)</h4>
+                  <p class="text-brand-muted text-sm leading-7">التسجيل الإلزامي في هيئة المقاولين للتأهل للمناقصات الحكومية والمشاريع الكبرى.</p>
+                </div>
+                <div class="reg-step">
+                  <h4 class="font-bold text-base mb-1">تراخيص البلدية</h4>
+                  <p class="text-brand-muted text-sm leading-7">الحصول على تصاريح البلدية لمشاريع الأعمال الخارجية والحفر والبناء في المواقع.</p>
+                </div>
+                <div class="reg-step">
+                  <h4 class="font-bold text-base mb-1">الامتثال لأنظمة الري الحضري</h4>
+                  <p class="text-brand-muted text-sm leading-7">الالتزام بمعايير كفاءة استخدام المياه، وأنظمة المياه المعالجة (TSE)، ومتطلبات الري الذكي في المشاريع الكبرى.</p>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="metric-card p-6 mb-4">
+                <h3 class="font-bold text-lg mb-4 gold-text">ضريبة الأراضي البيضاء</h3>
+                <p class="text-brand-muted text-sm leading-7">فرضت المملكة ضريبة 2.5% على الأراضي البيضاء غير المطورة لتشجيع ملاك الأراضي على التطوير أو البيع، مما يسرّع من حركة المشاريع العقارية ويزيد الطلب على خدمات اللاندسكيب.</p>
+              </div>
+              <div class="metric-card p-6 mb-4">
+                <h3 class="font-bold text-lg mb-4 gold-text">مبادرات التشجير</h3>
+                <p class="text-brand-muted text-sm leading-7">المركز الوطني لتنمية الغطاء النباتي (NCVC) بدأ في استعادة 120 مرج وحديقة باستخدام 5.8 مليون شتلة و28 طن بذور، ضمن مشروع يهدف لزراعة 12 مليون شجرة وشجيرة بحلول 2030.</p>
+              </div>
+              <div class="metric-card p-6">
+                <h3 class="font-bold text-lg mb-4 gold-text">الخصخصة والشراكات PPP</h3>
+                <p class="text-brand-muted text-sm leading-7">أكثر من 200 مشروع في 17 قطاعاً بقيمة 42.9 مليار دولار تم اعتمادها من المركز الوطني للتخصيص والشراكات، مع استهداف رفع مساهمة القطاع الخاص لـ 65% من الناتج المحلي بحلول 2030.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== 9. STRATEGIC RECOMMENDATIONS ===== -->
+        <div id="recommendations" class="section">
+          <div class="mb-6">
+            <span class="text-[11px] tracking-[.3em] text-brand-goldMuted font-medium">09 / STRATEGIC RECOMMENDATIONS</span>
+            <h2 class="text-3xl font-extrabold mt-2 gold-text">التوصيات الاستراتيجية</h2>
+          </div>
+
+          <div class="space-y-4">
+            <div class="rec-card p-6 md:p-8">
+              <span class="rec-number">01</span>
+              <div class="relative z-10">
+                <span class="badge badge-gold mb-3">التموضع</span>
+                <h3 class="font-bold text-xl mb-2">التموضع الفاخر المستدام</h3>
+                <p class="text-brand-muted text-sm leading-8 max-w-3xl">
+                  بناء علامة سواري كأول شركة لاندسكيب فاخرة في الرياض تجمع بين الفخامة الهادئة والاستدامة الحقيقية. التركيز على شمال الرياض (فلل، قصور، كمباوندات) مع تسعير Premium يعكس القيمة الاستثنائية. الابتعاد عن المنافسة السعرية والتركيز على القيمة المُدركة.
+                </p>
+              </div>
+            </div>
+            <div class="rec-card p-6 md:p-8">
+              <span class="rec-number">02</span>
+              <div class="relative z-10">
+                <span class="badge badge-olive mb-3">النموذج التشغيلي</span>
+                <h3 class="font-bold text-xl mb-2">نموذج Design-Build المتكامل</h3>
+                <p class="text-brand-muted text-sm leading-8 max-w-3xl">
+                  تبنّي نموذج التصميم والتنفيذ تحت سقف واحد يضمن تطابق الرؤية مع النتيجة. هذا يقلل التكاليف، يسرّع الجدول الزمني، ويرفع رضا العميل. الربط مع قسم الديكور الداخلي في سواري يخلق ميزة تنافسية فريدة (Inside-Out Integration).
+                </p>
+              </div>
+            </div>
+            <div class="rec-card p-6 md:p-8">
+              <span class="rec-number">03</span>
+              <div class="relative z-10">
+                <span class="badge badge-gold mb-3">الإيرادات</span>
+                <h3 class="font-bold text-xl mb-2">اشتراكات الصيانة المتكررة</h3>
+                <p class="text-brand-muted text-sm leading-8 max-w-3xl">
+                  إطلاق 3 باقات صيانة اشتراكية (أساسية، متقدمة، فاخرة) تحقق إيرادات متكررة مستقرة. استهداف 70%+ من عملاء التركيب للتحويل إلى اشتراكات. بناء فريق صيانة متخصص ونظام CRM لإدارة العلاقات طويلة الأمد.
+                </p>
+              </div>
+            </div>
+            <div class="rec-card p-6 md:p-8">
+              <span class="rec-number">04</span>
+              <div class="relative z-10">
+                <span class="badge badge-accent mb-3">الشراكات</span>
+                <h3 class="font-bold text-xl mb-2">شراكات استراتيجية مع المطورين</h3>
+                <p class="text-brand-muted text-sm leading-8 max-w-3xl">
+                  بناء شراكات مع كبار المطورين العقاريين في الرياض (الدار العربية، روشن، وغيرهم) لتأمين عقود لاندسكيب حصرية في المشاريع السكنية الفاخرة والمجمعات المتكاملة. التموضع كشريك تصميم وليس مجرد مقاول تنفيذ.
+                </p>
+              </div>
+            </div>
+            <div class="rec-card p-6 md:p-8">
+              <span class="rec-number">05</span>
+              <div class="relative z-10">
+                <span class="badge badge-olive mb-3">التقنية</span>
+                <h3 class="font-bold text-xl mb-2">دمج التقنية والأتمتة</h3>
+                <p class="text-brand-muted text-sm leading-8 max-w-3xl">
+                  تبنّي أنظمة الري الذكية، التصور ثلاثي الأبعاد (3D Visualization)، الدرون لمسح المواقع، وأدوات إدارة المشاريع الرقمية. هذا يرفع الكفاءة التشغيلية ويعزز ثقة العميل ويميّز سواري عن المنافسين التقليديين.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== 10. SOURCES ===== -->
+        <div id="sources" class="section">
+          <div class="mb-6">
+            <span class="text-[11px] tracking-[.3em] text-brand-goldMuted font-medium">10 / SOURCES & REFERENCES</span>
+            <h2 class="text-3xl font-extrabold mt-2 gold-text">المصادر والمراجع</h2>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <a href="https://www.techsciresearch.com/report/saudi-arabia-landscaping-market/11746.html" target="_blank" class="source-card p-5 block">
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-8 h-8 rounded-lg bg-brand-gold/10 flex items-center justify-center"><span class="text-brand-gold text-xs font-bold">01</span></div>
+                <span class="font-bold text-sm">TechSci Research</span>
+              </div>
+              <p class="text-brand-muted text-xs leading-6">Saudi Arabia Landscaping Market Report — Size, Share & Forecast 2030F</p>
+              <span class="text-brand-gold text-xs mt-2 inline-block">techsciresearch.com ↗</span>
+            </a>
+            <a href="https://www.globenewswire.com/news-release/2025/09/01/3142102/28124/en/Saudi-Arabia-5-55-Bn-Landscaping-Market-Trends-Competition-Forecast-Opportunities-2030F.html" target="_blank" class="source-card p-5 block">
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-8 h-8 rounded-lg bg-brand-gold/10 flex items-center justify-center"><span class="text-brand-gold text-xs font-bold">02</span></div>
+                <span class="font-bold text-sm">GlobeNewswire</span>
+              </div>
+              <p class="text-brand-muted text-xs leading-6">Saudi Arabia $5.55 Bn Landscaping Market — Trends, Competition, Forecast & Opportunities 2030F</p>
+              <span class="text-brand-gold text-xs mt-2 inline-block">globenewswire.com ↗</span>
+            </a>
+            <a href="https://www.kenresearch.com/industry-reports/ksa-landscaping-market" target="_blank" class="source-card p-5 block">
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-8 h-8 rounded-lg bg-brand-gold/10 flex items-center justify-center"><span class="text-brand-gold text-xs font-bold">03</span></div>
+                <span class="font-bold text-sm">Ken Research</span>
+              </div>
+              <p class="text-brand-muted text-xs leading-6">KSA Landscaping Market Size, Competitors, Trends & Forecast</p>
+              <span class="text-brand-gold text-xs mt-2 inline-block">kenresearch.com ↗</span>
+            </a>
+            <a href="https://www.marketsandata.com/industry-reports/saudi-arabia-landscaping-market" target="_blank" class="source-card p-5 block">
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-8 h-8 rounded-lg bg-brand-gold/10 flex items-center justify-center"><span class="text-brand-gold text-xs font-bold">04</span></div>
+                <span class="font-bold text-sm">Markets and Data</span>
+              </div>
+              <p class="text-brand-muted text-xs leading-6">Saudi Arabia Landscaping Market Size, Share and Growth 2032</p>
+              <span class="text-brand-gold text-xs mt-2 inline-block">marketsandata.com ↗</span>
+            </a>
+            <a href="https://www.vyansaintelligence.com/industry-report/saudi-arabia-landscaping-market-forecast" target="_blank" class="source-card p-5 block">
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-8 h-8 rounded-lg bg-brand-gold/10 flex items-center justify-center"><span class="text-brand-gold text-xs font-bold">05</span></div>
+                <span class="font-bold text-sm">Vyansa Intelligence</span>
+              </div>
+              <p class="text-brand-muted text-xs leading-6">Saudi Arabia Landscaping Market Forecast & Trends 2032</p>
+              <span class="text-brand-gold text-xs mt-2 inline-block">vyansaintelligence.com ↗</span>
+            </a>
+            <a href="https://www.researchandmarkets.com/report/saudi-arabia-landscaping-market" target="_blank" class="source-card p-5 block">
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-8 h-8 rounded-lg bg-brand-gold/10 flex items-center justify-center"><span class="text-brand-gold text-xs font-bold">06</span></div>
+                <span class="font-bold text-sm">Research and Markets</span>
+              </div>
+              <p class="text-brand-muted text-xs leading-6">KSA Landscaping Market Size, Competitors, Trends & Forecast</p>
+              <span class="text-brand-gold text-xs mt-2 inline-block">researchandmarkets.com ↗</span>
+            </a>
+            <a href="https://www.statista.com/outlook/cmo/diy-hardware-store/lawn-garden/saudi-arabia" target="_blank" class="source-card p-5 block">
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-8 h-8 rounded-lg bg-brand-gold/10 flex items-center justify-center"><span class="text-brand-gold text-xs font-bold">07</span></div>
+                <span class="font-bold text-sm">Statista</span>
+              </div>
+              <p class="text-brand-muted text-xs leading-6">Lawn & Garden Market — Saudi Arabia Forecast</p>
+              <span class="text-brand-gold text-xs mt-2 inline-block">statista.com ↗</span>
+            </a>
+            <a href="https://deepmarketinsights.com/vista/insights/landscaping-products-market/saudi-arabia" target="_blank" class="source-card p-5 block">
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-8 h-8 rounded-lg bg-brand-gold/10 flex items-center justify-center"><span class="text-brand-gold text-xs font-bold">08</span></div>
+                <span class="font-bold text-sm">Deep Market Insights</span>
+              </div>
+              <p class="text-brand-muted text-xs leading-6">Saudi Arabia Landscaping Products Market Size & Growth Report 2033</p>
+              <span class="text-brand-gold text-xs mt-2 inline-block">deepmarketinsights.com ↗</span>
+            </a>
+          </div>
+
+          <div class="mt-6 p-4 rounded-xl bg-brand-panel border border-brand-line/20 text-center">
+            <p class="text-brand-muted text-xs">تم إعداد هذه الدراسة بواسطة Claude AI لصالح SAWARY Sustainable Landscape — مارس 2026</p>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- =================== JAVASCRIPT =================== -->
+  <script>
+    // ===== Navigation =====
+    const navBtns = document.querySelectorAll('.nav-btn');
+    const sections = document.querySelectorAll('.section');
+
+    function switchSection(target) {
+      sections.forEach(s => s.classList.remove('active'));
+      navBtns.forEach(b => b.classList.remove('active'));
+      document.getElementById(target)?.classList.add('active');
+      document.querySelectorAll(`[data-target="${target}"]`).forEach(b => b.classList.add('active'));
+      document.getElementById('mainContent').scrollTop = 0;
+
+      // Initialize charts when switching to their section
+      if (target === 'market') initMarketCharts();
+      if (target === 'customer') initRadarChart();
+      if (target === 'maintenance') initSubscriptionChart();
+    }
+
+    navBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        switchSection(btn.dataset.target);
+        // Close mobile sidebar
+        document.getElementById('mobileSidebar').classList.remove('open');
+        document.getElementById('mobileOverlay').classList.remove('open');
+      });
+    });
+
+    // Mobile menu
+    document.getElementById('mobileMenuBtn')?.addEventListener('click', () => {
+      document.getElementById('mobileSidebar').classList.add('open');
+      document.getElementById('mobileOverlay').classList.add('open');
+    });
+    document.getElementById('mobileCloseBtn')?.addEventListener('click', () => {
+      document.getElementById('mobileSidebar').classList.remove('open');
+      document.getElementById('mobileOverlay').classList.remove('open');
+    });
+    document.getElementById('mobileOverlay')?.addEventListener('click', () => {
+      document.getElementById('mobileSidebar').classList.remove('open');
+      document.getElementById('mobileOverlay').classList.remove('open');
+    });
+
+    // Clone nav to mobile
+    const mobileNav = document.getElementById('mobileNav');
+    navBtns.forEach(btn => {
+      const clone = btn.cloneNode(true);
+      clone.classList.remove('active');
+      if (btn.classList.contains('active')) clone.classList.add('active');
+      clone.addEventListener('click', () => {
+        switchSection(clone.dataset.target);
+        document.getElementById('mobileSidebar').classList.remove('open');
+        document.getElementById('mobileOverlay').classList.remove('open');
+        mobileNav.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        clone.classList.add('active');
+      });
+      mobileNav.appendChild(clone);
+    });
+
+    // ===== Chart.js Global Config =====
+    Chart.defaults.color = '#9E9182';
+    Chart.defaults.font.family = 'Tajawal';
+    Chart.defaults.plugins.legend.labels.usePointStyle = true;
+    Chart.defaults.plugins.legend.labels.padding = 20;
+
+    // ===== Market Charts =====
+    let marketChartInstance, serviceChartInstance, sectorChartInstance;
+    function initMarketCharts() {
+      if (marketChartInstance) return;
+
+      // Market Growth Line Chart
+      const ctx1 = document.getElementById('marketChart').getContext('2d');
+      const gradient = ctx1.createLinearGradient(0, 0, 0, 380);
+      gradient.addColorStop(0, 'rgba(201,169,106,.25)');
+      gradient.addColorStop(1, 'rgba(201,169,106,.01)');
+
+      marketChartInstance = new Chart(ctx1, {
+        type: 'line',
+        data: {
+          labels: ['2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030'],
+          datasets: [{
+            label: 'حجم السوق (مليار $)',
+            data: [2.20, 2.40, 2.65, 3.00, 3.45, 3.73, 4.03, 4.36, 4.71, 5.10, 5.55],
+            borderColor: '#C9A96A',
+            backgroundColor: gradient,
+            fill: true,
+            tension: 0.4,
+            borderWidth: 2.5,
+            pointRadius: 4,
+            pointBackgroundColor: '#C9A96A',
+            pointBorderColor: '#0B0A09',
+            pointBorderWidth: 2,
+            pointHoverRadius: 7
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#1A1816',
+              borderColor: 'rgba(201,169,106,.3)',
+              borderWidth: 1,
+              titleFont: { weight: 'bold' },
+              callbacks: {
+                label: ctx => `$${ctx.parsed.y.toFixed(2)}B`
+              }
+            }
+          },
+          scales: {
+            x: { grid: { color: 'rgba(201,169,106,.06)' }, ticks: { font: { size: 12 } } },
+            y: {
+              grid: { color: 'rgba(201,169,106,.06)' },
+              ticks: { callback: v => '$' + v + 'B', font: { size: 12 } },
+              min: 1.5, max: 6
+            }
+          }
+        }
+      });
+
+      // Service Type Doughnut
+      serviceChartInstance = new Chart(document.getElementById('serviceTypeChart').getContext('2d'), {
+        type: 'doughnut',
+        data: {
+          labels: ['التركيب (Installation)', 'الصيانة (Maintenance)', 'التصميم (Design)'],
+          datasets: [{
+            data: [70, 20, 10],
+            backgroundColor: ['#C9A96A', '#6B7252', '#8E6B49'],
+            borderColor: '#141210',
+            borderWidth: 3,
+            hoverOffset: 8
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '65%',
+          plugins: { legend: { position: 'bottom', labels: { font: { size: 12 }, padding: 16 } } }
+        }
+      });
+
+      // Sector Doughnut
+      sectorChartInstance = new Chart(document.getElementById('sectorChart').getContext('2d'), {
+        type: 'doughnut',
+        data: {
+          labels: ['Softscape', 'Hardscape', 'أنظمة الري'],
+          datasets: [{
+            data: [60, 30, 10],
+            backgroundColor: ['#6B7252', '#C9A96A', '#8E6B49'],
+            borderColor: '#141210',
+            borderWidth: 3,
+            hoverOffset: 8
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '65%',
+          plugins: { legend: { position: 'bottom', labels: { font: { size: 12 }, padding: 16 } } }
+        }
+      });
+    }
+
+    // ===== Radar Chart =====
+    let radarChartInstance;
+    function initRadarChart() {
+      if (radarChartInstance) return;
+      radarChartInstance = new Chart(document.getElementById('radarChart').getContext('2d'), {
+        type: 'radar',
+        data: {
+          labels: ['السعر', 'الجودة', 'السمعة', 'الضمان', 'الصيانة', 'جودة التصميم'],
+          datasets: [{
+            label: 'أهمية العامل للعميل الفاخر',
+            data: [55, 92, 90, 80, 85, 95],
+            borderColor: '#C9A96A',
+            backgroundColor: 'rgba(201,169,106,.15)',
+            borderWidth: 2,
+            pointBackgroundColor: '#C9A96A',
+            pointBorderColor: '#0B0A09',
+            pointBorderWidth: 2,
+            pointRadius: 5
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: 'bottom', labels: { font: { size: 13 } } } },
+          scales: {
+            r: {
+              beginAtZero: true,
+              max: 100,
+              ticks: { display: false },
+              grid: { color: 'rgba(201,169,106,.1)' },
+              angleLines: { color: 'rgba(201,169,106,.1)' },
+              pointLabels: { font: { size: 13, family: 'Tajawal' }, color: '#F3EBDD' }
+            }
+          }
+        }
+      });
+    }
+
+    // ===== Subscription Revenue Chart =====
+    let subChartInstance;
+    function initSubscriptionChart() {
+      if (subChartInstance) return;
+      const ctx = document.getElementById('subscriptionChart').getContext('2d');
+      const grad = ctx.createLinearGradient(0, 0, 0, 300);
+      grad.addColorStop(0, 'rgba(107,114,82,.3)');
+      grad.addColorStop(1, 'rgba(107,114,82,.02)');
+
+      subChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['السنة 1', 'السنة 2', 'السنة 3', 'السنة 4', 'السنة 5'],
+          datasets: [
+            {
+              label: 'إيرادات التركيب (مليون ر.س)',
+              data: [4.5, 7.2, 10.5, 14, 18],
+              backgroundColor: '#C9A96A',
+              borderRadius: 8,
+              barPercentage: 0.6
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { labels: { color: '#F5F5DC' } },
-                    tooltip: { mode: 'index', intersect: false }
-                },
-                scales: {
-                    y: { title: { display: true, text: 'المليار ريال', color: '#8B948E'} }
-                }
+            {
+              label: 'إيرادات الصيانة المتكررة (مليون ر.س)',
+              data: [0.5, 1.8, 4.2, 7.5, 12],
+              backgroundColor: '#6B7252',
+              borderRadius: 8,
+              barPercentage: 0.6
             }
-        });
-
-        // Chart 2: Maintenance Market
-        new Chart(document.getElementById('maintenanceMarketChart').getContext('2d'), {
-            type: 'line',
-            data: {
-                labels: ['2024', '2025', '2026', '2027', '2028', '2029', '2030'],
-                datasets: [{
-                    label: 'الطلب على سوق إشتراكات الصيانة (مليون ريال/الرياض)',
-                    data: [150, 180, 240, 310, 400, 520, 680],
-                    borderColor: cOlive,
-                    backgroundColor: 'rgba(85, 107, 47, 0.15)',
-                    borderWidth: 3,
-                    fill: true,
-                    tension: 0.4,
-                    pointBackgroundColor: cGold,
-                    pointRadius: 4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'bottom', labels: { color: '#F5F5DC' } }
-                }
-            }
-        });
-
-        // Chart 3: Radar Chart for Customer Selection Criteria
-        new Chart(document.getElementById('selectionCriteriaRadarChart').getContext('2d'), {
-            type: 'radar',
-            data: {
-                labels: [
-                    'جودة الهاردسكيب والتنفيذ', 
-                    'التصميم الواقعي والـ 3D', 
-                    'عقود الصيانة والضمان', 
-                    'السرعة والالتزام بالوقت', 
-                    'السعر التنافسي'
-                ],
-                datasets: [{
-                    label: 'مدى الأهمية للعميل الفاخر',
-                    data: [95, 90, 85, 75, 60],
-                    backgroundColor: 'rgba(212, 175, 55, 0.2)',
-                    borderColor: '#D4AF37',
-                    pointBackgroundColor: '#121413',
-                    pointBorderColor: '#D4AF37',
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false }
-                },
-                scales: {
-                    r: {
-                        angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
-                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                        pointLabels: {
-                            color: '#F5F5DC',
-                            font: { family: "'Tajawal', sans-serif", size: 12, weight: 'bold' }
-                        },
-                        ticks: { display: false, min: 0, max: 100 }
-                    }
-                }
-            }
-        });
-
-        // --- Competitor Data & Table Logic (Sawary + 20 Players) ---
-        const competitors = [
-            // سواري (الأساس للقياس)
-            { name: "سواري للديكور واللاندسكيب (Sawary)", web: "https://taplink.cc/sawary.de?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnPdxJzKTaNYfIKhaRWQ5Zzt5dDSTDNtuQKQDbIGsqISPWsMoXDwEDs_Q3jmw_aem_3UKixQ1TX5-qnb8WcM6Ldg", ig: "https://www.instagram.com/sawary.de/", type: "Design & Build", segment: "الفلل الفاخرة", strengths: "خبرة عميقة ولاء العملاء والجودة والنموذج الشامل", weaknesses: "الحضور الرقمي الواضح", maint: "نعم" },
-            
-            // مكاتب ديكور وتصميم معماري
-            { name: "فارس الفارس (Faris AlFares)", web: "https://farisalfaris.com/", ig: "https://www.instagram.com/faris_alfares/", type: "مكاتب ديكور ولاندسكيب", segment: "قصور/فاخر", strengths: "تصاميم استثنائية وتكامل هندسي", weaknesses: "ميزانيات تنفيذ مرتفعة جداً", maint: "لا" },
-            { name: "سيمتري (Symmetry)", web: "https://symmetry-sa.com/", ig: "https://www.instagram.com/symmetry.sa/", type: "مكاتب ديكور ولاندسكيب", segment: "سكني فاخر", strengths: "هوية بصرية أنيقة، خامات فخمة", weaknesses: "تركيز أكبر على الديكور الداخلي", maint: "لا" },
-            { name: "درافت (Draft)", web: "https://draft-sa.com/", ig: "https://www.instagram.com/draft.sa/", type: "مكاتب ديكور ولاندسكيب", segment: "تجاري/سكني", strengths: "تصاميم حداثية قوية للمساحات", weaknesses: "أسعار التصميم فقط تعتبر مرتفعة", maint: "لا" },
-            { name: "بورو ديزاين (Puro)", web: "https://puro.sa/", ig: "https://www.instagram.com/puro.sa/", type: "مكاتب ديكور ولاندسكيب", segment: "سكني فاخر", strengths: "بساطة فخمة (Minimalism)", weaknesses: "التنفيذ قد يأخذ وقتاً أطول", maint: "لا" },
-            { name: "أبعاد الطبيعة (Abbaad)", web: "https://www.google.com/search?q=شركة+أبعاد+الطبيعة+لاندسكيب", ig: "https://www.instagram.com/explore/search/keyword/?q=abbaad", type: "مكاتب ديكور ولاندسكيب", segment: "سكني فاخر", strengths: "استخدام حجر الرياض بمهارة", weaknesses: "مدة تنفيذ طويلة للمشاريع", maint: "نعم" },
-            
-            // Design & Build (Landscaping Focus)
-            { name: "شركة نباتات (Nabatat)", web: "https://nabatat.com.sa/", ig: "https://www.instagram.com/nabatat_sa/", type: "Design & Build", segment: "مشاريع كبرى", strengths: "أكبر مقاول محلي، إمكانيات ضخمة", weaknesses: "لا يركزون على الفلل الفردية بشكل مخصص", maint: "نعم" },
-            { name: "سيتيسكيب (Citiscape)", web: "https://www.citiscapelandscaping.com/", ig: "https://www.instagram.com/citiscapegroup/", type: "Design & Build", segment: "حكومي/قصور", strengths: "خبرة إقليمية واسعة، معدات ثقيلة", weaknesses: "أسعار خارج ميزانية الفلل السكنية العادية", maint: "نعم" },
-            { name: "الرؤية الخضراء (Green Vision)", web: "https://greenvision.com.sa/", ig: "https://www.instagram.com/explore/search/keyword/?q=greenvision.sa", type: "Design & Build", segment: "تجاري/مجمعات", strengths: "تنفيذ المسطحات الكبيرة والملاعب", weaknesses: "افتقار للمسات الديكور الدقيقة السكنية", maint: "نعم" },
-            { name: "نسما للاندسكيب (Nesma)", web: "https://nesma.com/", ig: "https://www.instagram.com/explore/search/keyword/?q=nesma", type: "Design & Build", segment: "مشاريع كبرى", strengths: "قدرة تنفيذية وتسليم بالموعد الموثق", weaknesses: "مشاريع أعمال (B2B) بشكل أساسي", maint: "نعم" },
-            { name: "جذور الحدائق (Roots)", web: "https://www.google.com/search?q=جذور+الحدائق+لاندسكيب", ig: "https://www.instagram.com/roots_gardens/", type: "Design & Build", segment: "سكني/تجاري", strengths: "وضوح تام في العقود، استقرار مالي", weaknesses: "تصاميم تقليدية قد تفتقر للحداثة", maint: "نعم" },
-            { name: "تنسيق العربية (Tansiq)", web: "https://tansiqarabia.com/", ig: "https://www.instagram.com/explore/search/keyword/?q=tansiqarabia", type: "Design & Build", segment: "سكني فاخر", strengths: "جودة الهاردسكيب وتنفيذ البلاط", weaknesses: "ضغط مشاريع يؤثر على سرعة التسليم", maint: "لا" },
-            { name: "الشركة السعودية (SLC)", web: "https://slc.com.sa/", ig: "https://www.instagram.com/explore/search/keyword/?q=saudilandscaping", type: "Design & Build", segment: "شبه حكومي", strengths: "مقاولات ثقيلة وخبرة عريقة جداً", weaknesses: "تتجاهل قطاع الأفراد تماماً", maint: "نعم" },
-            { name: "تكوين (Takween)", web: "https://www.google.com/search?q=تكوين+لاندسكيب+الرياض", ig: "https://www.instagram.com/takweensa/", type: "Design & Build", segment: "سكني فاخر", strengths: "تصاميم حداثية ممتازة", weaknesses: "التكلفة العالية جداً للتنفيذ", maint: "لا" },
-            { name: "نباتي (Nabaty)", web: "https://nabaty.sa/", ig: "https://www.instagram.com/nabaty.sa/", type: "Design & Build", segment: "سكني/تجاري", strengths: "هوية بصرية قوية، تصاميم بوتيك", weaknesses: "تأخير في المواعيد لزيادة الطلب", maint: "نعم" },
-            { name: "آركي جرين (ArchiGreen)", web: "https://www.google.com/search?q=ArchiGreen+landscape+riyadh", ig: "https://www.instagram.com/explore/search/keyword/?q=archigreen", type: "Design & Build", segment: "سكني فاخر", strengths: "دمج المساحات المائية بشكل عصري", weaknesses: "التكلفة تعتبر مرتفعة نسبياً", maint: "لا" },
-            
-            // Execution Only
-            { name: "مشاتل الجزيرة", web: "https://aljazeraagri.com/", ig: "https://www.instagram.com/aljazeraagri/", type: "تنفيذ فقط", segment: "الكل", strengths: "توفر النباتات الكبيرة بسعر الجملة", weaknesses: "ضعف هندسي في الهاردسكيب والتوزيع", maint: "لا" },
-            { name: "الواحة الخضراء", web: "https://www.google.com/search?q=الواحة+الخضراء+تنسيق+حدائق", ig: "https://www.instagram.com/explore/search/keyword/?q=greenoasis", type: "تنفيذ فقط", segment: "سكني متوسط", strengths: "سرعة في تركيب شبكات الري", weaknesses: "خامات اقتصادية قد تتلف سريعاً", maint: "لا" },
-            { name: "الطبيعة الساحرة", web: "https://www.google.com/search?q=الطبيعة+الساحرة+لاندسكيب", ig: "https://www.instagram.com/explore/search/keyword/?q=charmingnature", type: "تنفيذ فقط", segment: "سكني", strengths: "أسعار منافسة جداً في العشب الصناعي", weaknesses: "تفتقر للزراعة المستدامة والحقيقية", maint: "لا" },
-            { name: "لمسة إبداع", web: "https://www.google.com/search?q=لمسة+إبداع+تنسيق+حدائق", ig: "https://www.instagram.com/lamsat_ibdaa/", type: "تنفيذ فقط", segment: "سكني", strengths: "تنفيذ الأعمال الخشبية والمظلات", weaknesses: "ضعف في تصميم شبكات الري المطمورة", maint: "لا" },
-            { name: "روائع الحدائق", web: "https://www.google.com/search?q=روائع+الحدائق+لاندسكيب", ig: "https://www.instagram.com/rawae_gardens/", type: "تنفيذ فقط", segment: "سكني", strengths: "وفرة العمالة والتنفيذ الفوري", weaknesses: "اعتماد كلي على العمالة دون إشراف هندسي", maint: "لا" }
-        ];
-
-        function renderTable(data) {
-            const tbody = document.getElementById('competitorsBody');
-            tbody.innerHTML = '';
-            data.forEach(c => {
-                const tr = document.createElement('tr');
-                
-                if(c.name.includes('سواري')) {
-                    tr.className = "sawary-row hover:bg-[#2c2415] transition-colors font-bold";
-                } else {
-                    tr.className = "hover:bg-[#181A19] transition-colors";
-                }
-                
-                let typeColor = "bg-gray-800 text-gray-300";
-                if(c.type.includes('تصميم وتنفيذ وتصنيع')) typeColor = "bg-[#D4AF37] text-[#121413] font-bold border border-brand-gold";
-                else if(c.type === 'Design & Build') typeColor = "bg-brand-olive/20 text-brand-gold border border-brand-olive";
-                else if(c.type === 'تنفيذ فقط') typeColor = "bg-gray-800 text-gray-400 border border-gray-700";
-                else if(c.type === 'مكاتب ديكور ولاندسكيب') typeColor = "bg-[#D4AF37]/20 text-brand-light border border-brand-gold";
-
-                let webLabel = c.web.includes('google.com') ? '🌐 بحث جوجل' : '🌐 الموقع الرسمي';
-                
-                // إضافة زر تحليل الذكاء الاصطناعي للمنافسين فقط
-                let aiBtn = '';
-                if(!c.name.includes('سواري')) {
-                    aiBtn = `<button onclick="analyzeCompetitor('${c.name.replace(/'/g, "\\'")}', '${c.strengths.replace(/'/g, "\\'")}', '${c.weaknesses.replace(/'/g, "\\'")}')" class="mt-2 text-brand-dark bg-brand-gold hover:bg-brand-goldHover transition-colors font-bold rounded px-2 py-1.5 w-fit flex items-center gap-1 text-xs print:hidden"><span class="text-sm leading-none">✨</span> كيف نتغلب عليهم؟</button>`;
-                }
-
-                tr.innerHTML = `
-                    <td class="p-4 border-b border-gray-800">
-                        <div class="text-brand-light mb-2 ${c.name.includes('سواري') ? 'text-brand-gold text-lg' : 'font-bold'}">${c.name}</div>
-                        <div class="flex flex-col gap-2 text-xs">
-                            <a href="${c.web}" target="_blank" class="${c.name.includes('سواري') ? 'text-brand-gold border-brand-gold' : 'text-brand-olive border-gray-700'} hover:text-white transition-colors block border rounded px-2 py-1 w-fit overflow-hidden text-ellipsis whitespace-nowrap max-w-[200px]">${webLabel}</a>
-                            <a href="${c.ig}" target="_blank" class="${c.name.includes('سواري') ? 'text-brand-gold border-brand-gold' : 'text-brand-muted border-gray-700'} hover:text-white transition-colors block border rounded px-2 py-1 w-fit">📸 حساب / بحث إنستغرام</a>
-                            ${aiBtn}
-                        </div>
-                    </td>
-                    <td class="p-4 border-b border-gray-800">
-                        <span class="px-2 py-1 rounded text-xs ${typeColor} whitespace-nowrap">${c.type}</span>
-                    </td>
-                    <td class="p-4 border-b border-gray-800 text-sm">${c.segment}</td>
-                    <td class="p-4 border-b border-gray-800 ${c.name.includes('سواري') ? 'text-brand-light' : 'text-brand-olive'} text-sm">${c.strengths}</td>
-                    <td class="p-4 border-b border-gray-800 ${c.name.includes('سواري') ? 'text-gray-400' : 'text-red-400'} text-sm">${c.weaknesses}</td>
-                    <td class="p-4 border-b border-gray-800 text-center text-sm font-bold ${c.maint.includes('نعم') ? 'text-brand-gold' : 'text-gray-600'}">${c.maint}</td>
-                `;
-                tbody.appendChild(tr);
-            });
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: 'bottom', labels: { font: { size: 12 }, padding: 16 } } },
+          scales: {
+            x: { grid: { display: false }, stacked: true },
+            y: { grid: { color: 'rgba(201,169,106,.06)' }, stacked: true, ticks: { callback: v => v + 'M' } }
+          }
         }
+      });
+    }
 
-        function filterTable(type, btnElement) {
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.className = "filter-btn px-4 py-2 bg-[#121413] border border-gray-700 text-gray-400 hover:text-brand-light rounded text-sm transition-colors";
-            });
-            btnElement.className = "filter-btn px-4 py-2 bg-brand-card border border-brand-gold text-brand-gold rounded font-bold text-sm transition-colors";
+    // ===== Competitors Table =====
+    const competitors = [
+      { name: 'Saudi Landscape Co (SALCO)', web: 'saudilandscape.com', pos: 'Design-Build-O&M متكامل', seg: 'حكومي + تجاري + سكني', str: 'خبرة منذ 2012 + عمليات كبيرة', weak: 'ليست فاخرة + تموضع عام', price: 'متوسط-عالي', maint: 'نعم', ig: '-', gr: '3.8 ★' },
+      { name: 'Green Wavs', web: 'greenwavs.com', pos: 'Full-cycle landscaping', seg: 'قصور + كمباوندات ملكية', str: 'خبرة قصور + فريق 500+ عامل', weak: 'محدودية التصميم الإبداعي', price: 'عالي', maint: 'نعم', ig: '-', gr: '4.1 ★' },
+      { name: 'Initial Landscaping (ISG)', web: 'initialsaudi.com', pos: 'مقاول لاندسكيب راسخ', seg: 'مطارات + مدن اقتصادية + سكني', str: 'منذ 1983 + شبكة واسعة', weak: 'تقليدي + بطء في التجديد', price: 'متوسط-عالي', maint: 'نعم', ig: '-', gr: '3.5 ★' },
+      { name: 'Rosemary (Nada Al Bahr)', web: 'rosemaryest.com', pos: 'لاندسكيب + صيانة', seg: 'سكني + تجاري', str: 'منذ 2002 + سمعة في الرياض', weak: 'حجم محدود + رقمنة ضعيفة', price: 'متوسط', maint: 'نعم', ig: '-', gr: '4.2 ★' },
+      { name: 'The Landscape Co (TLC)', web: 'thelandscape.sa', pos: 'Design-Build حديث', seg: 'فلل + تجاري', str: 'تأسست 2022 + خبرة خليجية', weak: 'جديدة + محفظة محدودة', price: 'متوسط-عالي', maint: 'محدود', ig: '-', gr: '4.0 ★' },
+      { name: 'BEC Arabia (Green Dimensions)', web: 'becarabia.com', pos: 'لاندسكيب + تطوير حضري', seg: 'مشاريع كبرى + حكومي', str: 'مجموعة متكاملة + ملاعب غولف', weak: 'ليست متخصصة سكني', price: 'عالي', maint: 'نعم', ig: '-', gr: '3.7 ★' },
+      { name: 'Safari Group', web: 'safarigroup.com.sa', pos: 'مقاولات لاندسكيب', seg: 'حكومي + تجاري كبير', str: 'عقود حكومية + حجم كبير', weak: 'جودة تصميم متواضعة', price: 'متوسط', maint: 'نعم', ig: '-', gr: '3.4 ★' },
+      { name: 'Zaid Alhussain Group', web: 'zahgroup.com', pos: 'مقاولات متكاملة', seg: 'بنية تحتية + حكومي', str: 'تنوع الخدمات + تاريخ طويل', weak: 'اللاندسكيب ليس تخصصه الأساسي', price: 'متوسط', maint: 'محدود', ig: '-', gr: '3.3 ★' },
+      { name: 'Nesma & Partners', web: 'nesma.com', pos: 'مقاولات عامة + لاندسكيب', seg: 'مشاريع ضخمة + حكومي', str: 'شركة كبرى + سمعة قوية', weak: 'تركيز على البنية التحتية', price: 'عالي', maint: 'محدود', ig: '-', gr: '3.6 ★' },
+      { name: 'Rashid Trading & Contracting', web: 'rtcc.com.sa', pos: 'مقاولات + لاندسكيب', seg: 'تجاري + حكومي', str: 'شبكة موردين + خبرة محلية', weak: 'غياب التموضع الفاخر', price: 'متوسط', maint: 'نعم', ig: '-', gr: '3.5 ★' },
+      { name: 'Tacoma', web: 'tacoma.sa', pos: 'خدمات بيئية + لاندسكيب', seg: 'تجاري + حكومي', str: 'أعلى إيرادات في القطاع', weak: 'تركيز خدمات بيئية أكثر من تصميم', price: 'عالي', maint: 'نعم', ig: '-', gr: '3.9 ★' },
+      { name: 'Al Muhaidib Landscaping', web: 'almuhaidib.com', pos: 'مقاولات متعددة القطاعات', seg: 'مشاريع كبرى + عقاري', str: 'مجموعة ضخمة + موارد مالية', weak: 'اللاندسكيب قسم فرعي', price: 'متوسط-عالي', maint: 'محدود', ig: '-', gr: '3.4 ★' },
+      { name: 'ICON Spaces (UAE)', web: 'iconspaces.com', pos: 'تصميم معماري + لاندسكيب', seg: 'فاخر + مشاريع ضخمة', str: 'خبرة إماراتية + تصميم عالمي', weak: 'جديدة في السوق السعودي (2023)', price: 'عالي جداً', maint: 'لا', ig: 'iconspaces', gr: '4.3 ★' },
+      { name: 'Western Experts', web: 'westernexperts.sa', pos: 'خدمات لاندسكيب', seg: 'تجاري + سكني', str: 'ثالث أكبر بالإيرادات', weak: 'تموضع غير واضح', price: 'متوسط', maint: 'نعم', ig: '-', gr: '3.6 ★' },
+      { name: 'المسيح للمقاولات', web: '-', pos: 'مقاول تنفيذ', seg: 'سكني + تجاري صغير', str: 'أسعار تنافسية + تنفيذ سريع', weak: 'لا يوجد تصميم + جودة متفاوتة', price: 'منخفض', maint: 'لا', ig: '-', gr: '3.0 ★' },
+      { name: 'حدائق الوادي', web: '-', pos: 'مقاول محلي', seg: 'سكني صغير-متوسط', str: 'تواجد محلي + مرونة', weak: 'بدون هوية + لا رقمنة', price: 'منخفض', maint: 'بالطلب', ig: '-', gr: '3.2 ★' },
+      { name: 'مشاتل الرياض', web: '-', pos: 'توريد نباتات + تنفيذ بسيط', seg: 'أفراد + سكني صغير', str: 'مشتل خاص + أسعار منخفضة', weak: 'لا تصميم + لا مشاريع كبيرة', price: 'منخفض', maint: 'لا', ig: '-', gr: '3.8 ★' },
+      { name: 'Green Touch', web: 'greentouch.sa', pos: 'لاندسكيب + ري', seg: 'سكني + تجاري', str: 'تخصص أنظمة ري', weak: 'ضعف التصميم الإبداعي', price: 'متوسط', maint: 'نعم', ig: 'greentouch_sa', gr: '3.7 ★' },
+      { name: 'واحة الخضراء', web: '-', pos: 'مقاول تنفيذ', seg: 'سكني متوسط', str: 'طاقم عمالة كبير', weak: 'بدون تصميم + جودة غير مضمونة', price: 'منخفض-متوسط', maint: 'بالطلب', ig: '-', gr: '2.9 ★' },
+      { name: 'Landscape Solutions KSA', web: 'landscapesolutions.sa', pos: 'تصميم + تنفيذ', seg: 'سكني فاخر + تجاري', str: 'فريق تصميم + 3D Rendering', weak: 'حجم صغير + محفظة محدودة', price: 'متوسط-عالي', maint: 'محدود', ig: 'landscapesolutions', gr: '4.0 ★' }
+    ];
 
-            if (type === 'all') {
-                renderTable(competitors);
-            } else {
-                const sawary = competitors.filter(c => c.name.includes('سواري'));
-                let filtered = competitors.filter(c => c.type === type && !c.name.includes('سواري'));
-                renderTable(sawary.concat(filtered));
-            }
-        }
+    const tbody = document.getElementById('compTableBody');
+    competitors.forEach((c, i) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="text-brand-gold font-bold">${i + 1}</td>
+        <td class="font-bold text-brand-text whitespace-nowrap">${c.name}</td>
+        <td>${c.web !== '-' ? `<a href="https://${c.web}" target="_blank">${c.web}</a>` : '<span class="text-brand-muted">—</span>'}</td>
+        <td>${c.pos}</td>
+        <td>${c.seg}</td>
+        <td class="text-brand-olive">${c.str}</td>
+        <td class="text-brand-danger">${c.weak}</td>
+        <td><span class="badge ${c.price.includes('عالي') ? 'badge-gold' : c.price.includes('منخفض') ? 'badge-accent' : 'badge-olive'}">${c.price}</span></td>
+        <td>${c.maint}</td>
+        <td>${c.ig !== '-' ? `<a href="https://instagram.com/${c.ig}" target="_blank">@${c.ig}</a>` : '<span class="text-brand-muted">—</span>'}</td>
+        <td class="text-brand-gold">${c.gr}</td>
+      `;
+      tbody.appendChild(tr);
+    });
 
-        renderTable(competitors);
+    // ===== GSAP Entrance Animation =====
+    if (typeof gsap !== 'undefined') {
+      gsap.from('header', { opacity: 0, y: 30, duration: 0.8, ease: 'power3.out' });
+    }
 
-        // --- PDF Generation Logic ---
-        function downloadPDF() {
-            const btn = document.querySelector('button[onclick="downloadPDF()"]');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '⏳ جاري تحضير الملف (PDF)...';
-            btn.disabled = true;
-
-            const element = document.getElementById('report-content');
-            
-            document.body.classList.add('pdf-mode');
-
-            const opt = {
-              margin:       [0.5, 0.5, 0.5, 0.5], 
-              filename:     'دراسة_سوق_سواري_لاندسكيب_2026.pdf',
-              image:        { type: 'jpeg', quality: 0.98 },
-              html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#121413' },
-              jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
-            };
-
-            html2pdf().set(opt).from(element).save().then(() => {
-                document.body.classList.remove('pdf-mode');
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-                
-                const activeId = document.querySelector('.nav-link.active').id.replace('nav-', '');
-                showSection(activeId);
-            }).catch(err => {
-                console.error("PDF Generation Error", err);
-                document.body.classList.remove('pdf-mode');
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            });
-        }
-
-        // ==========================================
-        // --- إعدادات وتكامل Gemini API ---
-        // ==========================================
-        const apiKey = ""; // API Key is injected by the environment
-        
-        // دالة نداء الـ API مع نظام Exponential Backoff لمعالجة الضغط (Rate Limits)
-        async function fetchGemini(prompt, systemInstruction = "", chatHistory = []) {
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-            
-            let contents = [...chatHistory, { role: "user", parts: [{ text: prompt }] }];
-            
-            const payload = {
-                contents: contents,
-                systemInstruction: systemInstruction ? { parts: [{ text: systemInstruction }] } : undefined
-            };
-
-            const maxRetries = 5;
-            const baseDelay = 1000;
-
-            for (let attempt = 0; attempt < maxRetries; attempt++) {
-                try {
-                    const response = await fetch(url, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-                    
-                    if (!response.ok) {
-                        if (response.status === 429) {
-                            const delay = baseDelay * Math.pow(2, attempt);
-                            await new Promise(r => setTimeout(r, delay));
-                            continue;
-                        }
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    const result = await response.json();
-                    return result.candidates?.[0]?.content?.parts?.[0]?.text || "عذراً، لم أتمكن من توليد إجابة.";
-                } catch (error) {
-                    if (attempt === maxRetries - 1) throw error;
-                    const delay = baseDelay * Math.pow(2, attempt);
-                    await new Promise(r => setTimeout(r, delay));
-                }
-            }
-        }
-
-        // تنسيق النصوص القادمة من Gemini (تحويل ** إلى عريض)
-        function formatMarkdown(text) {
-            return text.replace(/\*\*(.*?)\*\*/g, '<strong class="text-brand-gold">$1</strong>')
-                       .replace(/\*(.*?)\*/g, '<em class="text-gray-300">$1</em>')
-                       .replace(/\n/g, '<br>');
-        }
-
-        // --- 1. ميزة تحليل المنافسين (Modal) ---
-        async function analyzeCompetitor(name, strengths, weaknesses) {
-            const modal = document.getElementById('aiModal');
-            const title = document.getElementById('modalCompetitorName');
-            const loading = document.getElementById('modalLoading');
-            const content = document.getElementById('modalContent');
-            
-            modal.classList.remove('hidden');
-            title.innerHTML = `مقارنة استراتيجية مع: <span class="text-white">${name}</span>`;
-            loading.classList.remove('hidden');
-            content.classList.add('hidden');
-            content.innerHTML = '';
-
-            const prompt = `أنت خبير مبيعات استراتيجي في شركة 'سواري لاندسكيب' بالرياض (شركة تصميم وتنفيذ مساحات خارجية فاخرة، تعتمد نموذج Design & Build، وتركز على الاستدامة والفخامة وتوفر عقود صيانة).
-            لدينا منافس في السوق اسمه "${name}".
-            - نقاط قوة المنافس: ${strengths}
-            - نقاط ضعف المنافس: ${weaknesses}
-            
-            المطلوب: اكتب 3 نصائح بيعية سريعة ومقنعة (على شكل نقاط) لمندوب مبيعاتنا ليستخدمها في إقناع عميل يمتلك فيلا فاخرة باختيار 'سواري' بدلاً من هذا المنافس. اجعلها احترافية، مباشرة، وركز على تحويل نقاط ضعف المنافس لفرصة لنا.`;
-
-            try {
-                const responseText = await fetchGemini(prompt);
-                loading.classList.add('hidden');
-                content.innerHTML = formatMarkdown(responseText);
-                content.classList.remove('hidden');
-            } catch (error) {
-                loading.classList.add('hidden');
-                content.innerHTML = `<span class="text-red-400">حدث خطأ أثناء تحليل البيانات. الرجاء المحاولة لاحقاً.</span>`;
-                content.classList.remove('hidden');
-            }
-        }
-
-        function closeModal() {
-            document.getElementById('aiModal').classList.add('hidden');
-        }
-
-        // --- 2. ميزة المستشار الذكي العائم (Chatbot) ---
-        let chatHistory = [];
-        const systemPrompt = `أنت مستشار تخطيط أعمال وتطوير استراتيجي مدمج في لوحة تحكم شركة 'سواري لاندسكيب' في السعودية. سواري متخصصة في التصميم والتنفيذ والصيانة (Design & Build) للمساحات الخارجية للفلل الفاخرة بطريقة مستدامة. هدفك هو مساعدة فريق المبيعات والإدارة من خلال تقديم نصائح سريعة، استراتيجيات بيعية، واقتراحات تسعير وتسويق. إجاباتك يجب أن تكون دقيقة، مختصرة قدر الإمكان، وداعمة لنمو الشركة.`;
-
-        function toggleChat() {
-            const chatWindow = document.getElementById('chatWindow');
-            if (chatWindow.classList.contains('hidden')) {
-                chatWindow.classList.remove('hidden');
-                setTimeout(() => {
-                    chatWindow.classList.remove('opacity-0', 'scale-95');
-                    chatWindow.classList.add('opacity-100', 'scale-100');
-                }, 10);
-            } else {
-                chatWindow.classList.remove('opacity-100', 'scale-100');
-                chatWindow.classList.add('opacity-0', 'scale-95');
-                setTimeout(() => { chatWindow.classList.add('hidden'); }, 200);
-            }
-        }
-
-        function handleChatKeyPress(event) {
-            if (event.key === 'Enter') sendMessage();
-        }
-
-        function appendMessage(text, isUser = false) {
-            const chatContainer = document.getElementById('chatMessages');
-            const msgDiv = document.createElement('div');
-            msgDiv.className = isUser ? 'msg-user' : 'msg-bot';
-            msgDiv.innerHTML = isUser ? text : formatMarkdown(text);
-            chatContainer.appendChild(msgDiv);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-
-        async function sendMessage() {
-            const inputEl = document.getElementById('chatInput');
-            const btnEl = document.getElementById('sendBtn');
-            const userText = inputEl.value.trim();
-            
-            if (!userText) return;
-
-            // إضافة رسالة المستخدم للواجهة
-            appendMessage(userText, true);
-            inputEl.value = '';
-            btnEl.disabled = true;
-            btnEl.innerHTML = '<div class="loader !w-4 !h-4 !border-2"></div>';
-
-            // عرض رسالة تحميل وهمية
-            const loadingId = 'loading-' + Date.now();
-            const chatContainer = document.getElementById('chatMessages');
-            const loadingDiv = document.createElement('div');
-            loadingDiv.id = loadingId;
-            loadingDiv.className = 'msg-bot flex items-center gap-2';
-            loadingDiv.innerHTML = `<div class="loader !w-4 !h-4 border-brand-gold"></div> يفكر...`;
-            chatContainer.appendChild(loadingDiv);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-
-            try {
-                const responseText = await fetchGemini(userText, systemPrompt, chatHistory);
-                
-                // تحديث الذاكرة
-                chatHistory.push({ role: "user", parts: [{ text: userText }] });
-                chatHistory.push({ role: "model", parts: [{ text: responseText }] });
-                
-                // إزالة علامة التحميل وإضافة الرد
-                document.getElementById(loadingId).remove();
-                appendMessage(responseText, false);
-            } catch (error) {
-                document.getElementById(loadingId).remove();
-                appendMessage("عذراً، واجهت مشكلة في الاتصال. حاول مرة أخرى.", false);
-            } finally {
-                btnEl.disabled = false;
-                btnEl.innerHTML = 'إرسال';
-            }
-        }
-
-    </script>
+    // ===== KPI Ring Animation =====
+    function animateKPIRings() {
+      const arcs = document.querySelectorAll('.kpi-arc');
+      arcs.forEach((arc, i) => {
+        const pct = parseFloat(arc.getAttribute('data-pct')) / 100;
+        const circumference = parseFloat(arc.getAttribute('stroke-dasharray'));
+        const targetOffset = circumference * (1 - pct);
+        setTimeout(() => {
+          arc.style.transition = 'stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1)';
+          arc.style.strokeDashoffset = targetOffset;
+        }, 120 * i);
+      });
+    }
+    // Run on load since overview is the default active section
+    setTimeout(animateKPIRings, 300);
+  </script>
 </body>
 </html>
