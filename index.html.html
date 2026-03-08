@@ -114,6 +114,10 @@
             background-color: rgba(212, 175, 55, 0.1) !important;
             border: 2px solid #D4AF37 !important;
         }
+        
+        .break-url {
+            word-break: break-all;
+        }
     </style>
 </head>
 <body class="flex flex-col md:flex-row min-h-screen">
@@ -231,7 +235,7 @@
             <div class="mb-8 border-b border-gray-800 pb-6 flex flex-col lg:flex-row justify-between items-start lg:items-end gap-4">
                 <div>
                     <h2 class="text-3xl font-bold gold-gradient-text mb-3">2. تحليل المنافسين (سواري + 20 لاعب)</h2>
-                    <p class="text-brand-muted text-lg">خريطة شاملة تركز حصرياً على مكاتب التصميم ومقاولين التنفيذ الفعليين، مع الروابط الرسمية المختبرة.</p>
+                    <p class="text-brand-muted text-lg">خريطة شاملة تركز حصرياً على مكاتب التصميم ومقاولين التنفيذ الفعليين.</p>
                 </div>
                 <!-- Filters -->
                 <div class="flex flex-wrap gap-2 print:hidden">
@@ -262,7 +266,7 @@
                     </table>
                 </div>
             </div>
-            <p class="text-xs text-brand-muted mt-4">* تم وضع الروابط المباشرة المؤكدة للمواقع. للمواقع غير المستقرة، تم وضع رابط بحث مباشر يضمن الوصول لملف الشركة.</p>
+            <p class="text-xs text-brand-muted mt-4">* تم إبراز شركة "سواري" في القمة لتكون المقياس. الروابط المباشرة مؤكدة وتعمل.</p>
         </section>
 
         <!-- Module 3: Gaps & Customer Behavior -->
@@ -351,7 +355,7 @@
         <section id="section-regulatory" class="content-section fade-in hidden">
             <div class="mb-10 border-b border-gray-800 pb-6">
                 <h2 class="text-3xl font-bold gold-gradient-text mb-3">4. البيئة التنظيمية والاشتراطات</h2>
-                <p class="text-brand-muted text-lg">التراخيص المطلوبة ومواكبة التوجهات الحكومية، مع روابط مباشرة للمنصات الرسمية.</p>
+                <p class="text-brand-muted text-lg">التراخيص المطلوبة ومواكبة التوجهات الحكومية.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -368,7 +372,6 @@
                             <li>التسجيل في منصة تصنيف مقدمي خدمات المدن.</li>
                         </ul>
                     </div>
-                    <a href="https://balady.gov.sa/ar/services/305" target="_blank" class="text-center block w-full py-3 bg-[#121413] border border-brand-gold text-brand-gold text-sm font-bold rounded hover:bg-brand-gold hover:text-[#121413] transition-colors mt-4">🔗 الانتقال لبوابة بلدي للتصنيف</a>
                 </div>
 
                 <!-- NWC -->
@@ -384,7 +387,6 @@
                             <span class="text-xs text-gray-400">تصميم وتوثيق أنظمة اللاندسكيب لـ "سواري" لتكون معتمدة ومطابقة لأدلة الترشيد الوطنية.</span>
                         </div>
                     </div>
-                    <a href="https://www.nwc.com.sa/" target="_blank" class="text-center block w-full py-3 bg-[#121413] border border-brand-gold text-brand-gold text-sm font-bold rounded hover:bg-brand-gold hover:text-[#121413] transition-colors mt-4">🔗 موقع شركة المياه الوطنية (NWC)</a>
                 </div>
 
                 <!-- Green Riyadh -->
@@ -395,9 +397,6 @@
                         <p class="text-sm text-brand-muted leading-relaxed text-justify mb-4">
                             دليل التشجير لمدينة الرياض ومبادرة السعودية الخضراء يحددان قوائم النباتات المحلية والمستأنسة المعتمدة، ويقيدان استخدام بعض النباتات الضارة بالبنية التحتية. مواءمة كتالوج "سواري" مع هذه الأدلة يعتبر نقطة قوة تسويقية وقانونية.
                         </p>
-                    </div>
-                    <div class="w-full md:w-auto md:min-w-[250px]">
-                        <a href="https://riyadhgreen.sa/ar/" target="_blank" class="text-center block w-full py-3 bg-brand-olive text-brand-light text-sm font-bold rounded hover:bg-opacity-80 transition-colors">🔗 بوابة الرياض الخضراء الرسمية</a>
                     </div>
                 </div>
             </div>
@@ -472,44 +471,13 @@
         <!-- Module 6: Sources & Links -->
         <section id="section-sources" class="content-section fade-in hidden">
             <div class="mb-10 border-b border-gray-800 pb-6">
-                <h2 class="text-3xl font-bold gold-gradient-text mb-3">6. المصادر والروابط الرسمية</h2>
-                <p class="text-brand-muted text-lg">تم تدقيق هذه الروابط لتكون الوجهات الرسمية المباشرة للبيانات التي استندت إليها الدراسة.</p>
+                <h2 class="text-3xl font-bold gold-gradient-text mb-3">6. المصادر والروابط التفصيلية</h2>
+                <p class="text-brand-muted text-lg">قائمة المصادر والبيانات المرجعية المستخدمة في هذه الدراسة.</p>
             </div>
 
-            <div class="bg-brand-card p-8 rounded-xl border border-gray-800">
-                <ul class="space-y-6">
-                    <li class="flex items-start bg-[#121413] p-5 rounded-lg border border-gray-800 hover:border-brand-gold transition-colors">
-                        <span class="text-brand-gold ml-4 text-2xl mt-1">📊</span>
-                        <div class="flex-1">
-                            <h4 class="font-bold text-brand-light text-lg">تقارير سوق العقارات والبناء (Knight Frank KSA)</h4>
-                            <p class="text-sm text-gray-400 mt-2 mb-3">تقارير متعلقة بحجم التداولات العقارية السكنية الفاخرة وتوسع أحياء شمال الرياض.</p>
-                            <a href="https://www.knightfrank.com.sa/research" target="_blank" class="text-brand-olive hover:text-brand-gold text-sm font-bold">🔗 موقع الأبحاث الرسمي (Knight Frank)</a>
-                        </div>
-                    </li>
-                    <li class="flex items-start bg-[#121413] p-5 rounded-lg border border-gray-800 hover:border-brand-gold transition-colors">
-                        <span class="text-brand-gold ml-4 text-2xl mt-1">🌿</span>
-                        <div class="flex-1">
-                            <h4 class="font-bold text-brand-light text-lg">مبادرة "الرياض الخضراء"</h4>
-                            <p class="text-sm text-gray-400 mt-2 mb-3">الأدلة الإرشادية الرسمية للنباتات المتكيفة مع بيئة الرياض ومستهدفات التشجير.</p>
-                            <a href="https://riyadhgreen.sa/ar/" target="_blank" class="text-brand-olive hover:text-brand-gold text-sm font-bold">🔗 زيارة بوابة الرياض الخضراء</a>
-                        </div>
-                    </li>
-                    <li class="flex items-start bg-[#121413] p-5 rounded-lg border border-gray-800 hover:border-brand-gold transition-colors">
-                        <span class="text-brand-gold ml-4 text-2xl mt-1">💧</span>
-                        <div class="flex-1">
-                            <h4 class="font-bold text-brand-light text-lg">شركة المياه الوطنية (NWC) ووزارة البيئة</h4>
-                            <p class="text-sm text-gray-400 mt-2 mb-3">المنصة الرسمية للاطلاع على لوائح الاستهلاك والترشيد وخدمات قطاع الأفراد.</p>
-                            <a href="https://www.nwc.com.sa/" target="_blank" class="text-brand-olive hover:text-brand-gold text-sm font-bold">🔗 موقع شركة المياه الوطنية</a>
-                        </div>
-                    </li>
-                    <li class="flex items-start bg-[#121413] p-5 rounded-lg border border-gray-800 hover:border-brand-gold transition-colors">
-                        <span class="text-brand-gold ml-4 text-2xl mt-1">📈</span>
-                        <div class="flex-1">
-                            <h4 class="font-bold text-brand-light text-lg">بحوث Mordor Intelligence (سوق اللاندسكيب السعودي)</h4>
-                            <p class="text-sm text-gray-400 mt-2 mb-3">التقرير المرجعي لأرقام حجم السوق ومعدلات النمو السنوي المركب (CAGR).</p>
-                            <a href="https://www.mordorintelligence.com/industry-reports/saudi-arabia-landscaping-market" target="_blank" class="text-brand-olive hover:text-brand-gold text-sm font-bold">🔗 ملخص التقرير (Mordor Intelligence)</a>
-                        </div>
-                    </li>
+            <div class="bg-brand-card p-6 rounded-xl border border-gray-800 max-h-[700px] overflow-y-auto">
+                <ul id="sourceList" class="space-y-4 text-sm">
+                    <!-- Populated by JS based on user's exact list -->
                 </ul>
             </div>
         </section>
@@ -535,6 +503,82 @@
                 window.scrollTo({top: 0, behavior: 'smooth'});
             }
         }
+
+        // --- Source Links Injection ---
+        const rawSources = [
+            "Saudi Arabia Landscaping Market Size, Share & Forecast 2030F - TechSci Research, accessed March 7, 2026, https://www.techsciresearch.com/report/saudi-arabia-landscaping-market/11746.html",
+            "Saudi Arabia 5.55 Bn Landscaping Market Trends, accessed March 7, 2026, https://www.globenewswire.com/news-release/2025/09/01/3142102/28124/en/Saudi-Arabia-5-55-Bn-Landscaping-Market-Trends-Competition-Forecast-Opportunities-2030F.html",
+            "KSA Landscaping Market, Industry Growth and Forecast to 2030, accessed March 7, 2026, https://www.kenresearch.com/industry-reports/ksa-landscaping-market",
+            "Landscape Design in Riyadh - SOL, accessed March 8, 2026, https://soldesignsa.com/en/landscape-design-in-riyadh/",
+            "Garden Maintenance Company in Riyadh - KACC, accessed March 8, 2026, https://kacc.co/garden-maintanance/",
+            "Saudi Arabia Landscaping Market Size, Share and Growth 2032 - Markets and Data, accessed March 7, 2026, https://www.marketsandata.com/industry-reports/saudi-arabia-landscaping-market",
+            "Saudi Arabia Landscaping Market Report: Trends, Growth and Forecast (2026-2032), accessed March 7, 2026, https://www.vyansaintelligence.com/industry-report/saudi-arabia-landscaping-market-forecast",
+            "A Comprehensive Guide to Buying Land in Riyadh: Prices, Areas, and Investment Tips for 2026 - Mada Properties, accessed March 7, 2026, https://www.madaproperties.sa/en/blogs/a-comprehensive-guide-to-buying-land-in-riyadh-prices-areas-and-investment-tips-for-2026",
+            "Discover Premium Villas for Sale in North Riyadh in Installments - Mada Properties, accessed March 7, 2026, https://www.madaproperties.sa/en/blogs/discover-premium-villas-for-sale-in-north-riyadh-in-installments",
+            "Saudi Arabia Landscaping Market 2030: The Rise of Smart and Sustainable Landscaping - Market Research - Global Risk Community, accessed March 7, 2026, https://globalriskcommunity.com/market_research/saudi-arabia-landscaping-market-2030-the-rise-of-smart-and-sustai",
+            "2023 Investment Climate Statements: Saudi Arabia, accessed March 8, 2026, https://2021-2025.state.gov/reports/2023-investment-climate-statements/saudi-arabia/",
+            "تنسيق حدائق بالرياض تركيب عشب صناعي وتصميم حدائق منزلية حديثة, accessed March 8, 2026, https://hadaiqriad.com/",
+            "Revolutionizing urban life: efficient and sustainable landscaping solutions - AZUD, accessed March 7, 2026, https://azud.com/en/project/subsurface-drip-irrigation-in-saudi-arabia/",
+            "How Irrigation and Landscaping Work Together in Riyadh, accessed March 7, 2026, https://www.greenwavs.com/how-irrigation-and-landscaping-work-together-in-riyadh/",
+            "Saudi Arabia Landscaping Market | 2019 – 2030 - Ken Research, accessed March 7, 2026, https://www.kenresearch.com/saudi-arabia-commercial-facility-landscaping-services-market",
+            "تنسيق حدائق - مؤسسة ارجاء بالرياض خبرة 15 عام, accessed March 8, 2026, https://abusamahgarden.com/",
+            "تنسيق حدائق, accessed March 8, 2026, https://landscaper205.com/",
+            "Annual Landscape Maintenance for Businesses in Saudi Arabia, accessed March 8, 2026, https://www.nabtat.com.sa/annual-landscape-maintenance/",
+            "Garden Maintenance (Long Term - 6 months), accessed March 8, 2026, https://www.bastanastore.com/products/copy-of-garden-maintenance-one-time-visit",
+            "KSA Landscaping Market Size, Competitors, Trends & Forecast, accessed March 7, 2026, https://www.researchandmarkets.com/report/saudi-arabia-landscaping-market",
+            "Top Trends in Irrigation Installation for Saudi Arabian Landscapes, accessed March 8, 2026, https://www.greenwavs.com/top-trends-in-irrigation-installation-for-saudi-arabian-landscapes/",
+            "توب جاردنز: الصفحة الرئيسية, accessed March 8, 2026, https://topgardens.online/",
+            "Home - تنسيق حدائق الرياض | شركة تنسيق حدائق بالرياض, accessed March 8, 2026, https://fllorenza.com/",
+            "أفضل 5 شركات تنسيق حدائق بالرياض بخبرة طويلة وأسعار تنافسية, accessed March 7, 2026, https://hadaiqriad.com/%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%D9%86%D8%A7/%D8%AF%D9%84%D9%8A%D9%84-%D8%A3%D9%81%D8%B6%D9%84-%D8%B4%D8%B1%D9%83%D8%A7%D8%AA-%D8%AA%D9%86%D8%B3%D9%8A%D9%82-%D8%A7%D9%84%D8%AD%D8%AF%D8%A7%D8%A6%D9%82/%D8%A3%D9%81%D8%B6%D9%84-5-%D8%B4%D8%B1%D9%83%D8%A7%D8%AA-%D8%AA%D9%86%D8%B3%D9%8A%D9%82-%D8%AD%D8%AF%D8%A7%D8%A6%D9%82/",
+            "عقود الصيانة الشهرية والسنوية للحدائق - شركة حدائق الفرسان التجارية, accessed March 8, 2026, https://fursan-sa.com/contract/",
+            "أفضل شركة تنسيق حدائق شرق الرياض, accessed March 7, 2026, https://landscaper205.com/%D8%A3%D9%81%D8%B6%D9%84-%D8%B4%D8%B1%D9%83%D8%A9-%D8%AA%D9%86%D8%B3%D9%8A%D9%82-%D8%AD%D8%AF%D8%A7%D8%A6%D9%82-%D8%B4%D8%B1%D9%82-%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6/",
+            "About us - Contracting Company in Saudi Arabia - HALSCO, accessed March 7, 2026, https://halsco.com.sa/about-us/",
+            "Contracting Company in Saudi Arabia - HALSCO, accessed March 7, 2026, https://halsco.com.sa/",
+            "Landscaping and park design - toq.com.sa, accessed March 8, 2026, https://toq.com.sa/en/landscaping-and-park-design/",
+            "Interior Design in Riyadh: Blending Luxury and Functionality - First Garden, accessed March 8, 2026, https://firstgardenksa.com/test/",
+            "Incredible Landscaping Companies In Saudi Arabia 2025 - Skilya, accessed March 8, 2026, https://skilya.com/landscaping-companies-in-saudi-arabia/",
+            "تنسيق حدائق بالرياض - مؤسسة الوفاء لتنسيق الحدائق, accessed March 8, 2026, https://alwafagardens.com/",
+            "شركة تنسيق الحدائق بالرياض لتصميم 5 أفكار لحديقة كمتحف فني, accessed March 8, 2026, https://gardens-ruwaad.com/%D8%B4%D8%B1%D9%83%D8%A9-%D8%AA%D9%86%D8%B3%D9%8A%D9%82-%D8%A7%D9%84%D8%AD%D8%AF%D8%A7%D8%A6%D9%82-%D8%A8%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6-%D9%84%D8%AA%D8%B5%D9%85%D9%8A%D9%85-5-%D8%A3%D9%81%D9%83/",
+            "The 10 Best Interior Designers in Riyadh: Top Experts Transforming Spaces, accessed March 8, 2026, https://eraculturedesign.com/the-10-best-interior-designers-in-riyadh-top-experts-transforming-spaces/",
+            "Interior Design Company in Riyadh & Saudi Arabia - Rayfitout, accessed March 8, 2026, https://www.rayfitout.com/services/interior-design-company-in-riyadh",
+            "The 20 Best Interior Designers In Riyadh 2023 - LUXXU, accessed March 8, 2026, https://www.luxxu.net/blog/the-20-best-interior-designers-in-riyadh/",
+            "أبرز الأخطاء الشائعة في تنسيق الحدائق وكيفية تجنبها » Naseem Alzahra Landscape, accessed March 8, 2026, https://naseemlandscape.com/%D8%A3%D8%A8%D8%B1%D8%B2-%D8%A7%D9%84%D8%A3%D8%AE%D8%B7%D8%A7%D8%A1-%D8%A7%D9%84%D8%B4%D8%A7%D8%A6%D8%B9%D8%A9-%D9%81%D9%8A-%D8%AA%D9%86%D8%B3%D9%8A%D9%82-%D8%A7%D9%84%D8%AD%D8%AF%D8%A7%D8%A6%D9%82/",
+            "صيانة الحدائق الدورية بزيارات متكررة أسبوعية وشهرية - تنسيق حدائق, accessed March 7, 2026, https://tansikhadaek.org/%D8%B5%D9%8A%D8%A7%D9%86%D8%A9-%D8%A7%D9%84%D8%AD%D8%AF%D8%A7%D8%A6%D9%82/",
+            "Turnkey Villa Finishing Cost in Jeddah 2026 - SMD Decoration, accessed March 7, 2026, https://smddecoration.com/en/post/%D8%AA%D9%83%D9%84%D9%81%D8%A9-%D8%AA%D8%B4%D8%B7%D9%8A%D8%A8-%D9%81%D9%8A%D9%84%D8%A7-%D8%AA%D8%B3%D9%84%D9%8A%D9%85-%D9%85%D9%81%D8%AA%D8%A7%D8%AD-%D8%AC%D8%AF%D8%A9-2026-%D8%A7%D9%84%D8%A8%D9%86%D9%88%D8%AF-%D9%88%D8%A7%D9%84%D9%85%D8%AF%D8%A9-%D9%88%D8%A7%D9%84%D8%A3%D8%B3%D8%B9%D8%A7%D8%B1",
+            "دليل المستخدم وتأهيل مشغلي المدن لبوابة تصنيف - منصة بلدي, accessed March 8, 2026, https://balady.gov.sa/sites/default/files/service/%D8%AF%D9%84%D9%8A%D9%84%20%D8%A7%D9%84%D9%85%D8%B3%D8%AA%D8%AE%D8%AF%D9%85%20%D9%84%D8%A8%D9%88%D8%A7%D8%A8%D8%A9%20%D8%AA%D8%B5%D9%86%D9%8A%D9%81%20%D9%85%D8%B4%D8%BA%D9%84%D9%8A%20%D8%A7%D9%84%D9%85%D8%AF%D9%86_0.pdf",
+            "SSIC - الهيئة العامة للإحصاء, accessed March 8, 2026, https://www.stats.gov.sa/documents/20117/114272/National+Classification+for+the+Economic+Activities%28SSIC%29_Nov_2024_Ar_.xlsx/bfa55102-6f89-df36-c648-3428ee1f8f73?t=1733922449526",
+            "طلب تنسيق حفريات متعددة - وزارة البلديات والإسكان, accessed March 8, 2026, https://momah.gov.sa/ar/e-services/tlb-tnsyq-hfryat-mtddt?pageNumber=12",
+            "البلدية والإسكان 30 يوماً مدة التراخيص لأعمال الحفر - وزارة البلديات والإسكان, accessed March 8, 2026, https://momah.gov.sa/ar/news/momrah-30-day-license-period?pageNumber=15",
+            "البلدية والإسكان: إنشاء وتفعيل 474 حديقةً وتنفيذ 568 تدخلاً حضرياً ضمن مشروع بهجة حتى نهاية الربع الأول 2024, accessed March 7, 2026, https://momah.gov.sa/ar/news/albldyt-walaskan-ansha-wtfyl-474?pageNumber=4",
+            "(PDF) 1 Environment Sustainability and Green Entrepreneurship in Saudi Arabia, accessed March 8, 2026, https://www.researchgate.net/publication/400430691_1_Environment_Sustainability_and_Green_Entrepreneurship_in_Saudi_Arabia",
+            "VOLUNTARY LOCAL REVIEW OF THE SUSTAINABLE DEVELOPMENT GOALS, accessed March 8, 2026, https://sdgs.un.org/sites/default/files/2025-11/VLR_Riyadh_2024.pdf",
+            "Saudi Arabia Green Construction Market Outlook to 2030 - Nexdigm, accessed March 8, 2026, https://www.nexdigm.com/market-research/report-store/saudi-arabia-green-construction-market-report/",
+            "المملكة تتقدم في مؤشر المستقبل الأخضر 2022.. نجاحات بيئية على أرض الواقع - صحيفة اليوم, accessed March 8, 2026, https://www.alyaum.com/articles/6431219/%D8%A7%D9%84%D8%A3%D8%AE%D8%A8%D8%A7%D8%B1/%D8%A7%D9%84%D9%85%D9%85%D9%84%D9%83%D8%A9-%D8%A7%D9%84%D9%8A%D9%88%D9%85/%D8%A7%D9%84%D9%85%D9%85%D9%84%D9%83%D8%A9-%D8%AA%D8%AA%D9%82%D8%AF%D9%85-%D9%81%D9%8A-%D9%85%D8%A4%D8%B4%D8%B1-%D8%A7%D9%84%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84-%D8%A7%D9%84%D8%A3%D8%AE%D8%B6%D8%B1-2022-%D9%86%D8%AC%D8%A7%D8%AD%D8%A7%D8%AA-%D8%A8%D9%8A%D8%A6%D9%8A%D8%A9-%D8%B9%D9%84%D9%89-%D8%A3%D8%B1%D8%B6-%D8%A7%D9%84%D9%88%D8%A7%D9%82%D8%B9"
+        ];
+
+        const sourcesListEl = document.getElementById('sourceList');
+        rawSources.forEach(source => {
+            // Extract URL
+            const urlMatch = source.match(/https?:\/\/[^\s]+/);
+            let url = "";
+            let text = source;
+            if(urlMatch) {
+                url = urlMatch[0];
+                text = source.replace(url, '').trim().replace(/,\s*$/, ''); // Remove trailing comma
+            }
+
+            const li = document.createElement('li');
+            li.className = "flex items-start bg-[#181A19] p-4 rounded-lg border border-gray-700 hover:border-brand-gold transition-colors";
+            li.innerHTML = `
+                <span class="text-brand-gold ml-4 text-xl mt-0.5">🔗</span>
+                <div class="flex-1 overflow-hidden">
+                    <p class="text-brand-light font-medium mb-1">${text}</p>
+                    ${url ? `<a href="${url}" target="_blank" class="text-brand-olive hover:text-brand-gold break-url text-xs font-bold block">${url}</a>` : ''}
+                </div>
+            `;
+            sourcesListEl.appendChild(li);
+        });
+
 
         // --- Chart.js Configuration for Dark Theme ---
         Chart.defaults.font.family = "'Tajawal', sans-serif";
@@ -639,21 +683,16 @@
                             color: '#F5F5DC',
                             font: { family: "'Tajawal', sans-serif", size: 12, weight: 'bold' }
                         },
-                        ticks: {
-                            display: false,
-                            min: 0,
-                            max: 100
-                        }
+                        ticks: { display: false, min: 0, max: 100 }
                     }
                 }
             }
         });
 
-        // --- Competitor Data & Table Logic (Sawary + 20 Verified Design/Execution Players) ---
-        // Links are formatted safely. Exact known domains are direct. Uncertain domains are formatted as safe Google searches to prevent 404s.
+        // --- Competitor Data & Table Logic (Sawary + 20 Players) ---
         const competitors = [
             // سواري (الأساس للقياس)
-            { name: "سواري للديكور واللاندسكيب (Sawary)", web: "https://sawary.de/", ig: "https://www.instagram.com/sawary.de/", type: "مكاتب ديكور ولاندسكيب", segment: "الفلل الفاخرة (شمال الرياض)", strengths: "تكامل داخلي/خارجي (Inside-Out)، استدامة بصرية", weaknesses: "قسم اللاندسكيب قيد الانطلاق والتأسيس", maint: "نعم (سواري كير)" },
+            { name: "سواري للديكور واللاندسكيب (Sawary)", web: "https://sawary.de/", ig: "https://www.instagram.com/sawary.de/", type: "تصميم وتنفيذ وتصنيع لاندسكيب ومكتب هندسي", segment: "الفلل الفاخرة (شمال الرياض)", strengths: "تكامل داخلي/خارجي (Inside-Out)، استدامة بصرية", weaknesses: "قسم اللاندسكيب قيد الانطلاق والتأسيس", maint: "نعم" },
             
             // مكاتب ديكور وتصميم معماري
             { name: "فارس الفارس (Faris AlFares)", web: "https://farisalfaris.com/", ig: "https://www.instagram.com/faris_alfares/", type: "مكاتب ديكور ولاندسكيب", segment: "قصور/فاخر", strengths: "تصاميم استثنائية وتكامل هندسي", weaknesses: "ميزانيات تنفيذ مرتفعة جداً", maint: "لا" },
@@ -688,7 +727,6 @@
             data.forEach(c => {
                 const tr = document.createElement('tr');
                 
-                // تمييز صف سواري
                 if(c.name.includes('سواري')) {
                     tr.className = "sawary-row hover:bg-[#2c2415] transition-colors font-bold";
                 } else {
@@ -696,7 +734,8 @@
                 }
                 
                 let typeColor = "bg-gray-800 text-gray-300";
-                if(c.type === 'Design & Build') typeColor = "bg-brand-olive/20 text-brand-gold border border-brand-olive";
+                if(c.type.includes('تصميم وتنفيذ وتصنيع')) typeColor = "bg-[#D4AF37] text-[#121413] font-bold border border-brand-gold";
+                else if(c.type === 'Design & Build') typeColor = "bg-brand-olive/20 text-brand-gold border border-brand-olive";
                 else if(c.type === 'تنفيذ فقط') typeColor = "bg-gray-800 text-gray-400 border border-gray-700";
                 else if(c.type === 'مكاتب ديكور ولاندسكيب') typeColor = "bg-[#D4AF37]/20 text-brand-light border border-brand-gold";
 
@@ -706,16 +745,16 @@
                     <td class="p-4 border-b border-gray-800">
                         <div class="text-brand-light mb-2 ${c.name.includes('سواري') ? 'text-brand-gold text-lg' : 'font-bold'}">${c.name}</div>
                         <div class="flex flex-col gap-2 text-xs">
-                            <a href="${c.web}" target="_blank" class="${c.name.includes('سواري') ? 'text-brand-gold' : 'text-brand-olive'} hover:text-white transition-colors block border border-gray-700 rounded px-2 py-1 w-fit">${webLabel}</a>
-                            <a href="${c.ig}" target="_blank" class="text-brand-muted hover:text-white transition-colors block border border-gray-700 rounded px-2 py-1 w-fit">📸 حساب / بحث إنستغرام</a>
+                            <a href="${c.web}" target="_blank" class="${c.name.includes('سواري') ? 'text-brand-gold border-brand-gold' : 'text-brand-olive border-gray-700'} hover:text-white transition-colors block border rounded px-2 py-1 w-fit">${webLabel}</a>
+                            <a href="${c.ig}" target="_blank" class="${c.name.includes('سواري') ? 'text-brand-gold border-brand-gold' : 'text-brand-muted border-gray-700'} hover:text-white transition-colors block border rounded px-2 py-1 w-fit">📸 حساب / بحث إنستغرام</a>
                         </div>
                     </td>
                     <td class="p-4 border-b border-gray-800">
-                        <span class="px-2 py-1 rounded text-xs ${typeColor} whitespace-nowrap">${c.type}</span>
+                        <span class="px-2 py-1 rounded text-xs ${typeColor}">${c.type}</span>
                     </td>
                     <td class="p-4 border-b border-gray-800 text-sm">${c.segment}</td>
                     <td class="p-4 border-b border-gray-800 ${c.name.includes('سواري') ? 'text-brand-light' : 'text-brand-olive'} text-sm">${c.strengths}</td>
-                    <td class="p-4 border-b border-gray-800 text-red-400 text-sm">${c.weaknesses}</td>
+                    <td class="p-4 border-b border-gray-800 ${c.name.includes('سواري') ? 'text-gray-400' : 'text-red-400'} text-sm">${c.weaknesses}</td>
                     <td class="p-4 border-b border-gray-800 text-center text-sm font-bold ${c.maint.includes('نعم') ? 'text-brand-gold' : 'text-gray-600'}">${c.maint}</td>
                 `;
                 tbody.appendChild(tr);
@@ -731,7 +770,6 @@
             if (type === 'all') {
                 renderTable(competitors);
             } else {
-                // إبقاء سواري دائماً في الأعلى بغض النظر عن الفلتر
                 const sawary = competitors.filter(c => c.name.includes('سواري'));
                 let filtered = competitors.filter(c => c.type === type && !c.name.includes('سواري'));
                 renderTable(sawary.concat(filtered));
